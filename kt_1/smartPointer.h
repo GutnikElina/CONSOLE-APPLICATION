@@ -23,11 +23,6 @@ public:
 	SmartPointer& operator=(const SmartPointer& obj); //перегрузка
 
 	T* operator->() const;//оператор получения доступа к объекту
-	void showCounter() 
-	{
-		std::cout << "Значение счетчика для объекта "
-			<< smartPtr << " равно: " << smartPtr->counter << std::endl;
-	}
 };
 
 #endif

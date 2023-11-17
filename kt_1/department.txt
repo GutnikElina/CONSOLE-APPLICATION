@@ -1,0 +1,26 @@
+
+COMMERCIAL	5	4
+	Gutnik	Elina	Andreevna	6392	4.96
+	Ivanov	Ivan	Ivanovich	1932	3.76
+	Lozuk	Evgeniy	Petrovich	1523	5.01
+	Kovalenko	Antonina	Alexeevna	2048	3.59
+FINANCIAL	3	5
+	Kozlova	Alina	Victorovna	2984	4.21
+	Markova	Ulia	Sergeevna	9385	5.06
+	Ivanov	Artem	Petrovich	3064	3.90
+	Nikitina	Elena	Alexeevna	7075	4.44
+	Kuznetsov	Vladislav	Igorevich	3899	5.63
+IT	2	5
+	Makarov	Andrey	Andreevich	2949	3.01
+	Fedorova	Olga	Vladimirovna	4395	6.75
+	Dmitriev	Nikita	Maksimovich	5349	3.48
+	Koroleva	Anastasia	Andreevna	6504	5.25
+	Lebedev	Artem	Nikolaevich	2359	3.36
+MARKETING	4	2
+	Andreeva	Ekaterina	Alekseevna	1403	3.92
+	Kolesnikov	Ivan	Alexandrovich	2035	3.91
+PRODUCTION	5	4
+	Popova	Kseniya	Igorevna	5503	2.91
+	Petrov	Sergey	Ivanovich	5690	5.01
+	Komarov	Sergei	Dmitrievich	3295	4.59
+	Gutnik	Elina	Andreevna	2309	5.56

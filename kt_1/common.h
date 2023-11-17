@@ -5,8 +5,8 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 
-#include<locale.h>
-#include<windows.h>
+#include <locale.h>
+#include <windows.h>
 #include <iostream>
 #include <iomanip>
 #include <sstream>

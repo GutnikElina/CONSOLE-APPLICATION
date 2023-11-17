@@ -48,7 +48,7 @@ public:
 
 	void set();
 	void set(std::string name, std::string surname, std::string otch);
-	void getFromFile(std::istream& in) { in >> this->surname >> this->name >>  this->otch; };
+	virtual void getFromFile(std::istream& in) { in >> this->surname >> this->name >>  this->otch; };
 
 	void setName(std::string name) { this->name = name; }
 	void setSurname(std::string surname) { this->surname = surname; };

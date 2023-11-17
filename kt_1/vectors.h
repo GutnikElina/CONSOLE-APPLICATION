@@ -10,9 +10,9 @@ class Vectors
 {
 private:
 
-	std::vector<std::shared_ptr<User>> vectorUser;
-	std::vector<std::shared_ptr<Employee>> vectorEmployee;
-	std::vector<std::shared_ptr<Department>>  vectorDepartment;
+	std::vector<std::shared_ptr<User>> vectorUser{};
+	std::vector<std::shared_ptr<Employee>> vectorEmployee{};
+	std::vector<std::shared_ptr<Department>>  vectorDepartment{};
 
 public:
 
@@ -36,10 +36,11 @@ public:
 	static std::string checkPassword();
 
 	static std::string singIn(std::vector<std::shared_ptr<User>>& vectorUser);
+	static void singUp(int role, std::vector<std::shared_ptr<User>>& vectorUser, Vectors& vect);
 
-	void addAccountInFile();
-	void addEmployeeInFile();
-
+	static void addAccountInFile(std::vector<std::shared_ptr<User>> vectorUser);
+	static void addEmployeeInFile(std::vector<std::shared_ptr<Employee>> vectorEmployee);
+	static void addDepartmentInFile(std::vector<std::shared_ptr<Department>> vectorDepartment);
 };
 
 #endif

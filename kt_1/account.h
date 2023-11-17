@@ -21,7 +21,7 @@ public:
 	~User() { this->username.clear(); }
 
 	void set(std::string username, unsigned int password, int role, int access);
-	void getFromFile(std::istream& in);
+	void getFromFile(std::istream& in) override;
 
 	void setUsername(std::string username) { this->username = username; }
 	void setPassword(std::string password) { this->password = password; }
@@ -35,9 +35,18 @@ public:
 	int getRole() { return this->role; }
 	int getAccess() { return this->access; }
 
-	static void singUp(int role, std::vector<std::shared_ptr<User>>& vectorUser);
 	static int enterAccount(std::vector<std::shared_ptr<User>> vectorUser);
 	static std::shared_ptr<User>& findUser(std::string username, std::vector<std::shared_ptr<User>>& vecUser);
+	static void showAccounts(std::vector<std::shared_ptr<User>>& vectorUser);
+	static void addNewAccount(std::vector<std::shared_ptr<User>>& vectorUser);
+	static void deleteAccount(std::vector<std::shared_ptr<User>>& vectorUser, std::string username);
+	static std::shared_ptr<User>& findAccount(std::vector<std::shared_ptr<User>>& vectorUser);
+	static void changeAccount(std::vector<std::shared_ptr<User>>& vectorUser, std::string username);
+	static void changeUsername(std::vector<std::shared_ptr<User>>& vectorUser, std::shared_ptr<User>& user);
+	static void changePassword(std::vector<std::shared_ptr<User>>& vectorUser, std::shared_ptr<User>& user);
+	static void changeRole(std::vector<std::shared_ptr<User>>& vectorUser, std::shared_ptr<User>& user, std::string username);
+	static void changeAccess(std::vector<std::shared_ptr<User>>& vectorUser, std::shared_ptr<User>& user, std::string username);
+	static void changeMyAccount(std::vector<std::shared_ptr<User>>& vectorUser, std::string  username);
 
 	friend std::ostream& operator<<(std::ostream& stream, User& user);
 };
