@@ -4,40 +4,38 @@
 
 int main()
 {
-	setlocale(LC_ALL, "Rus");
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
 	SetConsoleTitle(L"√утник Ёлина јндреевна, группа 272301");    // измен€ем заголовок окна приложени€
-	Console::ConsoleCursorVisible(false, 100);
+	Console::ConsoleCursorVisible(false, 100);                    // управл€ем видимостью курсора в консоли
 
-	Vectors vect{};
-	std::string username{};
-	int role{};
-	bool flag = true;
+	Vectors vect;
+	std::string username;
+	int role;
 
-	vect.getVectorUsers();              // считываем из файла все данные аккаунтов
-	vect.getVectorEmployees();          // считываем из файла все данные работников
-	vect.getVectorDepartment();		    // считываем из файла все данные отделов
+	vect.GetVectorUsers();              // считываем из файла все данные аккаунтов
+	vect.GetVectorEmployees();          // считываем из файла все данные работников
+	vect.GetVectorDepartment();		    // считываем из файла все данные отделов
 
 	while (true)
 	{
-		int myChoice = User::enterAccount(vect.getUsers());        // вход в приложение
+		int my_choice = User::EnterAccount(vect.GetUsers());        // вход в приложение
 
-		if (myChoice == 0)
+		if (my_choice == 0)
 		{
-			username = Vectors::singIn(vect.getUsers());           //авторизаци€
-			if (username != "null")
+			username = Vectors::SingIn(vect.GetUsers());            //авторизаци€
+			if (username != "NULL")
 			{
-				role = User::findUser(username, vect.getUsers())->getRole();
-				if (role == 1) Menu::menuAdmin(vect, username);
-				else Menu::menuUser(vect, username);
+				role = User::FindUser(username, vect.GetUsers())->GetRole();
+				if (role == 1) Menu::MenuAdmin(vect, username);
+				else Menu::MenuUser(vect, username);
 			}
 		}
-		else if (myChoice == 1)
+		else if (my_choice == 1)
 		{
-			Vectors::singUp(0, vect.getUsers(), vect);                     //регистраци€
+			Vectors::SingUp(0, vect.GetUsers(), vect);               //регистраци€
 		}
-		else exit(0);
+		else exit(0);                                                //выход из приложени€
 	}
 }
 

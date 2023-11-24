@@ -10,41 +10,41 @@ class Department: public Employee
 {
 private:
 
-	std::string title{};
-	int numberOfProjects{};
-	int numberOfEmployees{};
-	std::vector<std::shared_ptr<Employee>> employee{};
+	std::string title;
+	int number_projects;
+	int number_employees;
+	std::vector<std::shared_ptr<Employee>> employee;
 
 public:
 
-	Department() : title("NULL"), numberOfProjects(0), numberOfEmployees(0), employee(0) {};
-	~Department() { this->title.clear(); };
+	Department() : title("NULL"), number_projects(0), number_employees(0), employee(0) {}
+	~Department() { this->title.clear(); this->employee.clear(); }
 
-	void getFromFile(std::istream& in) override;
+	void SetTitle(std::string title) { this->title = title; }
+	void SetNumberProjects(int number_projects) { this->number_projects = number_projects; };
+	void SetNumberEmployees(int number_employees) { this->number_employees = number_employees; };
+	void SetEmployees(std::vector<std::shared_ptr<Employee>> e) { this->employee = e; }
 
-	void setTitle(std::string title) { this->title = title; }
-	void setNumberOfProjects(int numberOfProjects) { this->numberOfProjects = numberOfProjects; };
-	void setNumberOfEmployees(int numberOfEmployees) { this->numberOfEmployees = numberOfEmployees; };
-	void setEmployees(std::vector<std::shared_ptr<Employee>> e) { this->employee = e; }
+	std::string GetTitle() { return this->title; }
+	int GetNumberProjects() { return this->number_projects; };
+	int GetNumberEmployees() { return this->number_employees; };
+	std::vector<std::shared_ptr<Employee>>& GetEmployees() { return this->employee; }
 
-	std::string getTitle() { return this->title; }
-	int getNumberOfProjects() { return this->numberOfProjects; };
-	int getNumberOfEmployees() { return this->numberOfEmployees; };
-	std::vector<std::shared_ptr<Employee>>& getEmployees() { return this->employee; }
+	static int FindDepartment(std::vector<std::shared_ptr<Department>>& dep);
+	static int FindEmployeeInDepartment(std::vector<std::shared_ptr<Department>> dep, int number_department);
+	static void DepartmentsDatabase(std::vector<std::shared_ptr<Department>> dep);
 
-	static int findDepartment(std::vector<std::shared_ptr<Department>>& dep);
-	static int findEmployeeInDepartment(std::vector<std::shared_ptr<Department>> dep, int numberOfDepartment);
-	static void databaseDepartment(std::vector<std::shared_ptr<Department>> dep);
+	static void ChangeTitle(std::vector<std::shared_ptr<Department>>& dep, int number_department);
+	static void ChangeNumberOfProjects(std::vector<std::shared_ptr<Department>>& dep, int number_department);
 
-	static void changeTitle(std::vector<std::shared_ptr<Department>>& dep, int numberOfDepartment);
-	static void changeNumberOfProjects(std::vector<std::shared_ptr<Department>>& dep, int numberOfDepartment);
+	static void DeleteEmployeeFromDepartment(std::vector<std::shared_ptr<Department>>& dep, int number_projects);
+	static void AddNewEmployeeInDepartment(std::vector<std::shared_ptr<Employee>>& emp, std::vector<std::shared_ptr<Department>>& dep, int number_department);
+	static void ParticulatDepartmentDatabase(std::vector<std::shared_ptr<Department>>& dep, int number_department);
+	static void DeleteDatabaseDepartment(std::vector<std::shared_ptr<Department>>& dep);
+	static void AddNewDepartment(std::vector<std::shared_ptr<Employee>>& emp, std::vector<std::shared_ptr<Department>>& dep);
+	static void DeleteDepartment(std::vector<std::shared_ptr<Department>>& dep);
 
-	static void deleteEmployeeFromDepartment(std::vector<std::shared_ptr<Department>>& dep, int numberOfDepartment);
-	static void addNewEmployeeInDepartment(std::vector<std::shared_ptr<Employee>>& emp, std::vector<std::shared_ptr<Department>>& dep, int numberOfDepartment);
-	static void databaseOfParticularDepartment(std::vector<std::shared_ptr<Department>>& dep, int numberOfDepartment);
-	static void deleteDatabaseDepartment(std::vector<std::shared_ptr<Department>>& dep);
-	static void addNewDepartment(std::vector<std::shared_ptr<Employee>>& emp, std::vector<std::shared_ptr<Department>>& dep);
-	static void deleteDepartment(std::vector<std::shared_ptr<Department>>& dep);
+	void GetFromFile(std::istream& in) override;
 };
 
 

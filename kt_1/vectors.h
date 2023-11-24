@@ -10,37 +10,37 @@ class Vectors
 {
 private:
 
-	std::vector<std::shared_ptr<User>> vectorUser{};
-	std::vector<std::shared_ptr<Employee>> vectorEmployee{};
-	std::vector<std::shared_ptr<Department>>  vectorDepartment{};
+	std::vector<std::shared_ptr<User>> vector_user;
+	std::vector<std::shared_ptr<Employee>> vector_employee;
+	std::vector<std::shared_ptr<Department>>  vector_department;
 
 public:
 
-	Vectors() : vectorUser(0), vectorEmployee(0), vectorDepartment(0) {}
+	Vectors() : vector_user(0), vector_employee(0), vector_department(0) {}
 	~Vectors() {}
 
-	int countLengthFile(std::string nameFile);
-	static std::string hash_password(const std::string& password);
+	int CountLengthFile(std::string nameFile);
+	static std::string HashPassword(const std::string& password);
 
-	std::vector<std::shared_ptr<User>>& getUsers() { return this->vectorUser; }
-	std::vector<std::shared_ptr<Employee>>& getEmployees() { return this->vectorEmployee; }
-	std::vector<std::shared_ptr<Department>>& getDepartment() { return this->vectorDepartment; }
+	std::vector<std::shared_ptr<User>>& GetUsers() { return this->vector_user; }
+	std::vector<std::shared_ptr<Employee>>& GetEmployees() { return this->vector_employee; }
+	std::vector<std::shared_ptr<Department>>& GetDepartment() { return this->vector_department; }
 
-	void getVectorUsers();
-	void getVectorEmployees();
-	void getVectorDepartment();
+	void GetVectorUsers();
+	void GetVectorEmployees();
+	void GetVectorDepartment();
 
-	static std::string checkInputUsername();
-	static std::string checkInputPassword();
-	static std::string checkUsername(std::vector<std::shared_ptr<User>> vectorUser);
-	static std::string checkPassword();
+	static std::string CheckInputUsername();
+	static std::string CheckInputPassword();
+	static std::string FindUsername(std::vector<std::shared_ptr<User>> vector_user);
+	static std::string FindPassword();
 
-	static std::string singIn(std::vector<std::shared_ptr<User>>& vectorUser);
-	static void singUp(int role, std::vector<std::shared_ptr<User>>& vectorUser, Vectors& vect);
+	static std::string SingIn(std::vector<std::shared_ptr<User>>& vector_user);
+	static void SingUp(int role, std::vector<std::shared_ptr<User>>& vector_user, Vectors& vect);
 
-	static void addAccountInFile(std::vector<std::shared_ptr<User>> vectorUser);
-	static void addEmployeeInFile(std::vector<std::shared_ptr<Employee>> vectorEmployee);
-	static void addDepartmentInFile(std::vector<std::shared_ptr<Department>> vectorDepartment);
+	static void AddAccountInFile(std::vector<std::shared_ptr<User>> vector_user);
+	static void AddEmployeeInFile(std::vector<std::shared_ptr<Employee>> vector_employee);
+	static void AddDepartmentInFile(std::vector<std::shared_ptr<Department>> vector_department);
 };
 
 #endif

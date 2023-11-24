@@ -5,7 +5,6 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 
-#include <locale.h>
 #include <windows.h>
 #include <iostream>
 #include <iomanip>
@@ -16,6 +15,5 @@
 #include <conio.h>
 #include <algorithm>
 #include <memory>
-#include <windows.h>
 
 #endif

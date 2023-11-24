@@ -10,71 +10,70 @@ class Employee : public FIO
 {
 private:
 
-	FIO fio{};
-	int id{};
-	std::string hourlyRate{};
-	double averageSalary{};
-	int amountOfMonths{};
-	std::vector<double> salary{};
-	std::vector<std::pair<std::string, double>> hoursWorkedForMonth{};
+	FIO fio;
+	int id;
+	std::string hourly_rate;
+	double average_salary;
+	int amount_months;
+	std::vector<double> salary;
+	std::vector<std::pair<std::string, double>> hours_worked_for_month;
 
 public:
 
-	Employee() : id(0), hourlyRate("NULL"), averageSalary(0), salary(0), hoursWorkedForMonth(0), amountOfMonths(0) {}
-	~Employee() { this->hourlyRate.clear(); }
+	Employee() : id(0), hourly_rate("NULL"), average_salary(0), salary(0), hours_worked_for_month(0), amount_months(0) {}
+	~Employee() { this->hourly_rate.clear(); }
 
-	void setFullName() { this->FIO::set(); }
-	void setId(int& id) { this->id = id; }
-	void setHourlyRate(std::string& hourlyRate) { this->hourlyRate = hourlyRate; }
-	void setAverageSalary(double& averageSalary) { this->averageSalary = averageSalary; }
-	void setAmountOfMonths(int& amountOfMonths) { this->amountOfMonths = amountOfMonths; }
-	void setSalary(std::vector<double> salary) { this->salary = salary; }
-	void setHoursWorkedForMonth(std::vector<std::pair<std::string, double>> hoursWorkedForMonth) 
-	{ this->hoursWorkedForMonth = hoursWorkedForMonth; }
+	int GetId() { return this->id; }
+	std::string GetHourlyRate() { return this->hourly_rate; }
+	double GetAverageSalary() { return this->average_salary; }
+	int GetAmountMonths() { return this->amount_months; }
+	std::vector<double> GetSalary() { return this->salary; }
+	std::vector<std::pair<std::string, double>> GetHoursWorkedForMonth() { return this->hours_worked_for_month; }
 
-	int getId() { return this->id; }
-	std::string getHourlyRate() { return this->hourlyRate; }
-	double getAverageSalary() { return this->averageSalary; }
-	int getAmountOfMonths() { return this->amountOfMonths; }
-	std::vector<double> getSalary() { return this->salary; }
-	std::vector<std::pair<std::string, double>> getHoursWorkedForMonth() { return this->hoursWorkedForMonth; }
+	void SetId(int id) { this->id = id; }
+	void SetHourlyRate(std::string hourly_rate) { this->hourly_rate = hourly_rate; }
+	void SetAverageSalary(double average_salary) { this->average_salary = average_salary; }
+	void SetAmountMonths(int amount_months) { this->amount_months = amount_months; }
+	void SetSalary(std::vector<double> salary) { this->salary = salary; }
+	void SetHoursWorkedForMonth(std::vector<std::pair<std::string, double>> hours)
+	{ this->hours_worked_for_month = hours; }
 
-	void getFromFile(std::istream& in) override;
+	static double CalculateSalary(double hours, std::string hourly_rate);
+	static double CalculateAverageSalary(std::vector<double> salary);
+	static void DatabaseEmployee(std::vector<std::shared_ptr<Employee>> employee);
 
-	static double calculateSalary(double hours, std::string hourlyRate);
-	static double calculateAverageSalary(std::vector<double> s);
-	static void database(std::vector<std::shared_ptr<Employee>> employee);
+	static int FindEmployee(std::vector<std::shared_ptr<Employee>> vectorEmployee);
+	static void FindByName(std::vector<std::shared_ptr<Employee>> vectorEmployee);
+	static void FindById(std::vector<std::shared_ptr<Employee>> vectorEmployee);
+	static void FindByHourlyRate(std::vector<std::shared_ptr<Employee>> vectorEmployee);
 
-	static int findEmployee(std::vector<std::shared_ptr<Employee>> vectorEmployee);
+	static void SortBySurname(std::vector<std::shared_ptr<Employee>>& vectorEmployee);
+	static void SortByID(std::vector<std::shared_ptr<Employee>>& vectorEmployee);
+	static void SortByHourlyRate(std::vector<std::shared_ptr<Employee>>& vectorEmployee);
 
-	static void findByName(std::vector<std::shared_ptr<Employee>> vectorEmployee);
-	static void findById(std::vector<std::shared_ptr<Employee>> vectorEmployee);
-	static void findByHourlyRate(std::vector<std::shared_ptr<Employee>> vectorEmployee);
+	static bool SortBySurnameCompUp(std::shared_ptr<Employee>& first, std::shared_ptr<Employee>&  second);
+	static bool SortBySurnameCompDown(std::shared_ptr<Employee>& first, std::shared_ptr<Employee>& second);
+	static bool SortByIdCompDown(std::shared_ptr<Employee>& first, std::shared_ptr<Employee>& second);
+	static bool SortByIdCompUp(std::shared_ptr<Employee>& first, std::shared_ptr<Employee>& second);
+	static bool SortByHourlyRatCompDown(std::shared_ptr<Employee>& first, std::shared_ptr<Employee>& second);
+	static bool SortByHourlyRatCompUp(std::shared_ptr<Employee>& first, std::shared_ptr<Employee>& second);
 
-	static void sortBySurname(std::vector<std::shared_ptr<Employee>>& vectorEmployee);
-	static void sortByID(std::vector<std::shared_ptr<Employee>>& vectorEmployee);
-	static void sortByHourlyRate(std::vector<std::shared_ptr<Employee>>& vectorEmployee);
+	static void SalaryData(std::vector<std::shared_ptr<Employee>> vectorEmploye);
 
-	static bool sortBySurnameCompUp(std::shared_ptr<Employee>& first, std::shared_ptr<Employee>&  second);
-	static bool sortBySurnameCompDown(std::shared_ptr<Employee>& first, std::shared_ptr<Employee>& second);
-	static bool sortByIdCompDown(std::shared_ptr<Employee>& first, std::shared_ptr<Employee>& second);
-	static bool sortByIdCompUp(std::shared_ptr<Employee>& first, std::shared_ptr<Employee>& second);
-	static bool sortByHourlyRatCompDown(std::shared_ptr<Employee>& first, std::shared_ptr<Employee>& second);
-	static bool sortByHourlyRatCompUp(std::shared_ptr<Employee>& first, std::shared_ptr<Employee>& second);
+	static void ChangeSurname(std::vector<std::shared_ptr<Employee>>& vectorEmployee, int number);
+	static void ChangeName(std::vector<std::shared_ptr<Employee>>& vectorEmployee, int number);
+	static void ChangeOtch(std::vector<std::shared_ptr<Employee>>& vectorEmployee, int number);  
+	static void ChangeId(std::vector<std::shared_ptr<Employee>>& vectorEmployee, int number);
+	static void ChangeHourlyRate(std::vector<std::shared_ptr<Employee>>& vectorEmployee, int number);
 
-	static void salaryData(std::vector<std::shared_ptr<Employee>> vectorEmploye);
+	static void DeleteDatabase(std::vector<std::shared_ptr<Employee>>& vectorEmployee);
+	static void AddEmployeeDatabase(std::vector<std::shared_ptr<Employee>>& vectorEmployee);
+	static void DeleteEmployee(std::vector<std::shared_ptr<Employee>>& vectorEmployee);
 
-	static void changeSurname(std::vector<std::shared_ptr<Employee>>& vectorEmployee, int number);
-	static void changeName(std::vector<std::shared_ptr<Employee>>& vectorEmployee, int number);
-	static void changeOtch(std::vector<std::shared_ptr<Employee>>& vectorEmployee, int number);  
-	static void changeId(std::vector<std::shared_ptr<Employee>>& vectorEmployee, int number);
-	static void changeHourlyRate(std::vector<std::shared_ptr<Employee>>& vectorEmployee, int number);
+	static void DatabaseForUser(std::vector<std::shared_ptr<User>> vectorUser, 
+		std::vector<std::shared_ptr<Employee>> vectorEmployee, std::string username);
 
-	static void deleteDatabase(std::vector<std::shared_ptr<Employee>>& vectorEmployee);
-	static void addEmployeeDatabase(std::vector<std::shared_ptr<Employee>>& vectorEmployee);
-	static void deleteEmployee(std::vector<std::shared_ptr<Employee>>& vectorEmployee);
-
-	static void databaseForUser(std::vector<std::shared_ptr<User>> vectorUser, std::vector<std::shared_ptr<Employee>> vectorEmployee, std::string username);
+	void GetFromFile(std::istream& in) override;
 };
 
 #endif

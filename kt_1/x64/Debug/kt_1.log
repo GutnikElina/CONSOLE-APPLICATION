@@ -1,25 +1,2 @@
-﻿  menu.cpp
-D:\Documents\LAB_WORKS_BSUIR\KURSACH_2\kursach_2\kt_1\menu.cpp(5,7): warning C4101: ch: неиспользованная локальная переменная
-D:\Documents\LAB_WORKS_BSUIR\KURSACH_2\kursach_2\kt_1\menu.cpp(175,41): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Documents\LAB_WORKS_BSUIR\KURSACH_2\kursach_2\kt_1\menu.cpp(188,41): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Documents\LAB_WORKS_BSUIR\KURSACH_2\kursach_2\kt_1\menu.cpp(216,41): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Documents\LAB_WORKS_BSUIR\KURSACH_2\kursach_2\kt_1\menu.cpp(213,9): warning C4101: y: неиспользованная локальная переменная
-D:\Documents\LAB_WORKS_BSUIR\KURSACH_2\kursach_2\kt_1\menu.cpp(213,6): warning C4101: x: неиспользованная локальная переменная
-D:\Documents\LAB_WORKS_BSUIR\KURSACH_2\kursach_2\kt_1\menu.cpp(247,42): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Documents\LAB_WORKS_BSUIR\KURSACH_2\kursach_2\kt_1\menu.cpp(292,47): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Documents\LAB_WORKS_BSUIR\KURSACH_2\kursach_2\kt_1\menu.cpp(333,42): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Documents\LAB_WORKS_BSUIR\KURSACH_2\kursach_2\kt_1\menu.cpp(369,42): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Documents\LAB_WORKS_BSUIR\KURSACH_2\kursach_2\kt_1\menu.cpp(423,42): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Documents\LAB_WORKS_BSUIR\KURSACH_2\kursach_2\kt_1\menu.cpp(476,42): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Documents\LAB_WORKS_BSUIR\KURSACH_2\kursach_2\kt_1\menu.cpp(518,42): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Documents\LAB_WORKS_BSUIR\KURSACH_2\kursach_2\kt_1\menu.cpp(584,42): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Documents\LAB_WORKS_BSUIR\KURSACH_2\kursach_2\kt_1\menu.cpp(636,42): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Documents\LAB_WORKS_BSUIR\KURSACH_2\kursach_2\kt_1\menu.cpp(615,7): warning C4101: choice: неиспользованная локальная переменная
-D:\Documents\LAB_WORKS_BSUIR\KURSACH_2\kursach_2\kt_1\menu.cpp(614,9): warning C4101: y: неиспользованная локальная переменная
-D:\Documents\LAB_WORKS_BSUIR\KURSACH_2\kursach_2\kt_1\menu.cpp(614,6): warning C4101: x: неиспользованная локальная переменная
-D:\Documents\LAB_WORKS_BSUIR\KURSACH_2\kursach_2\kt_1\menu.cpp(685,41): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Documents\LAB_WORKS_BSUIR\KURSACH_2\kursach_2\kt_1\menu.cpp(724,46): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
-D:\Documents\LAB_WORKS_BSUIR\KURSACH_2\kursach_2\kt_1\menu.cpp(195): warning C4715: Menu::continueOrNot: значение возвращается не при всех путях выполнения
-D:\Documents\LAB_WORKS_BSUIR\KURSACH_2\kursach_2\kt_1\menu.cpp(32): warning C4715: Menu::checkInt: значение возвращается не при всех путях выполнения
-D:\Documents\LAB_WORKS_BSUIR\KURSACH_2\kursach_2\kt_1\menu.cpp(223): warning C4715: Menu::confirmOrNot: значение возвращается не при всех путях выполнения
+﻿  vectors.cpp
   kt_1.vcxproj -> D:\Documents\LAB_WORKS_BSUIR\KURSACH_2\kursach_2\x64\Debug\kursach_2.exe

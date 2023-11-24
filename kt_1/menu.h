@@ -10,29 +10,33 @@ class Menu
 {
 public:
 
-	static int checkInt();
-	static std::string checkDouble();
-	static std::string checkString();
-	static int choiceKeyboard(std::string mainMenu[], int size);
+	static void FileNotOpened();
+
+	static int CheckInt();
+	static std::string CheckDouble();
+	static std::string CheckString();
+
+	static int ChoiceKeyboard(std::string mainMenu[], int size);
+
 	static bool confirmOrNot();
 	static bool continueOrNot();
 	static bool exitOrNot();
 
-	static void menuAdmin(Vectors& vect, std::string username);
-	static void menuUser(Vectors& vect, std::string username);
+	static void MenuAdmin(Vectors& vect, std::string username);
+	static void MenuUser(Vectors& vect, std::string username);
 
-	static void changeAccountMenu(std::vector<std::shared_ptr<User>>& vectorUser, std::string username);
-	static void workWithDataMenu(std::vector<std::shared_ptr<Employee>>& vectorEmployee);
-	static void workWithDepartmentsMenu(std::vector<std::shared_ptr<Employee>>& emp, std::vector<std::shared_ptr<Department>>& dep);
+	static void ChangeAccountMenu(std::vector<std::shared_ptr<User>>& vectorUser, std::string username);
+	static void WorkWithDataMenu(std::vector<std::shared_ptr<Employee>>& vectorEmployee);
+	static void WorkWithDepartmentsMenu(std::vector<std::shared_ptr<Employee>>& emp, std::vector<std::shared_ptr<Department>>& dep);
 
-	static void dataProcessingMenu(std::vector<std::shared_ptr<Employee>>& vectorEmployee);
-	static void changeDataMenu(std::vector<std::shared_ptr<Employee>>& vectorEmployee);
+	static void DataProcessingMenu(std::vector<std::shared_ptr<Employee>>& vectorEmployee);
+	static void ChangeDataMenu(std::vector<std::shared_ptr<Employee>>& vectorEmployee);
 
-	static void findMenu(std::vector<std::shared_ptr<Employee>> vectorEmployee);
-	static void sortMenu(std::vector<std::shared_ptr<Employee>> vectorEmployee);
+	static void FindMenu(std::vector<std::shared_ptr<Employee>> vectorEmployee);
+	static void SortMenu(std::vector<std::shared_ptr<Employee>> vectorEmployee);
 
-	static void editDatabaseMenu(std::vector<std::shared_ptr<Employee>>& vectorEmployee);
-	static void editDatabaseDepartmentMenu(std::vector<std::shared_ptr<Employee>>& emp, std::vector<std::shared_ptr<Department>>& dep);
+	static void EditDatabaseMenu(std::vector<std::shared_ptr<Employee>>& vectorEmployee);
+	static void EditDatabaseDepartmentMenu(std::vector<std::shared_ptr<Employee>>& emp, std::vector<std::shared_ptr<Department>>& dep);
 };
 
 #endif

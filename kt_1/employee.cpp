@@ -1,9 +1,9 @@
 #include "menu.h"
 
-double Employee::calculateSalary(double hours, std::string hourlyRate)
+double Employee::CalculateSalary(double hours, std::string hourly_rate)
 {
 	double salary = 0;
-	double rate = stod(hourlyRate);
+	double rate = stod(hourly_rate);
 	salary = hours * rate;
 
 	if (hours > 144)
@@ -14,36 +14,36 @@ double Employee::calculateSalary(double hours, std::string hourlyRate)
 	return salary;
 }
 
-double Employee::calculateAverageSalary(std::vector<double> s)
+double Employee::CalculateAverageSalary(std::vector<double> salary)
 {
-	double averageSalary = 0;
+	double average_salary = 0;
 	double sum = 0;
-	for (int i = 0; i < s.size(); i++)
+	for (int i = 0; i < salary.size(); i++)
 	{
-		sum += s.at(i);
+		sum += salary.at(i);
 	}
 
-	averageSalary = sum / (s.size());
-	return averageSalary;
+	average_salary = sum / (salary.size());
+	return average_salary;
 }
 
-void Employee::getFromFile(std::istream& in)
+void Employee::GetFromFile(std::istream& in)
 {
-	double sal, hours;
+	double salary, hours;
 	std::string month;
-	FIO::getFromFile(in);
-	in >> this->id >> this->hourlyRate >> this->averageSalary >> this->amountOfMonths;
-	this->hoursWorkedForMonth.resize(this->amountOfMonths);
-	this->salary.resize(this->amountOfMonths);
+	FIO::GetFromFile(in);
+	in >> this->id >> this->hourly_rate >> this->average_salary >> this->amount_months;
+	this->hours_worked_for_month.resize(this->amount_months);
+	this->salary.resize(this->amount_months);
 
-	while (in >> sal >> month >> hours)
+	while (in >> salary >> month >> hours)
 	{
-		this->salary.push_back(sal);
-		this->hoursWorkedForMonth.emplace_back(month, hours);
+		this->salary.push_back(salary);
+		this->hours_worked_for_month.emplace_back(month, hours);
 	}
 }
 
-void Employee::database(std::vector<std::shared_ptr<Employee>> employee)
+void Employee::DatabaseEmployee(std::vector<std::shared_ptr<Employee>> employee)
 {
 	std::cout << "+-----------------------------------------------------------------------------------+" << std::endl;
 	std::cout << "|                         ÁÀÇÀ ÄÀÍÍÛÕ ÐÀÁÎÒÍÈÊÎÂ ÏÐÅÄÏÐÈßÒÈß                        |" << std::endl;
@@ -55,20 +55,20 @@ void Employee::database(std::vector<std::shared_ptr<Employee>> employee)
 	for (int i = 0; i < employee.size(); i++)
 	{
 		std::cout << "\n| " << std::setw(4) << std::left << i + 1
-			<< "| " << std::setw(12) << std::left << employee.at(i)->getSurname()
-			<< std::setw(12) << std::left << employee.at(i)->getName()
-			<< std::setw(14) << std::left << employee.at(i)->getOtch()
-			<< "| " << std::setw(10) << std::left << employee.at(i)->getId()
-			<< "| " << std::setw(7) << std::left << employee.at(i)->getHourlyRate()
-			<< "$  | " << std::setw(9) << std::left << employee.at(i)->getAverageSalary() << "$  |";
+			<< "| " << std::setw(12) << std::left << employee.at(i)->GetSurname()
+			<< std::setw(12) << std::left << employee.at(i)->GetName()
+			<< std::setw(14) << std::left << employee.at(i)->GetOtch()
+			<< "| " << std::setw(10) << std::left << employee.at(i)->GetId()
+			<< "| " << std::setw(7) << std::left << employee.at(i)->GetHourlyRate()
+			<< "$  | " << std::setw(9) << std::left << employee.at(i)->GetAverageSalary() << "$  |";
 		std::cout << std::endl << "+-----------------------------------------------------------------------------------+";
 	}
 }
 
-void Employee::findByName(std::vector<std::shared_ptr<Employee>> vectorEmployee)
+void Employee::FindByName(std::vector<std::shared_ptr<Employee>> vector_employee)
 {
 	char ch;
-	if (!vectorEmployee.size())
+	if (!vector_employee.size())
 	{
 		system("cls");
 		Console::GoToXY(45, 14);
@@ -79,21 +79,21 @@ void Employee::findByName(std::vector<std::shared_ptr<Employee>> vectorEmployee)
 		return;
 	}
 
-	std::vector<std::shared_ptr<Employee>> vectEmp;
+	std::vector<std::shared_ptr<Employee>> vect_employee;
 	std::shared_ptr<Employee> empl = std::make_shared<Employee>();
 	bool flag = true;
 	
-	empl->setFullName();
+	empl->SetFullName();
 
-	for (int i = 0; i < vectorEmployee.size(); i++)
+	for (int i = 0; i < vector_employee.size(); i++)
 	{
-		if (empl->getName() == vectorEmployee.at(i)->getName() &&
-			empl->getSurname() == vectorEmployee.at(i)->getSurname() &&
-			empl->getOtch() == vectorEmployee.at(i)->getOtch())
+		if (empl->GetName() == vector_employee.at(i)->GetName() &&
+			empl->GetSurname() == vector_employee.at(i)->GetSurname() &&
+			empl->GetOtch() == vector_employee.at(i)->GetOtch())
 		{
 			flag = false;
-			empl = vectorEmployee.at(i);
-			vectEmp.push_back(empl);
+			empl = vector_employee.at(i);
+			vect_employee.push_back(empl);
 		}
 	}
 
@@ -107,15 +107,15 @@ void Employee::findByName(std::vector<std::shared_ptr<Employee>> vectorEmployee)
 	else
 	{
 		system("cls");
-		database(vectEmp);
+		DatabaseEmployee(vect_employee);
 	}
 	ch = _getch();
 }
 
-void Employee::findById(std::vector<std::shared_ptr<Employee>> vectorEmployee)
+void Employee::FindById(std::vector<std::shared_ptr<Employee>> vector_employee)
 {
 	char ch;
-	if (!vectorEmployee.size())
+	if (!vector_employee.size())
 	{
 		system("cls");
 		Console::GoToXY(45, 14);
@@ -126,24 +126,24 @@ void Employee::findById(std::vector<std::shared_ptr<Employee>> vectorEmployee)
 		return;
 	}
 
-	std::vector<std::shared_ptr<Employee>> vectEmp;
+	std::vector<std::shared_ptr<Employee>> vect_employee;
 	std::shared_ptr<Employee> empl = std::make_shared<Employee>();
 	bool flag = true;
 	system("cls");
 	Console::GoToXY(45, 12);
 	std::cout << "ÂÂÅÄÈÒÅ ÒÀÁÅËÜÍÛÉ ÍÎÌÅÐ ÐÀÁÎÒÍÈÊÀ ";
 	Console::GoToXY(55, 14);
-	int id = Menu::checkInt();
+	int id = Menu::CheckInt();
 
-	empl->setId(id);
+	empl->SetId(id);
 
-	for (int i = 0; i < vectorEmployee.size(); i++)
+	for (int i = 0; i < vector_employee.size(); i++)
 	{
-		if (empl->getId() == vectorEmployee.at(i)->getId())
+		if (empl->GetId() == vector_employee.at(i)->GetId())
 		{
 			flag = false;
-			empl = vectorEmployee.at(i);
-			vectEmp.push_back(empl);
+			empl = vector_employee.at(i);
+			vect_employee.push_back(empl);
 		}
 	}
 
@@ -157,15 +157,15 @@ void Employee::findById(std::vector<std::shared_ptr<Employee>> vectorEmployee)
 	else
 	{
 		system("cls");
-		database(vectEmp);
+		DatabaseEmployee(vect_employee);
 	}
 	ch = _getch();
 }
 
-void Employee::findByHourlyRate(std::vector<std::shared_ptr<Employee>> vectorEmployee)
+void Employee::FindByHourlyRate(std::vector<std::shared_ptr<Employee>> vector_employee)
 {
 	char ch;
-	if (!vectorEmployee.size())
+	if (!vector_employee.size())
 	{
 		system("cls");
 		Console::GoToXY(45, 14);
@@ -176,23 +176,23 @@ void Employee::findByHourlyRate(std::vector<std::shared_ptr<Employee>> vectorEmp
 		return;
 	}
 
-	std::vector<std::shared_ptr<Employee>> vectEmp;
+	std::vector<std::shared_ptr<Employee>> vect_employee;
 	std::shared_ptr<Employee> empl = std::make_shared<Employee>();
 	bool flag = true;
 	system("cls");
 	Console::GoToXY(40, 12);
 	std::cout << "ÂÂÅÄÈÒÅ ÏÎ×ÀÑÎÂÎÉ ÒÀÐÈÔ ÐÀÁÎÒÍÈÊÀ";
 	Console::GoToXY(55, 14);
-	std::string hourlyRate = Menu::checkDouble();
-	empl->setHourlyRate(hourlyRate);
+	std::string hourly_rate = Menu::CheckDouble();
+	empl->SetHourlyRate(hourly_rate);
 
-	for (int i = 0; i < vectorEmployee.size(); i++)
+	for (int i = 0; i < vector_employee.size(); i++)
 	{
-		if (empl->getHourlyRate() == vectorEmployee.at(i)->getHourlyRate())
+		if (empl->GetHourlyRate() == vector_employee.at(i)->GetHourlyRate())
 		{
 			flag = false;
-			empl = vectorEmployee.at(i);
-			vectEmp.push_back(empl);
+			empl = vector_employee.at(i);
+			vect_employee.push_back(empl);
 		}
 	}
 
@@ -206,12 +206,12 @@ void Employee::findByHourlyRate(std::vector<std::shared_ptr<Employee>> vectorEmp
 	else
 	{
 		system("cls");
-		database(vectEmp);
+		DatabaseEmployee(vect_employee);
 	}
 	ch = _getch();
 }
 
-void Employee::sortBySurname(std::vector<std::shared_ptr<Employee>>& vectorEmployee)
+void Employee::SortBySurname(std::vector<std::shared_ptr<Employee>>& vector_employee)
 {
 	system("cls");
 	char ch;
@@ -233,20 +233,20 @@ void Employee::sortBySurname(std::vector<std::shared_ptr<Employee>>& vectorEmplo
 		Console::GoToXY(36, 12);
 		std::cout << "+-----------------------------------------+";
 
-		switch (Menu::choiceKeyboard(line, size(line)))
+		switch (Menu::ChoiceKeyboard(line, size(line)))
 		{
 		case 0:
-			sort(vectorEmployee.begin(), vectorEmployee.end(), sortBySurnameCompDown);
+			sort(vector_employee.begin(), vector_employee.end(), SortBySurnameCompDown);
 			system("cls");
-			database(vectorEmployee);
+			DatabaseEmployee(vector_employee);
 			std::cout << std::endl << std::endl << "------------------------ ÑÎÐÒÈÐÎÂÊÀ ÓÑÏÅØÍÎ ÇÀÂÅÐØÅÍÀ -------------------------------" << std::endl;
 			ch = _getch();
 			return;
 			break;
 		case 1:
-			sort(vectorEmployee.begin(), vectorEmployee.end(), sortBySurnameCompUp);
+			sort(vector_employee.begin(), vector_employee.end(), SortBySurnameCompUp);
 			system("cls");
-			database(vectorEmployee);
+			DatabaseEmployee(vector_employee);
 			std::cout << std::endl << std::endl << "------------------------ ÑÎÐÒÈÐÎÂÊÀ ÓÑÏÅØÍÎ ÇÀÂÅÐØÅÍÀ -------------------------------" << std::endl;
 			ch = _getch();
 			return;
@@ -257,7 +257,7 @@ void Employee::sortBySurname(std::vector<std::shared_ptr<Employee>>& vectorEmplo
 	}
 }
 
-void Employee::sortByID(std::vector<std::shared_ptr<Employee>>& vectorEmployee)
+void Employee::SortByID(std::vector<std::shared_ptr<Employee>>& vector_employee)
 {
 	system("cls");
 	char ch;
@@ -278,20 +278,20 @@ void Employee::sortByID(std::vector<std::shared_ptr<Employee>>& vectorEmployee)
 		Console::GoToXY(36, 12);
 		std::cout << "+-----------------------------------------+";
 
-		switch (Menu::choiceKeyboard(line, size(line)))
+		switch (Menu::ChoiceKeyboard(line, size(line)))
 		{
 		case 0:
-			sort(vectorEmployee.begin(), vectorEmployee.end(), sortByIdCompDown);
+			sort(vector_employee.begin(), vector_employee.end(), SortByIdCompDown);
 			system("cls");
-			database(vectorEmployee);
+			DatabaseEmployee(vector_employee);
 			std::cout << std::endl << std::endl << "------------------------ ÑÎÐÒÈÐÎÂÊÀ ÓÑÏÅØÍÎ ÇÀÂÅÐØÅÍÀ -------------------------------" << std::endl;
 			ch = _getch();
 			return;
 			break;
 		case 1:
-			sort(vectorEmployee.begin(), vectorEmployee.end(), sortByIdCompUp);
+			sort(vector_employee.begin(), vector_employee.end(), SortByIdCompUp);
 			system("cls");
-			database(vectorEmployee);
+			DatabaseEmployee(vector_employee);
 			std::cout << std::endl << std::endl << "------------------------ ÑÎÐÒÈÐÎÂÊÀ ÓÑÏÅØÍÎ ÇÀÂÅÐØÅÍÀ -------------------------------" << std::endl;
 			ch = _getch();
 			return;
@@ -302,7 +302,7 @@ void Employee::sortByID(std::vector<std::shared_ptr<Employee>>& vectorEmployee)
 	}
 }
 
-void Employee::sortByHourlyRate(std::vector<std::shared_ptr<Employee>>& vectorEmployee)
+void Employee::SortByHourlyRate(std::vector<std::shared_ptr<Employee>>& vector_employee)
 {
 	system("cls");
 	char ch;
@@ -324,20 +324,20 @@ void Employee::sortByHourlyRate(std::vector<std::shared_ptr<Employee>>& vectorEm
 		Console::GoToXY(36, 12);
 		std::cout << "+-----------------------------------------+";
 		
-		switch (Menu::choiceKeyboard(line, size(line)))
+		switch (Menu::ChoiceKeyboard(line, size(line)))
 		{
 		case 0:
-			sort(vectorEmployee.begin(), vectorEmployee.end(), sortByHourlyRatCompDown);
+			sort(vector_employee.begin(), vector_employee.end(), SortByHourlyRatCompDown);
 			system("cls");
-			database(vectorEmployee);
+			DatabaseEmployee(vector_employee);
 			std::cout << std::endl << std::endl << "------------------------ ÑÎÐÒÈÐÎÂÊÀ ÓÑÏÅØÍÎ ÇÀÂÅÐØÅÍÀ -------------------------------" << std::endl;
 			ch = _getch();
 			return;
 			break;
 		case 1:
-			sort(vectorEmployee.begin(), vectorEmployee.end(), sortByHourlyRatCompUp);
+			sort(vector_employee.begin(), vector_employee.end(), SortByHourlyRatCompUp);
 			system("cls");
-			database(vectorEmployee);
+			DatabaseEmployee(vector_employee);
 			std::cout << std::endl << std::endl << "------------------------ ÑÎÐÒÈÐÎÂÊÀ ÓÑÏÅØÍÎ ÇÀÂÅÐØÅÍÀ -------------------------------" << std::endl;
 			ch = _getch();
 			return;
@@ -348,40 +348,40 @@ void Employee::sortByHourlyRate(std::vector<std::shared_ptr<Employee>>& vectorEm
 	}
 }
 
-bool Employee::sortBySurnameCompUp( std::shared_ptr<Employee>& first, std::shared_ptr<Employee>& second)
+bool Employee::SortBySurnameCompUp( std::shared_ptr<Employee>& first, std::shared_ptr<Employee>& second)
 {
-	return first->getSurname() < second->getSurname();
+	return first->GetSurname() < second->GetSurname();
 }
 
-bool Employee::sortBySurnameCompDown(std::shared_ptr<Employee>& first, std::shared_ptr<Employee>& second)
+bool Employee::SortBySurnameCompDown(std::shared_ptr<Employee>& first, std::shared_ptr<Employee>& second)
 {
-	return first->getSurname() > second->getSurname();
+	return first->GetSurname() > second->GetSurname();
 }
 
-bool Employee::sortByIdCompDown(std::shared_ptr<Employee>& first, std::shared_ptr<Employee>& second)
+bool Employee::SortByIdCompDown(std::shared_ptr<Employee>& first, std::shared_ptr<Employee>& second)
 {
-	return first->getId() > second->getId();
+	return first->GetId() > second->GetId();
 }
 
-bool Employee::sortByIdCompUp(std::shared_ptr<Employee>& first, std::shared_ptr<Employee>& second)
+bool Employee::SortByIdCompUp(std::shared_ptr<Employee>& first, std::shared_ptr<Employee>& second)
 {
-	return first->getId() < second->getId();
+	return first->GetId() < second->GetId();
 }
 
-bool Employee::sortByHourlyRatCompDown(std::shared_ptr<Employee>& first, std::shared_ptr<Employee>& second)
+bool Employee::SortByHourlyRatCompDown(std::shared_ptr<Employee>& first, std::shared_ptr<Employee>& second)
 {
-	return first->getHourlyRate() > second->getHourlyRate();
+	return first->GetHourlyRate() > second->GetHourlyRate();
 }
 
-bool Employee::sortByHourlyRatCompUp(std::shared_ptr<Employee>& first, std::shared_ptr<Employee>& second)
+bool Employee::SortByHourlyRatCompUp(std::shared_ptr<Employee>& first, std::shared_ptr<Employee>& second)
 {
-	return first->getHourlyRate() < second->getHourlyRate();
+	return first->GetHourlyRate() < second->GetHourlyRate();
 }
 
-void Employee::salaryData(std::vector<std::shared_ptr<Employee>> vectorEmployee)
+void Employee::SalaryData(std::vector<std::shared_ptr<Employee>> vector_employee)
 {
 	char ch;
-	if (!vectorEmployee.size())
+	if (!vector_employee.size())
 	{
 		system("cls");
 		Console::GoToXY(50, 12);
@@ -399,29 +399,30 @@ void Employee::salaryData(std::vector<std::shared_ptr<Employee>> vectorEmployee)
 		int flag = 0;
 		flag_1 = true;
 		system("cls");
-		int numberOfEmployee = findEmployee(vectorEmployee);
+		int number_employee = FindEmployee(vector_employee);
 		system("cls");
 		Console::GoToXY(40, 12);
 		std::cout << "ÂÂÅÄÈÒÅ ÌÅÑßÖ ÇÀ ÊÎÒÎÐÛÉ ÕÎÒÈÒÅ ÓÇÍÀÒÜ ÇÀÐÏËÀÒÓ";
 		Console::GoToXY(60, 13);
-		int month = Menu::checkInt();
+		int month = Menu::CheckInt();
 
 		Console::GoToXY(40, 15);
 		std::cout << "ÂÂÅÄÈÒÅ ÃÎÄ ÇÀ ÊÎÒÎÐÛÉ ÕÎÒÈÒÅ ÓÇÍÀÒÜ ÇÀÐÏËÀÒÓ";
 		Console::GoToXY(60, 16);
-		int year = Menu::checkInt();
+		int year = Menu::CheckInt();
 
 		date = std::to_string(month) + "." + std::to_string(year);
 
-		for (int i = 0; i < vectorEmployee.at(numberOfEmployee - 1)->getHoursWorkedForMonth().size(); i++)
+		for (int i = 0; i < vector_employee.at(number_employee - 1)->GetHoursWorkedForMonth().size(); i++)
 		{
-			if (date == vectorEmployee.at(numberOfEmployee - 1)->getHoursWorkedForMonth().at(i).first)
+			if (date == vector_employee.at(number_employee - 1)->GetHoursWorkedForMonth().at(i).first)
 			{
 				system("cls");
 				Console::GoToXY(40, 13);
 				std::cout << "+----------------------------------------+";
 				Console::GoToXY(40, 14);
-				std::cout << "| " << date << " | ÇÀÐÏËÀÒÀ: " << std::setw(18) << std::left << vectorEmployee.at(numberOfEmployee - 1)->getSalary().at(i) << "$ |";
+				std::cout << "| " << date << " | ÇÀÐÏËÀÒÀ: " << std::setw(18) << std::left << 
+					vector_employee.at(number_employee - 1)->GetSalary().at(i) << "$ |";
 				Console::GoToXY(40, 15);
 				std::cout << "+----------------------------------------+";
 				ch = _getch();
@@ -448,7 +449,7 @@ void Employee::salaryData(std::vector<std::shared_ptr<Employee>> vectorEmployee)
 
 		std::string line[] = { "   Äà", "Íåò, âûéòè" };
 
-		switch (Menu::choiceKeyboard(line, size(line)))
+		switch (Menu::ChoiceKeyboard(line, size(line)))
 		{
 		case 0:
 			flag_1 = false;
@@ -461,15 +462,15 @@ void Employee::salaryData(std::vector<std::shared_ptr<Employee>> vectorEmployee)
 	}
 }
 
-int Employee::findEmployee(std::vector<std::shared_ptr<Employee>> vectorEmployee)
+int Employee::FindEmployee(std::vector<std::shared_ptr<Employee>> vector_employee)
 {
 	char ch;
 	while (true)
 	{
-		database(vectorEmployee);
+		DatabaseEmployee(vector_employee);
 		std::cout << std::endl << "ÂÂÅÄÈÒÅ ÍÎÌÅÐ ÐÀÁÎÒÍÈÊÀ" << std::endl;
-		int numberEmployee = Menu::checkInt();
-		if (numberEmployee <= 0 || unsigned(numberEmployee) > vectorEmployee.size())
+		int number_employee = Menu::CheckInt();
+		if (number_employee <= 0 || unsigned(number_employee) > vector_employee.size())
 		{
 			system("cls");
 			Console::GoToXY(35, 14);
@@ -481,11 +482,11 @@ int Employee::findEmployee(std::vector<std::shared_ptr<Employee>> vectorEmployee
 			continue;
 		}
 		else
-			return numberEmployee;
+			return number_employee;
 	}
 }
 
-void Employee::changeSurname(std::vector<std::shared_ptr<Employee>>& vectorEmployee, int number)
+void Employee::ChangeSurname(std::vector<std::shared_ptr<Employee>>& vector_employee, int number)
 {
 	std::string surname;
 	char ch;
@@ -493,9 +494,9 @@ void Employee::changeSurname(std::vector<std::shared_ptr<Employee>>& vectorEmplo
 	Console::GoToXY(45, 10);
 	std::cout << "ÂÂÅÄÈÒÅ ÍÎÂÓÞ ÔÀÌÈËÈÞ ÐÀÁÎÒÍÈÊÀ";
 	Console::GoToXY(50, 12);
-	surname = Menu::checkString();
-	vectorEmployee.at(number)->setSurname(surname);
-	Vectors::addEmployeeInFile(vectorEmployee);
+	surname = Menu::CheckString();
+	vector_employee.at(number)->SetSurname(surname);
+	Vectors::AddEmployeeInFile(vector_employee);
 	system("cls");
 	Console::GoToXY(35, 14);
 	std::cout << " --------------- ÓÑÏÅØÍÎÅ ÈÇÌÅÍÅÍÈÅ --------------- ";
@@ -503,7 +504,7 @@ void Employee::changeSurname(std::vector<std::shared_ptr<Employee>>& vectorEmplo
 	return;
 }
 
-void Employee::changeName(std::vector<std::shared_ptr<Employee>>& vectorEmployee, int number)
+void Employee::ChangeName(std::vector<std::shared_ptr<Employee>>& vector_employee, int number)
 {
 	std::string name;
 	char ch;
@@ -511,9 +512,9 @@ void Employee::changeName(std::vector<std::shared_ptr<Employee>>& vectorEmployee
 	Console::GoToXY(45, 10);
 	std::cout << "ÂÂÅÄÈÒÅ ÍÎÂÎÅ ÈÌß ÐÀÁÎÒÍÈÊÀ";
 	Console::GoToXY(50, 12);
-	name = Menu::checkString();;
-	vectorEmployee.at(number)->setName(name);
-	Vectors::addEmployeeInFile(vectorEmployee);
+	name = Menu::CheckString();;
+	vector_employee.at(number)->SetName(name);
+	Vectors::AddEmployeeInFile(vector_employee);
 	system("cls");
 	Console::GoToXY(35, 14);
 	std::cout << " --------------- ÓÑÏÅØÍÎÅ ÈÇÌÅÍÅÍÈÅ --------------- ";
@@ -521,7 +522,7 @@ void Employee::changeName(std::vector<std::shared_ptr<Employee>>& vectorEmployee
 	return;
 }
 
-void Employee::changeOtch(std::vector<std::shared_ptr<Employee>>& vectorEmployee, int number)
+void Employee::ChangeOtch(std::vector<std::shared_ptr<Employee>>& vector_employee, int number)
 {
 	std::string otch;
 	char ch;
@@ -529,9 +530,9 @@ void Employee::changeOtch(std::vector<std::shared_ptr<Employee>>& vectorEmployee
 	Console::GoToXY(45, 10);
 	std::cout << "ÂÂÅÄÈÒÅ ÍÎÂÎÅ ÎÒ×ÅÑÒÂÎ ÐÀÁÎÒÍÈÊÀ";
 	Console::GoToXY(50, 12);
-	otch = Menu::checkString();;
-	vectorEmployee.at(number)->setOtch(otch);
-	Vectors::addEmployeeInFile(vectorEmployee);
+	otch = Menu::CheckString();;
+	vector_employee.at(number)->SetOtch(otch);
+	Vectors::AddEmployeeInFile(vector_employee);
 	system("cls");
 	Console::GoToXY(35, 14);
 	std::cout << " --------------- ÓÑÏÅØÍÎÅ ÈÇÌÅÍÅÍÈÅ --------------- ";
@@ -539,16 +540,16 @@ void Employee::changeOtch(std::vector<std::shared_ptr<Employee>>& vectorEmployee
 	return;
 }
 
-void Employee::changeId(std::vector<std::shared_ptr<Employee>>& vectorEmployee, int number)
+void Employee::ChangeId(std::vector<std::shared_ptr<Employee>>& vector_employee, int number)
 {
 	char ch;
 	system("cls");
 	Console::GoToXY(35, 10);
 	std::cout << "ÂÂÅÄÈÒÅ ÍÎÂÛÉ ÒÀÁÅËÜÍÛÉ ÍÎÌÅÐ ÐÀÁÎÒÍÈÊÀ";
 	Console::GoToXY(54, 12);
-	int id = Menu::checkInt();
-	vectorEmployee.at(number)->setId(id);
-	Vectors::addEmployeeInFile(vectorEmployee);
+	int id = Menu::CheckInt();
+	vector_employee.at(number)->SetId(id);
+	Vectors::AddEmployeeInFile(vector_employee);
 	system("cls");
 	Console::GoToXY(35, 14);
 	std::cout << " --------------- ÓÑÏÅØÍÎÅ ÈÇÌÅÍÅÍÈÅ --------------- ";
@@ -556,17 +557,17 @@ void Employee::changeId(std::vector<std::shared_ptr<Employee>>& vectorEmployee, 
 	return;
 }
 
-void Employee::changeHourlyRate(std::vector<std::shared_ptr<Employee>>& vectorEmployee, int number)
+void Employee::ChangeHourlyRate(std::vector<std::shared_ptr<Employee>>& vector_employee, int number)
 {
 	char ch;
-	std::string hourlyRate;
+	std::string hourly_rate;
 	system("cls");
 	Console::GoToXY(45, 10);
 	std::cout << "ÂÂÅÄÈÒÅ ÍÎÂÛÉ ÏÎ×ÀÑÎÂÎÉ ÒÀÐÈÔ ÐÀÁÎÒÍÈÊÀ";
 	Console::GoToXY(50, 12);
-	hourlyRate = Menu::checkDouble();
-	vectorEmployee.at(number)->setHourlyRate(hourlyRate);
-	Vectors::addEmployeeInFile(vectorEmployee);
+	hourly_rate = Menu::CheckDouble();
+	vector_employee.at(number)->SetHourlyRate(hourly_rate);
+	Vectors::AddEmployeeInFile(vector_employee);
 	system("cls");
 	Console::GoToXY(35, 14);
 	std::cout << " --------------- ÓÑÏÅØÍÎÅ ÈÇÌÅÍÅÍÈÅ --------------- ";
@@ -574,13 +575,13 @@ void Employee::changeHourlyRate(std::vector<std::shared_ptr<Employee>>& vectorEm
 	return;
 }
 
-void Employee::deleteDatabase(std::vector<std::shared_ptr<Employee>>& vectorEmployee)
+void Employee::DeleteDatabase(std::vector<std::shared_ptr<Employee>>& vector_employee)
 {
 	char ch;
 	system("cls");
 	std::ofstream fout("employees.txt", std::ios::out);
 
-	if (!vectorEmployee.size())
+	if (!vector_employee.size())
 	{
 		Console::GoToXY(45, 14);
 		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
@@ -598,10 +599,10 @@ void Employee::deleteDatabase(std::vector<std::shared_ptr<Employee>>& vectorEmpl
 	std::cout << "-!!!- ÏÎÄÒÂÅÐÄÈÒÅ, ×ÒÎ ÂÛ ÕÎÒÈÒÅ ÓÄÀËÈÒÜ ÂÑÞ ÁÀÇÓ ÄÀÍÍÛÕ -!!!-";
 	SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 
-	switch (Menu::choiceKeyboard(line, size(line)))
+	switch (Menu::ChoiceKeyboard(line, size(line)))
 	{
 	case 0:
-		vectorEmployee.clear();
+		vector_employee.clear();
 		fout << "";
 		fout.close();
 		system("cls");
@@ -622,12 +623,12 @@ void Employee::deleteDatabase(std::vector<std::shared_ptr<Employee>>& vectorEmpl
 	}
 }
 
-void Employee::addEmployeeDatabase(std::vector<std::shared_ptr<Employee>>& vectorEmployee)
+void Employee::AddEmployeeDatabase(std::vector<std::shared_ptr<Employee>>& vector_employee)
 {
 	system("cls");
 	std::shared_ptr<Employee> copy = std::make_shared<Employee>();
-	std::vector<std::pair<std::string, double>> hoursWorked;
-	std::vector<double> slry{};
+	std::vector<std::pair<std::string, double>> hours_worked;
+	std::vector<double> salary{};
 	bool flag = true, flag_1 = true;
 	char ch;
 	int month, year, amount = 0;
@@ -645,7 +646,7 @@ void Employee::addEmployeeDatabase(std::vector<std::shared_ptr<Employee>>& vecto
 	Console::GoToXY(25, 10);
 	std::cout << "+--------------------------------------------------------+";
 
-	copy->setFullName();
+	copy->SetFullName();
 
 	system("cls");
 	Console::GoToXY(25, 6);
@@ -662,13 +663,13 @@ void Employee::addEmployeeDatabase(std::vector<std::shared_ptr<Employee>>& vecto
 	Console::GoToXY(45, 12);
 	std::cout << "ÂÂÅÄÈÒÅ ÒÀÁÅËÜÍÛÉ ÍÎÌÅÐ ";
 	Console::GoToXY(50, 13);
-	int id = Menu::checkInt();
-	copy->setId(id);
+	int id = Menu::CheckInt();
+	copy->SetId(id);
 	Console::GoToXY(45, 15);
 	std::cout << "ÂÂÅÄÈÒÅ ÏÎ×ÀÑÎÂÎÉ ÒÀÐÈÔ";
 	Console::GoToXY(50, 16);
-	std::string hourlyRate = Menu::checkDouble();
-	copy->setHourlyRate(hourlyRate);
+	std::string hourly_rate = Menu::CheckDouble();
+	copy->SetHourlyRate(hourly_rate);
 
 	for (int j = 0; j < 12 && flag_1 == true; j++)
 	{
@@ -689,7 +690,7 @@ void Employee::addEmployeeDatabase(std::vector<std::shared_ptr<Employee>>& vecto
 			Console::GoToXY(45, 12);
 			std::cout << "ÂÂÅÄÈÒÅ ×ÈÑËÎ ÌÅÑßÖÀ ";
 			Console::GoToXY(50, 13);
-			month = Menu::checkInt();
+			month = Menu::CheckInt();
 			if (month != 1 && month != 2 && month != 3 && month != 4 && month != 5 && month != 6 && month != 7 &&
 				month != 8 && month != 9 && month != 10 && month != 11 && month != 12)
 			{
@@ -719,7 +720,7 @@ void Employee::addEmployeeDatabase(std::vector<std::shared_ptr<Employee>>& vecto
 			Console::GoToXY(45, 12);
 			std::cout << "ÂÂÅÄÈÒÅ ÃÎÄ ";
 			Console::GoToXY(50, 13);
-			year = Menu::checkInt();
+			year = Menu::CheckInt();
 			if (year != 2023 && year != 2022 && year != 2021 && year != 2020 && year != 2019
 				&& year != 2018 && year != 2017 && year != 2016)
 			{
@@ -751,15 +752,15 @@ void Employee::addEmployeeDatabase(std::vector<std::shared_ptr<Employee>>& vecto
 		Console::GoToXY(30, 12);
 		std::cout << "ÂÂÅÄÈÒÅ ÊÎË-ÂÎ ÎÒÐÀÁÎÒÀÍÍÛÕ ×ÀÑÎÂ ÇÀ ÝÒÎÒ ÌÅÑßÖ";
 		Console::GoToXY(53, 13);
-		hours = Menu::checkInt();
+		hours = Menu::CheckInt();
 
-		slry.push_back(calculateSalary(hours, copy->getHourlyRate()));
-		copy->setSalary(slry);
-		hoursWorked.push_back(make_pair(time, hours));
-		copy->setHoursWorkedForMonth(hoursWorked);
+		salary.push_back(CalculateSalary(hours, copy->GetHourlyRate()));
+		copy->SetSalary(salary);
+		hours_worked.push_back(make_pair(time, hours));
+		copy->SetHoursWorkedForMonth(hours_worked);
 
 		amount++;
-		copy->setAmountOfMonths(amount);
+		copy->SetAmountMonths(amount);
 
 		system("cls");
 		Console::GoToXY(25, 6);
@@ -777,7 +778,7 @@ void Employee::addEmployeeDatabase(std::vector<std::shared_ptr<Employee>>& vecto
 		std::string line[] = { " Äà", "Íåò" };
 
 
-		switch (Menu::choiceKeyboard(line, size(line)))
+		switch (Menu::ChoiceKeyboard(line, size(line)))
 		{
 		case 0:
 			if (j >= 11)
@@ -805,11 +806,11 @@ void Employee::addEmployeeDatabase(std::vector<std::shared_ptr<Employee>>& vecto
 		}
 	}
 
-	double av = calculateAverageSalary(copy->getSalary());
-	copy->setAverageSalary(av);
+	double avarage_salary = CalculateAverageSalary(copy->GetSalary());
+	copy->SetAverageSalary(avarage_salary);
 
-	vectorEmployee.push_back(copy);
-	Vectors::addEmployeeInFile(vectorEmployee);
+	vector_employee.push_back(copy);
+	Vectors::AddEmployeeInFile(vector_employee);
 
 	SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 	system("cls");
@@ -827,10 +828,10 @@ void Employee::addEmployeeDatabase(std::vector<std::shared_ptr<Employee>>& vecto
 	ch = _getch();
 }
 
-void Employee::deleteEmployee(std::vector<std::shared_ptr<Employee>>& vectorEmployee)
+void Employee::DeleteEmployee(std::vector<std::shared_ptr<Employee>>& vector_employee)
 {
 	char  ch;
-	if (!vectorEmployee.size())
+	if (!vector_employee.size())
 	{
 		system("cls");
 		Console::GoToXY(45, 14);
@@ -842,22 +843,22 @@ void Employee::deleteEmployee(std::vector<std::shared_ptr<Employee>>& vectorEmpl
 	}
 	system("cls");
 
-	int numberEmployee = findEmployee(vectorEmployee);
+	int number_employee = FindEmployee(vector_employee);
 	system("cls");
 	Console::GoToXY(30, 12);
 	std::cout << "ÂÛ ÒÎ×ÍÎ ÆÅËÀÅÒÅ ÓÄÀËÈÒÜ ÐÀÁÎÒÍÈÊÀ ÈÇ ÁÀÇÛ ÄÀÍÍÛÕ ÏÐÅÄÏÐÈßÒÈß?";
 
 	std::string line[] = { "Äà, óäàëèòü", "  Âûéòè" };
 
-	switch (Menu::choiceKeyboard(line, size(line)))
+	switch (Menu::ChoiceKeyboard(line, size(line)))
 	{
 	case 0:
-		if (numberEmployee > 0 && numberEmployee <= vectorEmployee.size()) {
-			if (numberEmployee == vectorEmployee.size())
-				vectorEmployee.pop_back();
+		if (number_employee > 0 && number_employee <= vector_employee.size()) {
+			if (number_employee == vector_employee.size())
+				vector_employee.pop_back();
 			else
-				vectorEmployee.erase(vectorEmployee.begin() + (numberEmployee - 1));
-			Vectors::addEmployeeInFile(vectorEmployee);
+				vector_employee.erase(vector_employee.begin() + (number_employee - 1));
+			Vectors::AddEmployeeInFile(vector_employee);
 
 			system("cls");
 			SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
@@ -879,14 +880,16 @@ void Employee::deleteEmployee(std::vector<std::shared_ptr<Employee>>& vectorEmpl
 	}
 }
 
-void Employee::databaseForUser(std::vector<std::shared_ptr<User>> vectorUser, std::vector<std::shared_ptr<Employee>> vectorEmployee, std::string  username)
+void Employee::DatabaseForUser(std::vector<std::shared_ptr<User>> vector_user, 
+	std::vector<std::shared_ptr<Employee>> vector_employee, std::string  username)
 {
 	char ch;
-	for (int i = 0; i < vectorUser.size(); i++)
+	for (int i = 0; i < vector_user.size(); i++)
 	{
-		if (username == vectorUser.at(i)->getUsername() && vectorUser.at(i)->getSurname() == vectorEmployee.at(i)->getSurname() &&
-			vectorUser.at(i)->getName() == vectorEmployee.at(i)->getName() &&
-			vectorUser.at(i)->getOtch() == vectorEmployee.at(i)->getOtch())
+		if (username == vector_user.at(i)->GetUsername() &&
+			vector_user.at(i)->GetSurname() == vector_employee.at(i)->GetSurname() &&
+			vector_user.at(i)->GetName() == vector_employee.at(i)->GetName() &&
+			vector_user.at(i)->GetOtch() == vector_employee.at(i)->GetOtch())
 		{
 			std::cout << "+-----------------------------------------------------------------------------+" << std::endl;
 			std::cout << "|                     ÁÀÇÀ ÄÀÍÍÛÕ ÐÀÁÎÒÍÈÊÎÂ ÏÐÅÄÏÐÈßÒÈß                      |" << std::endl;
@@ -895,22 +898,22 @@ void Employee::databaseForUser(std::vector<std::shared_ptr<User>> vectorUser, st
 			std::cout << "|                                       |   íîìåð   |   òàðèô   |   çàðïëàòà  |" << std::endl;
 			std::cout << "+-----------------------------------------------------------------------------+";
 
-			std::cout << "\n| " << std::setw(12) << std::left << vectorEmployee.at(i)->getSurname()
-				<< std::setw(12) << std::left << vectorEmployee.at(i)->getName()
-				<< std::setw(14) << std::left << vectorEmployee.at(i)->getOtch()
-				<< "| " << std::setw(10) << std::left << vectorEmployee.at(i)->getId()
-				<< "| " << std::setw(7) << std::left << vectorEmployee.at(i)->getHourlyRate()
-				<< "$  | " << std::setw(9) << std::left << vectorEmployee.at(i)->getAverageSalary() << "$  |";
+			std::cout << "\n| " << std::setw(12) << std::left << vector_employee.at(i)->GetSurname()
+				<< std::setw(12) << std::left << vector_employee.at(i)->GetName()
+				<< std::setw(14) << std::left << vector_employee.at(i)->GetOtch()
+				<< "| " << std::setw(10) << std::left << vector_employee.at(i)->GetId()
+				<< "| " << std::setw(7) << std::left << vector_employee.at(i)->GetHourlyRate()
+				<< "$  | " << std::setw(9) << std::left << vector_employee.at(i)->GetAverageSalary() << "$  |";
 			std::cout << std::endl << "+-----------------------------------------------------------------------------+" << std::endl;
 
 			std::cout << std::endl << "--- ÌÅÑßÖ --- ÇÀÐÏËÀÒÀ ---" << std::endl;
-			int amount = vectorEmployee.at(i)->getAmountOfMonths();
-			vectorEmployee.at(i)->getHoursWorkedForMonth().resize(amount - 1);
-			vectorEmployee.at(i)->getSalary().resize(amount - 1);
+			int amount = vector_employee.at(i)->GetAmountMonths();
+			vector_employee.at(i)->GetHoursWorkedForMonth().resize(amount - 1);
+			vector_employee.at(i)->GetSalary().resize(amount - 1);
 			for (int j = 0; j < amount - 1; j++)
 			{
-				std::cout << "   " << vectorEmployee.at(i)->getHoursWorkedForMonth().at(j).first << "     " <<
-					vectorEmployee.at(i)->getSalary().at(j) << std::endl;;
+				std::cout << "   " << vector_employee.at(i)->GetHoursWorkedForMonth().at(j).first << "     " <<
+					vector_employee.at(i)->GetSalary().at(j) << std::endl;;
 			}
 			ch = _getch();
 			return;

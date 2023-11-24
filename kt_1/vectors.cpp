@@ -1,6 +1,6 @@
 #include "menu.h"
 
-std::string Vectors::checkInputUsername()
+std::string Vectors::CheckInputUsername()
 {
 	int ch;
 	std::string result;
@@ -34,7 +34,7 @@ std::string Vectors::checkInputUsername()
 	return result;
 }
 
-std::string Vectors::checkUsername(std::vector<std::shared_ptr<User>> vectorUser)
+std::string Vectors::FindUsername(std::vector<std::shared_ptr<User>> vectorUser)
 {
 	std::string username;
 
@@ -48,7 +48,7 @@ std::string Vectors::checkUsername(std::vector<std::shared_ptr<User>> vectorUser
 			Console::GoToXY(40, 13);
 			std::cout << "(ˆËÙ˚, ·ÛÍ‚˚ Î‡ÚËÌÒÍÓ„Ó ‡ÎÙ‡‚ËÚ‡)";
 			Console::GoToXY(55, 15);
-			username = checkInputUsername();
+			username = CheckInputUsername();
 			if (username.size() < 5)
 			{
 				throw "-!!!- œŒœ–Œ¡”…“≈ «¿ÕŒ¬Œ. ÀŒ√»Õ ƒŒÀ∆≈Õ ¡€“‹ Õ≈  Œ–Œ◊≈ 5 —»Ã¬ŒÀŒ¬ -!!!-";
@@ -57,7 +57,7 @@ std::string Vectors::checkUsername(std::vector<std::shared_ptr<User>> vectorUser
 			{
 				for (int i = 0; i < vectorUser.size(); i++)
 				{
-					if (username == vectorUser.at(i)->getUsername())
+					if (username == vectorUser.at(i)->GetUsername())
 					{
 						throw "-!!!- œŒœ–Œ¡”…“≈ «¿ÕŒ¬Œ. “¿ Œ… ¿  ¿”Õ“ ”∆≈ —”Ÿ≈—“¬”≈“ -!!!-";
 					}
@@ -78,7 +78,7 @@ std::string Vectors::checkUsername(std::vector<std::shared_ptr<User>> vectorUser
 }
 
 
-std::string Vectors::checkInputPassword()
+std::string Vectors::CheckInputPassword()
 {
 	int ch;
 	std::string result;
@@ -110,7 +110,7 @@ std::string Vectors::checkInputPassword()
 	return result;
 }
 
-std::string Vectors::checkPassword()
+std::string Vectors::FindPassword()
 {
 	std::string password;
 
@@ -124,8 +124,8 @@ std::string Vectors::checkPassword()
 			Console::GoToXY(40, 13);
 			std::cout << "(ˆËÙ˚, ·ÛÍ‚˚ Î‡ÚËÌÒÍÓ„Ó ‡ÎÙ‡‚ËÚ‡)";
 			Console::GoToXY(55, 15);
-			password = checkInputPassword();
-			std::string hashed_password = hash_password(password);
+			password = CheckInputPassword();
+			std::string hashed_password = HashPassword(password);
 
 			if (password.size() < 5)
 			{
@@ -145,7 +145,7 @@ std::string Vectors::checkPassword()
 	}
 }
 
-std::string Vectors::hash_password(const std::string& password)
+std::string Vectors::HashPassword(const std::string& password)
 {
 	unsigned int hash = 0;
 	int i = 0;
@@ -164,12 +164,12 @@ std::string Vectors::hash_password(const std::string& password)
 	return std::to_string(hash);
 }
 
-int Vectors::countLengthFile(std::string nameFile)
+int Vectors::CountLengthFile(std::string nameFile)
 {
 	int counter = 0;
-	std::string bufString;
+	std::string buf_string;
 	std::ifstream fin(nameFile);
-	while (getline(fin, bufString))
+	while (getline(fin, buf_string))
 	{
 		counter++;
 	}
@@ -177,170 +177,146 @@ int Vectors::countLengthFile(std::string nameFile)
 	return counter;
 }
 
-void Vectors::getVectorUsers()
+void Vectors::GetVectorUsers()
 {
-	for (int i = 0; i < countLengthFile("users.txt"); i++)
-		this->vectorUser.push_back(std::make_shared<User>());
-	std::ifstream fin("users.txt", std::ios::in);
-	if (!fin.is_open())
+	int count = CountLengthFile("users.txt");
+	for (int i = 0; i < count; i++)
+		this->vector_user.push_back(std::make_shared<User>());
+	std::ifstream file("users.txt", std::ios::in);
+	if (!file.is_open())
 	{
-		system("cls");
-		Console::GoToXY(50, 12);
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
-		std::cout << "-!!!- Œÿ»¡ ¿ Œ“ –€“»ﬂ ‘¿…À¿ -!!!-";
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-		exit(1);
+		Menu::FileNotOpened();
+	}
+
+	if (!vector_user.size())
+	{
+		std::shared_ptr<User> user = std::make_shared<User>();
+		user->SetRole(1);
+		user->SetAccess(1);
+		user->SetUsername("admin");
+		user->SetPassword(Vectors::HashPassword("12345"));
+		user->SetSurname("Gutnik");
+		user->SetName("Elina");
+		user->SetOtch("Andreevna");
+		this->vector_user.push_back(user);
 	}
 	else
 	{
-		if (!vectorUser.size())
-		{
-			std::shared_ptr<User> user = std::make_shared<User>();
-			user->setRole(1);
-			user->setAccess(1);
-			user->setUsername("admin");
-			user->setPassword(Vectors::hash_password("12345"));
-			user->setSurname("Gutnik");
-			user->setName("Elina");
-			user->setOtch("Andreevna");
-			this->vectorUser.push_back(user);
-		}
-		else
-		{
-			for (auto& element : this->vectorUser)
-				element->getFromFile(fin);
-		}
-		fin.close();
+		for (auto& element : this->vector_user)
+			element->GetFromFile(file);
 	}
+	file.close();
 }
 
-void Vectors::getVectorEmployees()
+void Vectors::GetVectorEmployees()
 {
-	std::ifstream fin("employees.txt", std::ios::in);
-	
-	if (fin.is_open())
-	{
-		std::string surname, name, otch, month, hourlyRate;
-		double sal, hours, averageSalary;
-		int id, amountOfMonths;
-		while (true)
-		{
-			if (!(fin >> surname >> name >> otch >> id >> hourlyRate >> averageSalary >> amountOfMonths))
-				break;
-			std::shared_ptr<Employee> emp = std::make_shared<Employee>();
-			std::vector<double> salary;
-			std::vector<std::pair<std::string, double>> hoursWorkedForMonth;
-			emp->setSurname(surname);
-			emp->setName(name);
-			emp->setOtch(otch);
-			emp->setId(id);
-			emp->setHourlyRate(hourlyRate);
-			emp->setAverageSalary(averageSalary);
-			emp->setAmountOfMonths(amountOfMonths);
+	std::ifstream file("employees.txt", std::ios::in);
 
-			for (int i = 0; i < amountOfMonths; i++)
-			{
-				fin >> sal >> month >> hours;
-				salary.push_back(sal);
-				hoursWorkedForMonth.emplace_back(month, hours);
-			}
-			emp->setSalary(salary);
-			emp->setHoursWorkedForMonth(hoursWorkedForMonth);
-			this->vectorEmployee.push_back(emp);
-		}
-		fin.close();
-	}
-	else
+	if (!file.is_open())
 	{
-		system("cls");
-		Console::GoToXY(50, 12);
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
-		std::cout << "-!!!- Œÿ»¡ ¿ Œ“ –€“»ﬂ ‘¿…À¿ -!!!-";
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-		exit(1);
+		Menu::FileNotOpened();
 	}
+
+	std::string surname, name, otch, month, hourly_rate;
+	double salry, hours, average_salary;
+	int id, amount_months;
+	while (true)
+	{
+		if (!(file >> surname >> name >> otch >> id >> hourly_rate >> average_salary >> amount_months))
+			break;
+		std::shared_ptr<Employee> emp = std::make_shared<Employee>();
+		std::vector<double> salary;
+		std::vector<std::pair<std::string, double>> hours_worked;
+		emp->SetSurname(surname);
+		emp->SetName(name);
+		emp->SetOtch(otch);
+		emp->SetId(id);
+		emp->SetHourlyRate(hourly_rate);
+		emp->SetAverageSalary(average_salary);
+		emp->SetAmountMonths(amount_months);
+
+		for (int i = 0; i < amount_months; i++)
+		{
+			file >> salry >> month >> hours;
+			salary.push_back(salry);
+			hours_worked.emplace_back(month, hours);
+		}
+		emp->SetSalary(salary);
+		emp->SetHoursWorkedForMonth(hours_worked);
+		this->vector_employee.push_back(emp);
+	}
+	file.close();
 }
 
-void Vectors::getVectorDepartment()
+void Vectors::GetVectorDepartment()
 {
 	std::ifstream fin("department.txt", std::ios::in);
-	if (fin.is_open())
+	if (!fin.is_open())
 	{
-		std::string title, surname, name, otch, hourlyRate;
-		int numberOfProjects, numberOfEmployees, id;
-		while (true)
+		Menu::FileNotOpened();
+	}
+
+	std::string title, surname, name, otch, hourly_rate;
+	int number_projects, number_employees, id;
+	while (true)
+	{
+		if (!(fin >> title >> number_projects >> number_employees))
+			break;
+		std::shared_ptr<Department> dep = std::make_shared<Department>();
+		std::vector<std::shared_ptr<Employee>> employee;
+		dep->SetTitle(title);
+		dep->SetNumberProjects(number_projects);
+		dep->SetNumberEmployees(number_employees);
+
+		for (int i = 0; i < number_employees; i++)
 		{
-			if (!(fin >> title >> numberOfProjects >> numberOfEmployees))
-				break;
-			std::shared_ptr<Department> dep = std::make_shared<Department>();
-			std::vector<std::shared_ptr<Employee>> employee;
-			dep->setTitle(title);
-			dep->setNumberOfProjects(numberOfProjects);
-			dep->setNumberOfEmployees(numberOfEmployees);
-
-			for (int i = 0; i < numberOfEmployees; i++)
-			{
-				fin >> surname >> name >> otch >> id >> hourlyRate;
-				std::shared_ptr<Employee> emp = std::make_shared<Employee>();
-				emp->setSurname(surname);
-				emp->setName(name);
-				emp->setOtch(otch);
-				emp->setId(id);
-				emp->setHourlyRate(hourlyRate);
-				employee.push_back(emp);
-			}
-			dep->setEmployees(employee);
-			this->vectorDepartment.push_back(dep);
+			fin >> surname >> name >> otch >> id >> hourly_rate;
+			std::shared_ptr<Employee> emp = std::make_shared<Employee>();
+			emp->SetSurname(surname);
+			emp->SetName(name);
+			emp->SetOtch(otch);
+			emp->SetId(id);
+			emp->SetHourlyRate(hourly_rate);
+			employee.push_back(emp);
 		}
-		fin.close();
+		dep->SetEmployees(employee);
+		this->vector_department.push_back(dep);
 	}
-	else
-	{
-		system("cls");
-		Console::GoToXY(50, 12);
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
-		std::cout << "-!!!- Œÿ»¡ ¿ Œ“ –€“»ﬂ ‘¿…À¿ -!!!-";
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-		exit(1);
-	}
+	fin.close();
 }
 
-void Vectors::addAccountInFile(std::vector<std::shared_ptr<User>> vectorUser)
+void Vectors::AddAccountInFile(std::vector<std::shared_ptr<User>> vector_user)
 {
-	std::ofstream fout("users.txt", std::ios::out);
-	if (!fout.is_open())
+	std::ofstream file("users.txt", std::ios::out);
+	if (!file.is_open())
 	{
-		system("cls");
-		Console::GoToXY(50, 12);
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
-		std::cout << "-!!!- Œÿ»¡ ¿ Œ“ –€“»ﬂ ‘¿…À¿ -!!!-";
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-		exit(1);
+		Menu::FileNotOpened();
 	}
-	for (auto& element : vectorUser)
-		fout << element->getUsername() << "\t" << element->getPassword() << "\t" << element->getRole() << "\t" << element->getAccess() << "\t" <<
-		element->getSurname() << "\t" << element->getName() << "\t" << element->getOtch() << "\t" << std:: endl;
-	fout.close();
+	for (auto& element : vector_user)
+		file << element->GetUsername() << "\t" << element->GetPassword() << "\t" <<
+		element->GetRole() << "\t" << element->GetAccess() << "\t" << element->GetSurname() << 
+		"\t" << element->GetName() << "\t" << element->GetOtch() << "\t" << std:: endl;
+	file.close();
 }
 
-std::string Vectors::singIn(std::vector<std::shared_ptr<User>>& vectorUser)
+std::string Vectors::SingIn(std::vector<std::shared_ptr<User>>& vector_user)
 {
 	system("cls");
 	Console::GoToXY(50, 12);
 	std::cout << "¬¬≈ƒ»“≈ ÀŒ√»Õ";
 	Console::GoToXY(53, 13);
-	std::string username = checkInputUsername();
+	std::string username = CheckInputUsername();
 	system("cls"); 
 	Console::GoToXY(50, 12);
 	std::cout << "¬¬≈ƒ»“≈ œ¿–ŒÀ‹";
 	Console::GoToXY(54, 13);
-	std::string password = checkPassword();
+	std::string password = FindPassword();
 	system("cls");
 
-	for (int i = 0; i < vectorUser.size(); i++)
-		if (username == vectorUser.at(i)->getUsername() && password == vectorUser.at(i)->getPassword())
+	for (int i = 0; i < vector_user.size(); i++)
+		if (username == vector_user.at(i)->GetUsername() && password == vector_user.at(i)->GetPassword())
 		{
-			if (!vectorUser.at(i)->getAccess())
+			if (!vector_user.at(i)->GetAccess())
 			{
 				system("cls");
 				Console::GoToXY(42, 12);
@@ -350,7 +326,7 @@ std::string Vectors::singIn(std::vector<std::shared_ptr<User>>& vectorUser)
 				char ch = _getch();
 				return "null";
 			}
-			else return vectorUser.at(i)->getUsername();
+			else return vector_user.at(i)->GetUsername();
 		}
 	system("cls");
 	Console::GoToXY(40, 12);
@@ -358,78 +334,68 @@ std::string Vectors::singIn(std::vector<std::shared_ptr<User>>& vectorUser)
 	std::cout << "-!!!- “¿ Œ… ”◊≈“ÕŒ… «¿œ»—» Õ≈ —”Ÿ≈—“¬”≈“ -!!!-";
 	SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 	char ch = _getch();
-	return "null";
+	return "NULL";
 }
 
-void Vectors::singUp(int role, std::vector<std::shared_ptr<User>>& vectorUser, Vectors& vect)
+void Vectors::SingUp(int role, std::vector<std::shared_ptr<User>>& vector_user, Vectors& vect)
 {
 	std::shared_ptr<User> user = std::make_shared<User>();
-	user->setRole(role);
-	user->setAccess(1);
+	user->SetRole(role);
+	user->SetAccess(1);
 	system("cls");
 
-	user->setUsername(Vectors::checkUsername(vectorUser));
-	user->setPassword(Vectors::checkPassword());
+	user->SetUsername(Vectors::FindUsername(vector_user));
+	user->SetPassword(Vectors::FindPassword());
 
-	user->setFullName();
+	user->SetFullName();
 
 	if (Menu::confirmOrNot())
-		vectorUser.push_back(user);
+		vector_user.push_back(user);
 
-	vect.addAccountInFile(vectorUser);
+	vect.AddAccountInFile(vector_user);
 }
 
 
-void Vectors::addEmployeeInFile(std::vector<std::shared_ptr<Employee>> vectorEmployee)
+void Vectors::AddEmployeeInFile(std::vector<std::shared_ptr<Employee>> vector_employee)
 {
 	std::ofstream fout("employees.txt", std::ios_base::trunc);
 	if (!fout.is_open())
 	{
-		system("cls");
-		Console::GoToXY(50, 12);
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
-		std::cout << "-!!!- Œÿ»¡ ¿ Œ“ –€“»ﬂ ‘¿…À¿ -!!!-";
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-		exit(1);
+		Menu::FileNotOpened();
 	}
-	for (auto& element : vectorEmployee)
+	for (auto& element : vector_employee)
 	{
-		fout << element->getSurname() << "\t" << element->getName() << "\t" << element->getOtch() <<
-			"\t" << element->getId() << "\t" << element->getHourlyRate() << "\t" << element->getAverageSalary() <<
-			"\t" << element->getAmountOfMonths();
-		for (int j = 0; j < element->getAmountOfMonths(); j++)
+		fout << element->GetSurname() << "\t" << element->GetName() << "\t" << element->GetOtch() <<
+			"\t" << element->GetId() << "\t" << element->GetHourlyRate() << "\t" << element->GetAverageSalary() <<
+			"\t" << element->GetAmountMonths();
+		for (int j = 0; j < element->GetAmountMonths(); j++)
 		{
-			fout << "\t" << element->getSalary().at(j)
-				<< "\t" << element->getHoursWorkedForMonth().at(j).first
-				<< "\t" << element->getHoursWorkedForMonth().at(j).second;
+			fout << "\t" << element->GetSalary().at(j)
+				<< "\t" << element->GetHoursWorkedForMonth().at(j).first
+				<< "\t" << element->GetHoursWorkedForMonth().at(j).second;
 		}
 		fout << "\n";
 	}
 	fout.close();
 }
 
-void Vectors::addDepartmentInFile(std::vector<std::shared_ptr<Department>> vectorDepartment)
+void Vectors::AddDepartmentInFile(std::vector<std::shared_ptr<Department>> vector_department)
 {
 	std::ofstream fout("department.txt", std::ios_base::trunc);
 	if (!fout.is_open())
 	{
-		system("cls");
-		Console::GoToXY(50, 12);
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
-		std::cout << "-!!!- Œÿ»¡ ¿ Œ“ –€“»ﬂ ‘¿…À¿ -!!!-";
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-		exit(1);
+		Menu::FileNotOpened();
 	}
-	for (auto& element : vectorDepartment)
+	for (auto& element : vector_department)
 	{
-		fout << "\n" << element->getTitle() << "\t" << element->getNumberOfProjects() << "\t" << element->getNumberOfEmployees();
-		for (int j = 0; j < element->getEmployees().size(); j++)
+		fout << "\n" << element->GetTitle() << "\t" << element->GetNumberProjects() << "\t" << element->GetNumberEmployees();
+		for (int j = 0; j < element->GetEmployees().size(); j++)
 		{
-			fout << "\n\t" << element->getEmployees().at(j)->getSurname()
-				<< "\t" << element->getEmployees().at(j)->getName()
-				<< "\t" << element->getEmployees().at(j)->getOtch()
-				<< "\t" << element->getEmployees().at(j)->getId()
-				<< "\t" << element->getEmployees().at(j)->getHourlyRate();
+			fout << "\n\t" << element->GetEmployees().at(j)->GetSurname()
+				<< "\t" << element->GetEmployees().at(j)->GetName()
+				<< "\t" << element->GetEmployees().at(j)->GetOtch()
+				<< "\t" << element->GetEmployees().at(j)->GetId()
+				<< "\t" << element->GetEmployees().at(j)->GetHourlyRate();
 		}
 	}
 	fout << "\n";

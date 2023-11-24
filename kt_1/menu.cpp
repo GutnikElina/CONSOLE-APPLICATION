@@ -1,19 +1,29 @@
 #include "menu.h"
 
-int Menu::checkInt()
+void Menu::FileNotOpened()
+{
+	system("cls");
+	Console::GoToXY(50, 12);
+	SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
+	std::cout << "-!!!- ОШИБКА ОТКРЫТИЯ ФАЙЛА -!!!-";
+	SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+	exit(1);
+}
+
+int Menu::CheckInt()
 {
 	char ch;
 	while (1)
 	{
 		try
 		{
-			int num;
-			std::cin >> num;
+			int number;
+			std::cin >> number;
 			if (std::cin.fail())
 			{
 				throw 1;
 			}
-			return num;
+			return number;
 		}
 		catch (int)
 		{
@@ -30,7 +40,7 @@ int Menu::checkInt()
 	}
 }
 
-std::string Menu::checkDouble()
+std::string Menu::CheckDouble()
 {
 	int ch;
 	std::string result;
@@ -63,7 +73,7 @@ std::string Menu::checkDouble()
 	return result;
 }
 
-std::string Menu::checkString()
+std::string Menu::CheckString()
 {
 	int ch;
 	std::string result;
@@ -97,7 +107,7 @@ std::string Menu::checkString()
 }
 
 
-int Menu::choiceKeyboard(std::string mainMenu[], int size)
+int Menu::ChoiceKeyboard(std::string mainMenu[], int size)
 {
 	int x, y, active_menu = 0;
 
@@ -171,7 +181,7 @@ bool Menu::exitOrNot()
 	int active_menu = 0;
 	bool flag = true;
 
-	if (Menu::choiceKeyboard(question, size(question)))
+	if (Menu::ChoiceKeyboard(question, size(question)))
 		return true;
 	else return false;
 
@@ -184,7 +194,7 @@ bool Menu::continueOrNot()
 
 	std::string line[] = { " Да", "Нет" };
 
-	switch (Menu::choiceKeyboard(line, size(line)))
+	switch (Menu::ChoiceKeyboard(line, size(line)))
 	{
 	case 0:
 		return true;
@@ -209,10 +219,9 @@ bool Menu::confirmOrNot()
 	Console::GoToXY(30, 12);
 	std::cout << "+--------------------------------------------------------+";
 
-	int x, y, option = 0;
 	std::string line[] = { "Да, подтверждаю", "    Выйти" };
 
-	switch (Menu::choiceKeyboard(line, size(line)))
+	switch (Menu::ChoiceKeyboard(line, size(line)))
 	{
 	case 0:
 		return true;
@@ -221,7 +230,7 @@ bool Menu::confirmOrNot()
 	}
 }
 
-void Menu::changeAccountMenu(std::vector<std::shared_ptr<User>>& vectorUser, std::string username)
+void Menu::ChangeAccountMenu(std::vector<std::shared_ptr<User>>& vector_user, std::string username)
 {
 	std::string menu[] = { "     Посмотреть все аккаунты", "      Добавить новый аккаунт", "        Удалить аккаунт",
 		"   Редактировать данные аккаунта", "        Вернуться назад" };
@@ -243,24 +252,24 @@ void Menu::changeAccountMenu(std::vector<std::shared_ptr<User>>& vectorUser, std
 		Console::GoToXY(36, 12);
 		std::cout << "+-------------------------------------------+";
 
-		switch (Menu::choiceKeyboard(menu, size(menu)))
+		switch (Menu::ChoiceKeyboard(menu, size(menu)))
 		{
 		case 0:
 			system("cls");
-			User::showAccounts(vectorUser);
+			User::ShowAccounts(vector_user);
 			ch = _getch();
 			break;
 		case 1:
 			system("cls");
-			User::addNewAccount(vectorUser);
+			User::AddNewAccount(vector_user);
 			break;
 		case 2:
 			system("cls");
-			User::deleteAccount(vectorUser, username);
+			User::DeleteAccount(vector_user, username);
 			break;
 		case 3:
 			system("cls");
-			User::changeAccount(vectorUser, username);
+			User::ChangeAccount(vector_user, username);
 			break;
 		case 4:
 			return;
@@ -268,9 +277,9 @@ void Menu::changeAccountMenu(std::vector<std::shared_ptr<User>>& vectorUser, std
 	}
 }
 
-void Menu::menuAdmin(Vectors& vect, std::string username)
+void Menu::MenuAdmin(Vectors& vect, std::string username)
 {
-	std::string adminMenu[] = { "        Управлять аккаунтами", "  Работать c данными работников",
+	std::string admin_menu[] = { "        Управлять аккаунтами", "  Работать c данными работников",
 		"   Работать c данными отделов","         Выйти из аккаунта" };
 
 	while (true)
@@ -288,19 +297,19 @@ void Menu::menuAdmin(Vectors& vect, std::string username)
 		Console::GoToXY(40, 12);
 		std::cout << "+---------------------------------------+";
 
-		switch (Menu::choiceKeyboard(adminMenu, size(adminMenu)))
+		switch (Menu::ChoiceKeyboard(admin_menu, size(admin_menu)))
 		{
 		case 0:
 			system("cls");
-			changeAccountMenu(vect.getUsers(), username);
+			ChangeAccountMenu(vect.GetUsers(), username);
 			break;
 		case 1:
 			system("cls");
-			workWithDataMenu(vect.getEmployees());
+			WorkWithDataMenu(vect.GetEmployees());
 			break;
 		case 2:
 			system("cls");
-			workWithDepartmentsMenu(vect.getEmployees(), vect.getDepartment());
+			WorkWithDepartmentsMenu(vect.GetEmployees(), vect.GetDepartment());
 			break;
 		case 3:
 			if (exitOrNot())
@@ -310,7 +319,7 @@ void Menu::menuAdmin(Vectors& vect, std::string username)
 	}
 }
 
-void Menu::workWithDataMenu(std::vector<std::shared_ptr<Employee>>& vectorEmployee)
+void Menu::WorkWithDataMenu(std::vector<std::shared_ptr<Employee>>& vector_employee)
 {
 	std::string menu[] = { " Обработать данные", "Редактировать данные", "   Вернуться назад" };
 
@@ -329,15 +338,15 @@ void Menu::workWithDataMenu(std::vector<std::shared_ptr<Employee>>& vectorEmploy
 		std::cout << "|                                           |";
 		Console::GoToXY(36, 12);
 		std::cout << "+-------------------------------------------+";
-		switch (Menu::choiceKeyboard(menu, size(menu)))
+		switch (Menu::ChoiceKeyboard(menu, size(menu)))
 		{
 		case 0:
 			system("cls");
-			dataProcessingMenu(vectorEmployee);
+			DataProcessingMenu(vector_employee);
 			break;
 		case 1:
 			system("cls");
-			changeDataMenu(vectorEmployee);
+			ChangeDataMenu(vector_employee);
 			break;
 		case 2:
 			return;
@@ -345,7 +354,7 @@ void Menu::workWithDataMenu(std::vector<std::shared_ptr<Employee>>& vectorEmploy
 	}
 }
 
-void Menu::dataProcessingMenu(std::vector<std::shared_ptr<Employee>>& vectorEmployee)
+void Menu::DataProcessingMenu(std::vector<std::shared_ptr<Employee>>& vector_employee)
 {
 	std::string menu[] = { "      Найти работника", "   Сортировать работников", "Показать зарплату за опр-й месяц", "      Вернуться назад" };
 
@@ -365,19 +374,19 @@ void Menu::dataProcessingMenu(std::vector<std::shared_ptr<Employee>>& vectorEmpl
 		Console::GoToXY(36, 12);
 		std::cout << "+----------------------------------------+";
 
-		switch (Menu::choiceKeyboard(menu, size(menu)))
+		switch (Menu::ChoiceKeyboard(menu, size(menu)))
 		{
 		case 0:
 			system("cls");
-			findMenu(vectorEmployee);
+			FindMenu(vector_employee);
 			break;
 		case 1:
 			system("cls");
-			sortMenu(vectorEmployee);
+			SortMenu(vector_employee);
 			break;
 		case 2:
 			system("cls");
-			Employee::salaryData(vectorEmployee);
+			Employee::SalaryData(vector_employee);
 			break;
 		case 3:
 			return;
@@ -386,10 +395,10 @@ void Menu::dataProcessingMenu(std::vector<std::shared_ptr<Employee>>& vectorEmpl
 }
 
 
-void Menu::findMenu(std::vector<std::shared_ptr<Employee>> vectorEmployee)
+void Menu::FindMenu(std::vector<std::shared_ptr<Employee>> vector_employee)
 {
 	char ch;
-	if (!vectorEmployee.size())
+	if (!vector_employee.size())
 	{
 		system("cls");
 		Console::GoToXY(45, 14);
@@ -419,19 +428,19 @@ void Menu::findMenu(std::vector<std::shared_ptr<Employee>> vectorEmployee)
 		Console::GoToXY(36, 12);
 		std::cout << "+----------------------------------------+";
 		
-		switch (Menu::choiceKeyboard(menu, size(menu)))
+		switch (Menu::ChoiceKeyboard(menu, size(menu)))
 		{
 		case 0:
 			system("cls");
-			Employee::findByName(vectorEmployee);
+			Employee::FindByName(vector_employee);
 			break;
 		case 1:
 			system("cls");
-			Employee::findById(vectorEmployee);
+			Employee::FindById(vector_employee);
 			break;
 		case 2:
 			system("cls");
-			Employee::findByHourlyRate(vectorEmployee);
+			Employee::FindByHourlyRate(vector_employee);
 			break;
 		case 3:
 			return;
@@ -439,10 +448,10 @@ void Menu::findMenu(std::vector<std::shared_ptr<Employee>> vectorEmployee)
 	}
 }
 
-void Menu::sortMenu(std::vector<std::shared_ptr<Employee>> vectorEmployee)
+void Menu::SortMenu(std::vector<std::shared_ptr<Employee>> vector_employee)
 {
 	char ch;
-	if (!vectorEmployee.size())
+	if (!vector_employee.size())
 	{
 		system("cls");
 		Console::GoToXY(45, 14);
@@ -472,19 +481,19 @@ void Menu::sortMenu(std::vector<std::shared_ptr<Employee>> vectorEmployee)
 		Console::GoToXY(36, 12);
 		std::cout << "+----------------------------------------+";
 
-		switch (Menu::choiceKeyboard(menu, size(menu)))
+		switch (Menu::ChoiceKeyboard(menu, size(menu)))
 		{
 		case 0:
 			system("cls");
-			Employee::sortBySurname(vectorEmployee);
+			Employee::SortBySurname(vector_employee);
 			break;
 		case 1:
 			system("cls");
-			Employee::sortByID(vectorEmployee);
+			Employee::SortByID(vector_employee);
 			break;
 		case 2:
 			system("cls");
-			Employee::sortByHourlyRate(vectorEmployee);
+			Employee::SortByHourlyRate(vector_employee);
 			break;
 		case 3:
 			return;
@@ -492,7 +501,7 @@ void Menu::sortMenu(std::vector<std::shared_ptr<Employee>> vectorEmployee)
 	}
 }
 
-void Menu::changeDataMenu(std::vector<std::shared_ptr<Employee>>& vectorEmployee)
+void Menu::ChangeDataMenu(std::vector<std::shared_ptr<Employee>>& vector_employee)
 {
 	std::string menu[] = { "  Изменить данные работников", "Удалить всю базу данных работников", "      Добавить работника",
 		"Посмотреть базу данных работников", "      Удалить работника", "       Вернуться назад" };
@@ -514,28 +523,28 @@ void Menu::changeDataMenu(std::vector<std::shared_ptr<Employee>>& vectorEmployee
 		Console::GoToXY(36, 12);
 		std::cout << "+----------------------------------------+";
 
-		switch (Menu::choiceKeyboard(menu, size(menu)))
+		switch (Menu::ChoiceKeyboard(menu, size(menu)))
 		{
 		case 0:
 			system("cls");
-			editDatabaseMenu(vectorEmployee);
+			EditDatabaseMenu(vector_employee);
 			break;
 		case 1:
 			system("cls");
-			Employee::deleteDatabase(vectorEmployee);
+			Employee::DeleteDatabase(vector_employee);
 			break;
 		case 2:
 			system("cls");
-			Employee::addEmployeeDatabase(vectorEmployee);
+			Employee::AddEmployeeDatabase(vector_employee);
 			break;
 		case 3:
 			system("cls");
-			Employee::database(vectorEmployee);
+			Employee::DatabaseEmployee(vector_employee);
 			ch = _getch();
 			break;
 		case 4:
 			system("cls");
-			Employee::deleteEmployee(vectorEmployee);
+			Employee::DeleteEmployee(vector_employee);
 			break;
 		case 5:
 			return;
@@ -544,10 +553,10 @@ void Menu::changeDataMenu(std::vector<std::shared_ptr<Employee>>& vectorEmployee
 
 }
 
-void Menu::editDatabaseMenu(std::vector<std::shared_ptr<Employee>>& vectorEmployee)
+void Menu::EditDatabaseMenu(std::vector<std::shared_ptr<Employee>>& vector_employee)
 {
 	char ch;
-	if (!vectorEmployee.size())
+	if (!vector_employee.size())
 	{
 		system("cls");
 		Console::GoToXY(45, 14);
@@ -558,7 +567,7 @@ void Menu::editDatabaseMenu(std::vector<std::shared_ptr<Employee>>& vectorEmploy
 		return;
 	}
 
-	int numberOfEmployee = Employee::findEmployee(vectorEmployee);
+	int numberOfEmployee = Employee::FindEmployee(vector_employee);
 	numberOfEmployee--;
 
 	std::string menu[] = { "    Изменение фамилии", "     Изменение имени", "   Изменение отчества",
@@ -580,27 +589,27 @@ void Menu::editDatabaseMenu(std::vector<std::shared_ptr<Employee>>& vectorEmploy
 		Console::GoToXY(36, 12);
 		std::cout << "+-----------------------------------------+";
 
-		switch (Menu::choiceKeyboard(menu, size(menu)))
+		switch (Menu::ChoiceKeyboard(menu, size(menu)))
 		{
 		case 0:
 			system("cls");
-			Employee::changeSurname(vectorEmployee, numberOfEmployee);
+			Employee::ChangeSurname(vector_employee, numberOfEmployee);
 			break;
 		case 1:
 			system("cls");
-			Employee::changeName(vectorEmployee, numberOfEmployee);
+			Employee::ChangeName(vector_employee, numberOfEmployee);
 			break;
 		case 2:
 			system("cls");
-			Employee::changeOtch(vectorEmployee, numberOfEmployee);
+			Employee::ChangeOtch(vector_employee, numberOfEmployee);
 			break;
 		case 3:
 			system("cls");
-			Employee::changeId(vectorEmployee, numberOfEmployee);
+			Employee::ChangeId(vector_employee, numberOfEmployee);
 			break;
 		case 4:
 			system("cls");
-			Employee::changeHourlyRate(vectorEmployee, numberOfEmployee);
+			Employee::ChangeHourlyRate(vector_employee, numberOfEmployee);
 			break;
 		case 5:
 			return;
@@ -608,10 +617,9 @@ void Menu::editDatabaseMenu(std::vector<std::shared_ptr<Employee>>& vectorEmploy
 	}
 }
 
-void Menu::workWithDepartmentsMenu(std::vector<std::shared_ptr<Employee>>& emp, std::vector<std::shared_ptr<Department>>& dep)
+void Menu::WorkWithDepartmentsMenu(std::vector<std::shared_ptr<Employee>>& empl, std::vector<std::shared_ptr<Department>>& dep)
 {
-	int x, y, option = 0;
-	char choice, ch;
+	char ch;
 	bool flag = true;
 	std::string menu[] = { "    Изменить данные отдела", "Удалить всю базу данных отделов", "Посмотреть базу данных отделов",
 		"        Добавить отдел", "         Удалить отдел", "        Вернуться назад" };
@@ -632,28 +640,28 @@ void Menu::workWithDepartmentsMenu(std::vector<std::shared_ptr<Employee>>& emp, 
 		Console::GoToXY(36, 12);
 		std::cout << "+-------------------------------------------+";
 
-		switch (Menu::choiceKeyboard(menu, size(menu)))
+		switch (Menu::ChoiceKeyboard(menu, size(menu)))
 		{
 		case 0:
 			system("cls");
-			editDatabaseDepartmentMenu(emp, dep);
+			EditDatabaseDepartmentMenu(empl, dep);
 			break;
 		case 1:
 			system("cls");
-			Department::deleteDatabaseDepartment(dep);
+			Department::DeleteDatabaseDepartment(dep);
 			break;
 		case 2:
 			system("cls");
-			Department::databaseDepartment(dep);
+			Department::DepartmentsDatabase(dep);
 			ch = _getch();
 			break;
 		case 3:
 			system("cls");
-			Department::addNewDepartment(emp, dep);
+			Department::AddNewDepartment(empl, dep);
 			break;
 		case 4:
 			system("cls");
-			Department::deleteDepartment(dep);
+			Department::DeleteDepartment(dep);
 			break;
 		case 5:
 			return;
@@ -661,7 +669,7 @@ void Menu::workWithDepartmentsMenu(std::vector<std::shared_ptr<Employee>>& emp, 
 	}
 }
 
-void Menu::editDatabaseDepartmentMenu(std::vector<std::shared_ptr<Employee>>& emp, std::vector<std::shared_ptr<Department>>& dep)
+void Menu::EditDatabaseDepartmentMenu(std::vector<std::shared_ptr<Employee>>& empl, std::vector<std::shared_ptr<Department>>& dep)
 {
 	char ch;
 	if (!dep.size())
@@ -675,38 +683,38 @@ void Menu::editDatabaseDepartmentMenu(std::vector<std::shared_ptr<Employee>>& em
 		return;
 	}
 
-	int numberOfDepartment = Department::findDepartment(dep);
-	numberOfDepartment--;
+	int number_department = Department::FindDepartment(dep);
+	number_department--;
 
 	std::string menu[] = { "    Изменение названия", "Изменение кол-ва проектов", "   Добавить работника",
 		"   Удалить работника",  "    Вернуться назад" };
 
-	switch (Menu::choiceKeyboard(menu, size(menu)))
+	switch (Menu::ChoiceKeyboard(menu, size(menu)))
 	{
 	case 0:
 		system("cls");
-		Department::changeTitle(dep, numberOfDepartment);
+		Department::ChangeTitle(dep, number_department);
 		break;
 	case 1:
 		system("cls");
-		Department::changeNumberOfProjects(dep, numberOfDepartment);
+		Department::ChangeNumberOfProjects(dep, number_department);
 		break;
 	case 2:
 		system("cls");
-		Department::addNewEmployeeInDepartment(emp, dep, numberOfDepartment);
+		Department::AddNewEmployeeInDepartment(empl, dep, number_department);
 		break;
 	case 3:
 		system("cls");
-		Department::deleteEmployeeFromDepartment(dep, numberOfDepartment);
+		Department::DeleteEmployeeFromDepartment(dep, number_department);
 		break;
 	case 4:
 		return;
 	}
 }
 
-void Menu::menuUser(Vectors& vect, std::string username)
+void Menu::MenuUser(Vectors& vect, std::string username)
 {
-	std::string userMenu[] = { " Посмотреть свою базу данных",  "Посмотреть базу данных отделов", "    Управлять аккаунтом", "     Выйти из аккаунта" };
+	std::string user_menu[] = { " Посмотреть свою базу данных",  "Посмотреть базу данных отделов", "    Управлять аккаунтом", "     Выйти из аккаунта" };
 	char ch;
 
 	while (true)
@@ -720,21 +728,21 @@ void Menu::menuUser(Vectors& vect, std::string username)
 		Console::GoToXY(40, 11);
 		std::cout << "+---------------------------------------+";
 
-		switch (Menu::choiceKeyboard(userMenu, size(userMenu)))
+		switch (Menu::ChoiceKeyboard(user_menu, size(user_menu)))
 		{
 		case 0:
 			system("cls");
-			Employee::databaseForUser(vect.getUsers(), vect.getEmployees(), username);
+			Employee::DatabaseForUser(vect.GetUsers(), vect.GetEmployees(), username);
 			ch = _getch();
 			break;
 		case 1:
 			system("cls");
-			Department::databaseDepartment(vect.getDepartment());
+			Department::DepartmentsDatabase(vect.GetDepartment());
 			ch = _getch();
 			break;
 		case 2:
 			system("cls");
-			User::changeMyAccount(vect.getUsers(), username);
+			User::ChangeMyAccount(vect.GetUsers(), username);
 			break;
 		case 3:
 			if (!exitOrNot())

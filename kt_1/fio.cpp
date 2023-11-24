@@ -2,7 +2,7 @@
 
 FIO::FIO()
 {
-	this->set("NULL", "NULL", "NULL");
+	this->SetFio("NULL", "NULL", "NULL");
 }
 
 FIO::~FIO()
@@ -12,24 +12,24 @@ FIO::~FIO()
 	this->otch.clear();
 }
 
-void FIO::set()
+void FIO::Set()
 {
 	system("cls");
 	Console::GoToXY(49, 9);
 	std::cout << "ÂÂÅÄÈÒÅ ÔÀÌÈËÈÞ";
 	Console::GoToXY(53, 10);
-	this->surname = Vectors::checkInputUsername();
+	this->surname = Vectors::CheckInputUsername();
 	Console::GoToXY(50, 12);
 	std::cout << "ÂÂÅÄÈÒÅ ÈÌß";
 	Console::GoToXY(53, 13);
-	this->name = Vectors::checkInputUsername();
+	this->name = Vectors::CheckInputUsername();
 	Console::GoToXY(48, 15);
 	std::cout << "ÂÂÅÄÈÒÅ ÎÒ×ÅÑÒÂÎ";
 	Console::GoToXY(53, 16);
-	this->otch = Vectors::checkInputUsername();
+	this->otch = Vectors::CheckInputUsername();
 }
 
-void FIO::set(std::string name, std::string surname, std::string otch)
+void FIO::SetFio(std::string name, std::string surname, std::string otch)
 {
 	this->name = name;
 	this->surname = surname;

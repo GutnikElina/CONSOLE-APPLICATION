@@ -1,9 +1,9 @@
 #include "menu.h"
 
-void Department::getFromFile(std::istream& in)
+void Department::GetFromFile(std::istream& in)
 {
-	in >> this->title >> this->numberOfProjects >> this->numberOfEmployees;
-	this->employee.resize(this->numberOfEmployees);
+	in >> this->title >> this->number_projects >> this->number_employees;
+	this->employee.resize(this->number_employees);
 	std::string surname{}, name{}, otch{};
 	int id{};
 	std::string hourlyRate{};
@@ -12,15 +12,15 @@ void Department::getFromFile(std::istream& in)
 
 		in >> surname >> name >> otch >> id >> hourlyRate;
 
-		this->employee.at(i)->setSurname(surname);
-		this->employee.at(i)->setName(name);
-		this->employee.at(i)->setOtch(otch);
-		this->employee.at(i)->setId(id);
-		this->employee.at(i)->setHourlyRate(hourlyRate);
+		this->employee.at(i)->SetSurname(surname);
+		this->employee.at(i)->SetName(name);
+		this->employee.at(i)->SetOtch(otch);
+		this->employee.at(i)->SetId(id);
+		this->employee.at(i)->SetHourlyRate(hourlyRate);
 	}
 }
 
-int Department::findDepartment(std::vector<std::shared_ptr<Department>>& dep)
+int Department::FindDepartment(std::vector<std::shared_ptr<Department>>& dep)
 {
 	char ch;
 	std::string title{};
@@ -29,13 +29,13 @@ int Department::findDepartment(std::vector<std::shared_ptr<Department>>& dep)
 	while (true)
 	{
 		flag = 0;
-		databaseDepartment(dep);
+		DepartmentsDatabase(dep);
 		std::cout << std::endl << "ÂÂÅÄÈÒÅ ÍÀÇÂÀÍÈÅ ÎÒÄÅËÀ" << std::endl;
-		title = Menu::checkString();
+		title = Menu::CheckString();
 
 		for (i = 0; i < dep.size() && flag == 0; i++)
 		{
-			if (title == dep.at(i)->getTitle())
+			if (title == dep.at(i)->GetTitle())
 			{
 				flag++;
 			}
@@ -57,40 +57,40 @@ int Department::findDepartment(std::vector<std::shared_ptr<Department>>& dep)
 	}
 }
 
-void Department::databaseDepartment(std::vector<std::shared_ptr<Department>> dep)
+void Department::DepartmentsDatabase(std::vector<std::shared_ptr<Department>> dep)
 {
 	for (int amount = 0; amount < dep.size(); amount++)
 	{
 		std::cout << std::endl << "+-----------------------------------------------------------------------------------+" << std::endl;
-		std::cout << "|                           ÁÀÇÀ ÄÀÍÍÛÕ ÎÒÄÅËÀ - " << std::setw(35) << std::left << dep.at(amount)->getTitle() << "| " << std::endl;
+		std::cout << "|                           ÁÀÇÀ ÄÀÍÍÛÕ ÎÒÄÅËÀ - " << std::setw(35) << std::left << dep.at(amount)->GetTitle() << "|" << std::endl;
 		std::cout << "+-------------+-----+---------------------------------------+-----------+-----------+" << std::endl;
 		std::cout << "|    Êîë-âî   |  ¹  |              ÔÈÎ ðàáîòíèêà            | Òàáåëüíûé | Ïî÷àñîâîé |" << std::endl;
 		std::cout << "|   ïðîåêòîâ  |     |                                       |   íîìåð   |   òàðèô   |" << std::endl;
 		std::cout << "+-------------+-----+---------------------------------------+-----------+-----------+";
 
-		std::cout << "\n " << "    " << std::setw(9) << dep.at(amount)->getNumberOfProjects();
-		if (dep.at(amount)->getEmployees().size() > 0)
+		std::cout << "\n " << "    " << std::setw(9) << dep.at(amount)->GetNumberProjects();
+		if (dep.at(amount)->GetEmployees().size() > 0)
 		{
-			for (int i = 0; i < dep.at(amount)->getEmployees().size(); i++)
+			for (int i = 0; i < dep.at(amount)->GetEmployees().size(); i++)
 			{
 				if (i == 0)
 				{
 					std::cout << "| " << std::setw(4) << std::left << (i + 1)
-						<< "| " << std::setw(12) << std::left << dep.at(amount)->getEmployees().at(i)->getSurname()
-						<< std::setw(12) << std::left << dep.at(amount)->getEmployees().at(i)->getName()
-						<< std::setw(14) << std::left << dep.at(amount)->getEmployees().at(i)->getOtch()
-						<< "| " << std::setw(10) << std::left << dep.at(amount)->getEmployees().at(i)->getId()
-						<< "| " << std::setw(8) << std::left << dep.at(amount)->getEmployees().at(i)->getHourlyRate() << "$ |";
+						<< "| " << std::setw(12) << std::left << dep.at(amount)->GetEmployees().at(i)->GetSurname()
+						<< std::setw(12) << std::left << dep.at(amount)->GetEmployees().at(i)->GetName()
+						<< std::setw(14) << std::left << dep.at(amount)->GetEmployees().at(i)->GetOtch()
+						<< "| " << std::setw(10) << std::left << dep.at(amount)->GetEmployees().at(i)->GetId()
+						<< "| " << std::setw(8) << std::left << dep.at(amount)->GetEmployees().at(i)->GetHourlyRate() << "$ |";
 					std::cout << std::endl << "              +-----+---------------------------------------+-----------+-----------+" << std::endl;
 				}
 				else
 				{
 					std::cout << "              | " << std::setw(4) << std::left << (i + 1)
-						<< "| " << std::setw(12) << std::left << dep.at(amount)->getEmployees().at(i)->getSurname()
-						<< std::setw(12) << std::left << dep.at(amount)->getEmployees().at(i)->getName()
-						<< std::setw(14) << std::left << dep.at(amount)->getEmployees().at(i)->getOtch()
-						<< "| " << std::setw(10) << std::left << dep.at(amount)->getEmployees().at(i)->getId()
-						<< "| " << std::setw(8) << std::left << dep.at(amount)->getEmployees().at(i)->getHourlyRate() << "$ |";
+						<< "| " << std::setw(12) << std::left << dep.at(amount)->GetEmployees().at(i)->GetSurname()
+						<< std::setw(12) << std::left << dep.at(amount)->GetEmployees().at(i)->GetName()
+						<< std::setw(14) << std::left << dep.at(amount)->GetEmployees().at(i)->GetOtch()
+						<< "| " << std::setw(10) << std::left << dep.at(amount)->GetEmployees().at(i)->GetId()
+						<< "| " << std::setw(8) << std::left << dep.at(amount)->GetEmployees().at(i)->GetHourlyRate() << "$ |";
 					std::cout << std::endl << "              +-----+---------------------------------------+-----------+-----------+" << std::endl;
 				}
 			}
@@ -99,7 +99,7 @@ void Department::databaseDepartment(std::vector<std::shared_ptr<Department>> dep
 	}
 }
 
-void Department::changeTitle(std::vector<std::shared_ptr<Department>>& dep, int numberOfDepartment)
+void Department::ChangeTitle(std::vector<std::shared_ptr<Department>>& dep, int number_department)
 {
 	std::string title;
 	char ch;
@@ -107,9 +107,9 @@ void Department::changeTitle(std::vector<std::shared_ptr<Department>>& dep, int 
 	Console::GoToXY(45, 13);
 	std::cout << "ÂÂÅÄÈÒÅ ÍÎÂÎÅ ÍÀÇÂÀÍÈÅ ÎÒÄÅËÀ";
 	Console::GoToXY(55, 14);
-	title = Menu::checkString();
-	dep.at(numberOfDepartment)->getTitle() = title;
-	Vectors::addDepartmentInFile(dep);
+	title = Menu::CheckString();
+	dep.at(number_department)->GetTitle() = title;
+	Vectors::AddDepartmentInFile(dep);
 	system("cls");
 	Console::GoToXY(35, 14);
 	std::cout << " --------------- ÓÑÏÅØÍÎÅ ÈÇÌÅÍÅÍÈÅ --------------- ";
@@ -117,7 +117,7 @@ void Department::changeTitle(std::vector<std::shared_ptr<Department>>& dep, int 
 	return;
 }
 
-void Department::changeNumberOfProjects(std::vector<std::shared_ptr<Department>>& dep, int numberOfDepartment)
+void Department::ChangeNumberOfProjects(std::vector<std::shared_ptr<Department>>& dep, int number_department)
 {
 	int numb;
 	char ch;
@@ -125,9 +125,9 @@ void Department::changeNumberOfProjects(std::vector<std::shared_ptr<Department>>
 	Console::GoToXY(40, 13);
 	std::cout << "ÂÂÅÄÈÒÅ ÍÎÂÎÅ ÊÎË-ÂÎ ÏÐÎÅÊÒÎÂ Ó ÎÒÄÅËÀ";
 	Console::GoToXY(55, 14);
-	numb = Menu::checkInt();
-	dep.at(numberOfDepartment)->setNumberOfProjects(numb);
-	Vectors::addDepartmentInFile(dep);
+	numb = Menu::CheckInt();
+	dep.at(number_department)->SetNumberProjects(numb);
+	Vectors::AddDepartmentInFile(dep);
 	system("cls");
 	Console::GoToXY(35, 14);
 	std::cout << " --------------- ÓÑÏÅØÍÎÅ ÈÇÌÅÍÅÍÈÅ --------------- ";
@@ -136,14 +136,14 @@ void Department::changeNumberOfProjects(std::vector<std::shared_ptr<Department>>
 }
 
 
-void Department::addNewEmployeeInDepartment(std::vector<std::shared_ptr<Employee>>& emp, std::vector<std::shared_ptr<Department>>& dep, int numberOfDepartment)
+void Department::AddNewEmployeeInDepartment(std::vector<std::shared_ptr<Employee>>& emp, std::vector<std::shared_ptr<Department>>& dep, int number_department)
 {
 	system("cls");
 	std::shared_ptr<Employee> copy = std::make_shared<Employee>();
 	bool flag_1 = true;
 	char ch;
 	int flag;
-	int numbOfEmployees = dep.at(numberOfDepartment)->getEmployees().size();
+	int number_employee = dep.at(number_department)->GetEmployees().size();
 
 	while (true)
 	{
@@ -161,17 +161,17 @@ void Department::addNewEmployeeInDepartment(std::vector<std::shared_ptr<Employee
 		Console::GoToXY(36, 12);
 		std::cout << "+-----------------------------------------------+";
 
-		copy->setFullName();
+		copy->SetFullName();
 
 		for (int j = 0; j < emp.size() && flag == 0; j++)
 		{
-			if (copy->getSurname() == emp.at(j)->getSurname() &&
-				copy->getName() == emp.at(j)->getName() &&
-				copy->getOtch() == emp.at(j)->getOtch())
+			if (copy->GetSurname() == emp.at(j)->GetSurname() &&
+				copy->GetName() == emp.at(j)->GetName() &&
+				copy->GetOtch() == emp.at(j)->GetOtch())
 			{
 				flag++;
-				numbOfEmployees++;
-				dep.at(numberOfDepartment)->getEmployees().push_back(emp.at(j));
+				number_employee++;
+				dep.at(number_department)->GetEmployees().push_back(emp.at(j));
 			}
 		}
 
@@ -188,8 +188,8 @@ void Department::addNewEmployeeInDepartment(std::vector<std::shared_ptr<Employee
 		}
 		else
 		{
-			dep.at(numberOfDepartment)->setNumberOfEmployees(numbOfEmployees);
-			Vectors::addDepartmentInFile(dep);
+			dep.at(number_department)->SetNumberEmployees(number_employee);
+			Vectors::AddDepartmentInFile(dep);
 
 			SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 			system("cls");
@@ -228,7 +228,7 @@ void Department::addNewEmployeeInDepartment(std::vector<std::shared_ptr<Employee
 	}
 }
 
-void Department::deleteEmployeeFromDepartment(std::vector<std::shared_ptr<Department>>& dep, int numberOfDepartment)
+void Department::DeleteEmployeeFromDepartment(std::vector<std::shared_ptr<Department>>& dep, int number_department)
 {
 	char  ch;
 	if (!dep.size())
@@ -243,21 +243,21 @@ void Department::deleteEmployeeFromDepartment(std::vector<std::shared_ptr<Depart
 	}
 	system("cls");
 
-	int numbOfEmployee = findEmployeeInDepartment(dep, numberOfDepartment);
+	int number_employee = FindEmployeeInDepartment(dep, number_department);
 
 	if (Menu::confirmOrNot())
 	{
-		if (numbOfEmployee > 0 && numbOfEmployee <= dep.at(numberOfDepartment)->getNumberOfEmployees()) 
+		if (number_employee > 0 && number_employee <= dep.at(number_department)->GetNumberEmployees())
 		{
-			if (numbOfEmployee == dep.at(numberOfDepartment)->getNumberOfEmployees())
-				dep.at(numberOfDepartment)->getEmployees().pop_back();
+			if (number_employee == dep.at(number_department)->GetNumberEmployees())
+				dep.at(number_department)->GetEmployees().pop_back();
 			else
-				dep.at(numberOfDepartment)->getEmployees().erase(dep.at(numberOfDepartment)->getEmployees().begin() + (numberOfDepartment - 1));
+				dep.at(number_department)->GetEmployees().erase(dep.at(number_department)->GetEmployees().begin() + (number_department - 1));
 
-			int count = dep.at(numberOfDepartment)->getNumberOfEmployees();
+			int count = dep.at(number_department)->GetNumberEmployees();
 			count--;
-			dep.at(numberOfDepartment)->setNumberOfEmployees(count);
-			Vectors::addDepartmentInFile(dep);
+			dep.at(number_department)->SetNumberEmployees(count);
+			Vectors::AddDepartmentInFile(dep);
 
 			system("cls");
 			Console::GoToXY(35, 11);
@@ -277,17 +277,17 @@ void Department::deleteEmployeeFromDepartment(std::vector<std::shared_ptr<Depart
 	else return;
 }
 
-int Department::findEmployeeInDepartment(std::vector<std::shared_ptr<Department>> dep, int numberOfDepartment)
+int Department::FindEmployeeInDepartment(std::vector<std::shared_ptr<Department>> dep, int number_department)
 {
 	char ch;
 	int flag, number;
 	while (true)
 	{
 		flag = 0;
-		databaseOfParticularDepartment(dep, numberOfDepartment);
+		ParticulatDepartmentDatabase(dep, number_department);
 		std::cout << std::endl << "ÂÂÅÄÈÒÅ ÍÎÌÅÐ ÐÀÁÎÒÍÈÊÀ" << std::endl;
-		number = Menu::checkInt();
-		if (number <= 0 || unsigned(number) > dep.at(numberOfDepartment)->getEmployees().size())
+		number = Menu::CheckInt();
+		if (number <= 0 || unsigned(number) > dep.at(number_department)->GetEmployees().size())
 		{
 			system("cls");
 			Console::GoToXY(35, 14);
@@ -303,39 +303,40 @@ int Department::findEmployeeInDepartment(std::vector<std::shared_ptr<Department>
 	}
 }
 
-void Department::databaseOfParticularDepartment(std::vector<std::shared_ptr<Department>>& dep, int numberOfDepartment)
+void Department::ParticulatDepartmentDatabase(std::vector<std::shared_ptr<Department>>& dep, int number_department)
 {
 	std::cout << "+---------------------------------------------------------------------------+" << std::endl;
-	std::cout << "|                   ÁÀÇÀ ÄÀÍÍÛÕ ÎÒÄÅËÀ - " << std::setw(35) << std::left << dep.at(numberOfDepartment)->getTitle() << "| " << std::endl;
+	std::cout << "|                   ÁÀÇÀ ÄÀÍÍÛÕ ÎÒÄÅËÀ - " << std::setw(35) << std::left << 
+		dep.at(number_department)->GetTitle() << "| " << std::endl;
 	std::cout << "+-------------+-----+-------------------------------+-----------+-----------+" << std::endl;
 	std::cout << "|    Êîë-âî   |  ¹  |        ÔÈÎ ðàáîòíèêà          | Òàáåëüíûé | Ïî÷àñîâîé |" << std::endl;
 	std::cout << "|   ïðîåêòîâ  |     |                               |   íîìåð   |   òàðèô   |" << std::endl;
 	std::cout << "+-------------+-----+-------------------------------+-----------+-----------+";
 
-	std::cout << "\n " << "    " << std::setw(9) << dep.at(numberOfDepartment)->getNumberOfProjects();
+	std::cout << "\n " << "    " << std::setw(9) << dep.at(number_department)->GetNumberProjects();
 
-	if (dep.at(numberOfDepartment)->getEmployees().size() > 0)
+	if (dep.at(number_department)->GetEmployees().size() > 0)
 	{
-		for (int i = 0; i < dep.at(numberOfDepartment)->getEmployees().size(); i++)
+		for (int i = 0; i < dep.at(number_department)->GetEmployees().size(); i++)
 		{
 			if (i == 0)
 			{
 				std::cout << "| " << std::setw(4) << std::left << (i + 1)
-					<< "| " << std::setw(10) << std::left << dep.at(numberOfDepartment)->getEmployees().at(i)->getSurname()
-					<< std::setw(10) << std::left << dep.at(numberOfDepartment)->getEmployees().at(i)->getName()
-					<< std::setw(10) << std::left << dep.at(numberOfDepartment)->getEmployees().at(i)->getOtch()
-					<< "| " << std::setw(10) << std::left << dep.at(numberOfDepartment)->getEmployees().at(i)->getId()
-					<< "| " << std::setw(8) << std::left << dep.at(numberOfDepartment)->getEmployees().at(i)->getHourlyRate() << "$ |";
+					<< "| " << std::setw(10) << std::left << dep.at(number_department)->GetEmployees().at(i)->GetSurname()
+					<< std::setw(10) << std::left << dep.at(number_department)->GetEmployees().at(i)->GetName()
+					<< std::setw(10) << std::left << dep.at(number_department)->GetEmployees().at(i)->GetOtch()
+					<< "| " << std::setw(10) << std::left << dep.at(number_department)->GetEmployees().at(i)->GetId()
+					<< "| " << std::setw(8) << std::left << dep.at(number_department)->GetEmployees().at(i)->GetHourlyRate() << "$ |";
 				std::cout << std::endl << "              +-----+-------------------------------+-----------+-----------+" << std::endl;
 			}
 			else
 			{
 				std::cout << "              | " << std::setw(4) << std::left << (i + 1)
-					<< "| " << std::setw(10) << std::left << dep.at(numberOfDepartment)->getEmployees().at(i)->getSurname()
-					<< std::setw(10) << std::left << dep.at(numberOfDepartment)->getEmployees().at(i)->getName()
-					<< std::setw(10) << std::left << dep.at(numberOfDepartment)->getEmployees().at(i)->getOtch()
-					<< "| " << std::setw(10) << std::left << dep.at(numberOfDepartment)->getEmployees().at(i)->getId()
-					<< "| " << std::setw(8) << std::left << dep.at(numberOfDepartment)->getEmployees().at(i)->getHourlyRate() << "$ |";
+					<< "| " << std::setw(10) << std::left << dep.at(number_department)->GetEmployees().at(i)->GetSurname()
+					<< std::setw(10) << std::left << dep.at(number_department)->GetEmployees().at(i)->GetName()
+					<< std::setw(10) << std::left << dep.at(number_department)->GetEmployees().at(i)->GetOtch()
+					<< "| " << std::setw(10) << std::left << dep.at(number_department)->GetEmployees().at(i)->GetId()
+					<< "| " << std::setw(8) << std::left << dep.at(number_department)->GetEmployees().at(i)->GetHourlyRate() << "$ |";
 				std::cout << std::endl << "              +-----+-------------------------------+-----------+-----------+" << std::endl;
 			}
 		}
@@ -343,7 +344,7 @@ void Department::databaseOfParticularDepartment(std::vector<std::shared_ptr<Depa
 	else std::cout << std::endl;
 }
 
-void Department::deleteDatabaseDepartment(std::vector<std::shared_ptr<Department>>& dep)
+void Department::DeleteDatabaseDepartment(std::vector<std::shared_ptr<Department>>& dep)
 {
 	char ch;
 	system("cls");
@@ -386,7 +387,7 @@ void Department::deleteDatabaseDepartment(std::vector<std::shared_ptr<Department
 	else return;
 }
 
-void Department::addNewDepartment(std::vector<std::shared_ptr<Employee>>& emp, std::vector<std::shared_ptr<Department>>& dep)
+void Department::AddNewDepartment(std::vector<std::shared_ptr<Employee>>& emp, std::vector<std::shared_ptr<Department>>& dep)
 {
 	char ch;
 	while (true)
@@ -408,7 +409,7 @@ void Department::addNewDepartment(std::vector<std::shared_ptr<Employee>>& emp, s
 		Console::GoToXY(46, 14);
 		std::cout << "ÂÂÅÄÈÒÅ ÍÀÇÂÀÍÈÅ ÎÒÄÅËÀ ";
 		Console::GoToXY(52, 15);
-		d->setTitle(Menu::checkString());
+		d->SetTitle(Menu::CheckString());
 
 		system("cls");
 		Console::GoToXY(36, 8);
@@ -424,10 +425,10 @@ void Department::addNewDepartment(std::vector<std::shared_ptr<Employee>>& emp, s
 		Console::GoToXY(40, 14);
 		std::cout << "ÂÂÅÄÈÒÅ ÊÎËÈ×ÅÑÒÂÎ ÏÐÎÅÊÒÎÂ Ó ÎÒÄÅËÀ";
 		Console::GoToXY(53, 15);
-		d->setNumberOfProjects(Menu::checkInt());
+		d->SetNumberProjects(Menu::CheckInt());
 
 		dep.push_back(d);
-		Vectors::addDepartmentInFile(dep);
+		Vectors::AddDepartmentInFile(dep);
 
 		system("cls");
 		Console::GoToXY(35, 11);
@@ -445,7 +446,7 @@ void Department::addNewDepartment(std::vector<std::shared_ptr<Employee>>& emp, s
 	}
 }
 
-void Department::deleteDepartment(std::vector<std::shared_ptr<Department>>& dep)
+void Department::DeleteDepartment(std::vector<std::shared_ptr<Department>>& dep)
 {
 	char  ch;
 	if (!dep.size())
@@ -460,17 +461,17 @@ void Department::deleteDepartment(std::vector<std::shared_ptr<Department>>& dep)
 	}
 	system("cls");
 
-	int numberDepartment = findDepartment(dep);
+	int number_department = FindDepartment(dep);
 
 	if (Menu::confirmOrNot())
 	{
-		if (numberDepartment > 0 && numberDepartment <= dep.size())
+		if (number_department > 0 && number_department <= dep.size())
 		{
-			if (numberDepartment == dep.size())
+			if (number_department == dep.size())
 				dep.pop_back();
 			else
-				dep.erase(dep.begin() + (numberDepartment - 1));
-			Vectors::addDepartmentInFile(dep);
+				dep.erase(dep.begin() + (number_department - 1));
+			Vectors::AddDepartmentInFile(dep);
 
 			system("cls");
 			Console::GoToXY(35, 11);

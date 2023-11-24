@@ -6,7 +6,7 @@
 
 #include "common.h"
 
-namespace Keyboard
+namespace Keyboard  // пользовательское пространство имен, хранящее константные переменные кода клавиш
 {
 	static const char ESCAPE = 27;
 	static const char UP = 72;
@@ -37,26 +37,27 @@ class FIO
 {
 private:
 
-	std::string name{};
-	std::string surname{};
-	std::string otch{};
+	std::string name;
+	std::string surname;
+	std::string otch;
 
 public:
 
 	FIO();
 	~FIO();
 
-	void set();
-	void set(std::string name, std::string surname, std::string otch);
-	virtual void getFromFile(std::istream& in) { in >> this->surname >> this->name >>  this->otch; };
+	void Set();
+	void SetFio(std::string name, std::string surname, std::string otch);
+	void SetName(std::string name) { this->name = name; }
+	void SetSurname(std::string surname) { this->surname = surname; };
+	void SetOtch(std::string otch) { this->otch = otch; };
+	void SetFullName() { this->FIO::Set(); }
 
-	void setName(std::string name) { this->name = name; }
-	void setSurname(std::string surname) { this->surname = surname; };
-	void setOtch(std::string otch) { this->otch = otch; };
+	std::string GetName() { return this->name; }
+	std::string GetSurname() { return this->surname; }
+	std::string GetOtch() { return this->otch; }
 
-	std::string getName() { return this->name; }
-	std::string getSurname() { return this->surname; }
-	std::string getOtch() { return this->otch; }
+	virtual void GetFromFile(std::istream& in) { in >> this->surname >> this->name >>  this->otch; }
 };
 
 #endif 
