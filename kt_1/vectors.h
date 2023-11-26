@@ -1,8 +1,9 @@
 #pragma once
 
 #ifndef VECTORS_H
-
 #define VECTORS_H
+
+#define _CRT_SECURE_NO_WARNINGS
 
 #include "department.h"
 
@@ -19,8 +20,8 @@ public:
 	Vectors() : vector_user(0), vector_employee(0), vector_department(0) {}
 	~Vectors() {}
 
-	int CountLengthFile(std::string nameFile);
-	static std::string HashPassword(const std::string& password);
+	int CountLengthFile();
+	static std::string HashPassword(std::string password);
 
 	std::vector<std::shared_ptr<User>>& GetUsers() { return this->vector_user; }
 	std::vector<std::shared_ptr<Employee>>& GetEmployees() { return this->vector_employee; }

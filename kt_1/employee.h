@@ -1,8 +1,9 @@
 #pragma once
 
 #ifndef EMPLOYEE_H
-
 #define EMPLOYEE_H
+
+#define _CRT_SECURE_NO_WARNINGS
 
 #include "account.h"
 
@@ -46,6 +47,9 @@ public:
 	static void FindByName(std::vector<std::shared_ptr<Employee>> vectorEmployee);
 	static void FindById(std::vector<std::shared_ptr<Employee>> vectorEmployee);
 	static void FindByHourlyRate(std::vector<std::shared_ptr<Employee>> vectorEmployee);
+
+	static void ChooseSortWindow();
+	static void EndSortWindow();
 
 	static void SortBySurname(std::vector<std::shared_ptr<Employee>>& vectorEmployee);
 	static void SortByID(std::vector<std::shared_ptr<Employee>>& vectorEmployee);

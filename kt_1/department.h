@@ -1,8 +1,9 @@
 #pragma once
 
 #ifndef USER_H
-
 #define USER_H
+
+#define _CRT_SECURE_NO_WARNINGS
 
 #include "employee.h"
 
@@ -29,6 +30,13 @@ public:
 	int GetNumberProjects() { return this->number_projects; };
 	int GetNumberEmployees() { return this->number_employees; };
 	std::vector<std::shared_ptr<Employee>>& GetEmployees() { return this->employee; }
+
+	static void ErrorFindDepartment();
+	static void DepartmentChangeWindow();
+	static void ErrorFindEmployee();
+	static void AddDepartmentWindow();
+	static void ConfirmDeleting();
+	static void AddEmployeeWindow();
 
 	static int FindDepartment(std::vector<std::shared_ptr<Department>>& dep);
 	static int FindEmployeeInDepartment(std::vector<std::shared_ptr<Department>> dep, int number_department);

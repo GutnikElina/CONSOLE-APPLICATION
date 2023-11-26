@@ -1,8 +1,9 @@
 #pragma once
 
 #ifndef FIO_H
-
 #define FIO_H
+
+#define _CRT_SECURE_NO_WARNINGS
 
 #include "common.h"
 
@@ -46,18 +47,18 @@ public:
 	FIO();
 	~FIO();
 
-	void Set();
-	void SetFio(std::string name, std::string surname, std::string otch);
+	void Set(std::string name, std::string surname, std::string otch);
+	void SetFullName();
 	void SetName(std::string name) { this->name = name; }
-	void SetSurname(std::string surname) { this->surname = surname; };
-	void SetOtch(std::string otch) { this->otch = otch; };
-	void SetFullName() { this->FIO::Set(); }
+	void SetSurname(std::string surname) { this->surname = surname; }
+	void SetOtch(std::string otch) { this->otch = otch; }
 
+	std::string GetFullName() { return this->surname + this->name + this->otch; }
 	std::string GetName() { return this->name; }
 	std::string GetSurname() { return this->surname; }
 	std::string GetOtch() { return this->otch; }
 
-	virtual void GetFromFile(std::istream& in) { in >> this->surname >> this->name >>  this->otch; }
+	virtual void GetFromFile(std::istream& in);
 };
 
 #endif 

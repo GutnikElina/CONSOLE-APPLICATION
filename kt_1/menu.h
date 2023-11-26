@@ -1,8 +1,9 @@
 #pragma once
 
 #ifndef MENU_H
-
 #define MENU_H
+
+#define _CRT_SECURE_NO_WARNINGS
 
 #include "vectors.h"
 
@@ -11,6 +12,7 @@ class Menu
 public:
 
 	static void FileNotOpened();
+	static void EmptyDatabase();
 
 	static int CheckInt();
 	static std::string CheckDouble();

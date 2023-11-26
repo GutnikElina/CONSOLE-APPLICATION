@@ -5,7 +5,6 @@ double Employee::CalculateSalary(double hours, std::string hourly_rate)
 	double salary = 0;
 	double rate = stod(hourly_rate);
 	salary = hours * rate;
-
 	if (hours > 144)
 	{
 		salary += (hours - 144) * rate;
@@ -18,11 +17,8 @@ double Employee::CalculateAverageSalary(std::vector<double> salary)
 {
 	double average_salary = 0;
 	double sum = 0;
-	for (int i = 0; i < salary.size(); i++)
-	{
+	for (int i = 0; i < (int)salary.size(); i++)
 		sum += salary.at(i);
-	}
-
 	average_salary = sum / (salary.size());
 	return average_salary;
 }
@@ -35,7 +31,6 @@ void Employee::GetFromFile(std::istream& in)
 	in >> this->id >> this->hourly_rate >> this->average_salary >> this->amount_months;
 	this->hours_worked_for_month.resize(this->amount_months);
 	this->salary.resize(this->amount_months);
-
 	while (in >> salary >> month >> hours)
 	{
 		this->salary.push_back(salary);
@@ -45,13 +40,13 @@ void Employee::GetFromFile(std::istream& in)
 
 void Employee::DatabaseEmployee(std::vector<std::shared_ptr<Employee>> employee)
 {
+	system("cls");
 	std::cout << "+-----------------------------------------------------------------------------------+" << std::endl;
 	std::cout << "|                         ÁÀÇÀ ÄÀÍÍÛÕ ÐÀÁÎÒÍÈÊÎÂ ÏÐÅÄÏÐÈßÒÈß                        |" << std::endl;
 	std::cout << "+-----------------------------------------------------------------------------------+" << std::endl;
 	std::cout << "|  ¹  |            ÔÈÎ ðàáîòíèêà              | Òàáåëüíûé | Ïî÷àñîâîé |   Ñðåäíÿÿ   |" << std::endl;
 	std::cout << "|     |                                       |   íîìåð   |   òàðèô   |   çàðïëàòà  |" << std::endl;
 	std::cout << "+-----------------------------------------------------------------------------------+";
-
 	for (int i = 0; i < employee.size(); i++)
 	{
 		std::cout << "\n| " << std::setw(4) << std::left << i + 1
@@ -63,69 +58,35 @@ void Employee::DatabaseEmployee(std::vector<std::shared_ptr<Employee>> employee)
 			<< "$  | " << std::setw(9) << std::left << employee.at(i)->GetAverageSalary() << "$  |";
 		std::cout << std::endl << "+-----------------------------------------------------------------------------------+";
 	}
+	char ch = _getch();
 }
 
 void Employee::FindByName(std::vector<std::shared_ptr<Employee>> vector_employee)
 {
-	char ch;
-	if (!vector_employee.size())
-	{
-		system("cls");
-		Console::GoToXY(45, 14);
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
-		std::cout << "-!!!- ÁÀÇÀ ÄÀÍÍÛÕ ÏÓÑÒÀ -!!!-";
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-		ch = _getch();
-		return;
-	}
-
+	if (!vector_employee.size()) Menu::EmptyDatabase();
 	std::vector<std::shared_ptr<Employee>> vect_employee;
 	std::shared_ptr<Employee> empl = std::make_shared<Employee>();
 	bool flag = true;
-	
 	empl->SetFullName();
-
 	for (int i = 0; i < vector_employee.size(); i++)
-	{
-		if (empl->GetName() == vector_employee.at(i)->GetName() &&
-			empl->GetSurname() == vector_employee.at(i)->GetSurname() &&
-			empl->GetOtch() == vector_employee.at(i)->GetOtch())
+		if (empl->GetFullName() == vector_employee.at(i)->GetFullName())
 		{
 			flag = false;
 			empl = vector_employee.at(i);
 			vect_employee.push_back(empl);
 		}
-	}
-
 	if (flag)
-	{
-		Console::GoToXY(35, 18);
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
-		std::cout << "-!!!- ÂÂÅÄÅÍÍÛÉ ÐÀÁÎÒÍÈÊ ÍÅ ÍÀÉÄÅÍ. ÏÎÏÐÎÁÓÉÒÅ ÑÍÎÂÀ -!!!-";
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-	}
+		Department::ErrorFindEmployee();
 	else
 	{
 		system("cls");
 		DatabaseEmployee(vect_employee);
 	}
-	ch = _getch();
 }
 
 void Employee::FindById(std::vector<std::shared_ptr<Employee>> vector_employee)
 {
-	char ch;
-	if (!vector_employee.size())
-	{
-		system("cls");
-		Console::GoToXY(45, 14);
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
-		std::cout << "-!!!- ÁÀÇÀ ÄÀÍÍÛÕ ÏÓÑÒÀ -!!!-";
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-		ch = _getch();
-		return;
-	}
-
+	if (!vector_employee.size()) Menu::EmptyDatabase();
 	std::vector<std::shared_ptr<Employee>> vect_employee;
 	std::shared_ptr<Employee> empl = std::make_shared<Employee>();
 	bool flag = true;
@@ -134,48 +95,25 @@ void Employee::FindById(std::vector<std::shared_ptr<Employee>> vector_employee)
 	std::cout << "ÂÂÅÄÈÒÅ ÒÀÁÅËÜÍÛÉ ÍÎÌÅÐ ÐÀÁÎÒÍÈÊÀ ";
 	Console::GoToXY(55, 14);
 	int id = Menu::CheckInt();
-
-	empl->SetId(id);
-
 	for (int i = 0; i < vector_employee.size(); i++)
-	{
 		if (empl->GetId() == vector_employee.at(i)->GetId())
 		{
 			flag = false;
 			empl = vector_employee.at(i);
 			vect_employee.push_back(empl);
 		}
-	}
-
 	if (flag)
-	{
-		Console::GoToXY(35, 16);
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
-		std::cout << "-!!!- ÂÂÅÄÅÍÍÛÉ ÐÀÁÎÒÍÈÊ ÍÅ ÍÀÉÄÅÍ. ÏÎÏÐÎÁÓÉÒÅ ÑÍÎÂÀ -!!!-";
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-	}
+		Department::ErrorFindEmployee();
 	else
 	{
 		system("cls");
 		DatabaseEmployee(vect_employee);
 	}
-	ch = _getch();
 }
 
 void Employee::FindByHourlyRate(std::vector<std::shared_ptr<Employee>> vector_employee)
 {
-	char ch;
-	if (!vector_employee.size())
-	{
-		system("cls");
-		Console::GoToXY(45, 14);
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
-		std::cout << "-!!!- ÁÀÇÀ ÄÀÍÍÛÕ ÏÓÑÒÀ -!!!-";
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-		ch = _getch();
-		return;
-	}
-
+	if (!vector_employee.size()) Menu::EmptyDatabase();
 	std::vector<std::shared_ptr<Employee>> vect_employee;
 	std::shared_ptr<Employee> empl = std::make_shared<Employee>();
 	bool flag = true;
@@ -185,7 +123,6 @@ void Employee::FindByHourlyRate(std::vector<std::shared_ptr<Employee>> vector_em
 	Console::GoToXY(55, 14);
 	std::string hourly_rate = Menu::CheckDouble();
 	empl->SetHourlyRate(hourly_rate);
-
 	for (int i = 0; i < vector_employee.size(); i++)
 	{
 		if (empl->GetHourlyRate() == vector_employee.at(i)->GetHourlyRate())
@@ -195,62 +132,56 @@ void Employee::FindByHourlyRate(std::vector<std::shared_ptr<Employee>> vector_em
 			vect_employee.push_back(empl);
 		}
 	}
-
 	if (flag)
-	{
-		Console::GoToXY(35, 16);
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
-		std::cout << "-!!!- ÂÂÅÄÅÍÍÛÉ ÐÀÁÎÒÍÈÊ ÍÅ ÍÀÉÄÅÍ. ÏÎÏÐÎÁÓÉÒÅ ÑÍÎÂÀ -!!!-";
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-	}
+		Department::ErrorFindEmployee();
 	else
 	{
 		system("cls");
 		DatabaseEmployee(vect_employee);
 	}
-	ch = _getch();
+}
+
+void Employee::ChooseSortWindow() 
+{
+	system("cls");
+	SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+	Console::GoToXY(36, 8);
+	std::cout << "+-----------------------------------------+";
+	Console::GoToXY(36, 9);
+	std::cout << "|                                         |";
+	Console::GoToXY(36, 10);
+	std::cout << "|           ÂÛÁÅÐÈÒÅ ÑÎÐÒÈÐÎÂÊÓ           |";
+	Console::GoToXY(36, 11);
+	std::cout << "|                                         |";
+	Console::GoToXY(36, 12);
+	std::cout << "+-----------------------------------------+";
+}
+
+void Employee::EndSortWindow()
+{
+	system("cls");
+	std::cout << std::endl << std::endl << "------------------------ ÑÎÐÒÈÐÎÂÊÀ ÓÑÏÅØÍÎ ÇÀÂÅÐØÅÍÀ -------------------------------" << std::endl;
+	char ch = _getch();
+	return;
 }
 
 void Employee::SortBySurname(std::vector<std::shared_ptr<Employee>>& vector_employee)
 {
 	system("cls");
-	char ch;
 	std::string line[] = { "Ñîðòèðîâêà ïî óáûâàíèþ", "Ñîðòèðîâêà ïî âîçðàñòàíèþ", "    Âåðíóòüñÿ íàçàä" };
-
 	while (true)
 	{
-		system("cls");
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-
-		Console::GoToXY(36, 8);
-		std::cout << "+-----------------------------------------+";
-		Console::GoToXY(36, 9);
-		std::cout << "|                                         |";
-		Console::GoToXY(36, 10);
-		std::cout << "|           ÂÛÁÅÐÈÒÅ ÑÎÐÒÈÐÎÂÊÓ           |";
-		Console::GoToXY(36, 11);
-		std::cout << "|                                         |";
-		Console::GoToXY(36, 12);
-		std::cout << "+-----------------------------------------+";
-
-		switch (Menu::ChoiceKeyboard(line, size(line)))
+		ChooseSortWindow();
+		switch (Menu::ChoiceKeyboard(line, (int)size(line)))
 		{
 		case 0:
 			sort(vector_employee.begin(), vector_employee.end(), SortBySurnameCompDown);
-			system("cls");
+			EndSortWindow();
 			DatabaseEmployee(vector_employee);
-			std::cout << std::endl << std::endl << "------------------------ ÑÎÐÒÈÐÎÂÊÀ ÓÑÏÅØÍÎ ÇÀÂÅÐØÅÍÀ -------------------------------" << std::endl;
-			ch = _getch();
-			return;
-			break;
 		case 1:
 			sort(vector_employee.begin(), vector_employee.end(), SortBySurnameCompUp);
-			system("cls");
+			EndSortWindow();
 			DatabaseEmployee(vector_employee);
-			std::cout << std::endl << std::endl << "------------------------ ÑÎÐÒÈÐÎÂÊÀ ÓÑÏÅØÍÎ ÇÀÂÅÐØÅÍÀ -------------------------------" << std::endl;
-			ch = _getch();
-			return;
-			break;
 		case 2:
 			return;
 		}
@@ -265,37 +196,17 @@ void Employee::SortByID(std::vector<std::shared_ptr<Employee>>& vector_employee)
 
 	while (true)
 	{
-		system("cls");
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-		Console::GoToXY(36, 8);
-		std::cout << "+-----------------------------------------+";
-		Console::GoToXY(36, 9);
-		std::cout << "|                                         |";
-		Console::GoToXY(36, 10);
-		std::cout << "|           ÂÛÁÅÐÈÒÅ ÑÎÐÒÈÐÎÂÊÓ           |";
-		Console::GoToXY(36, 11);
-		std::cout << "|                                         |";
-		Console::GoToXY(36, 12);
-		std::cout << "+-----------------------------------------+";
-
-		switch (Menu::ChoiceKeyboard(line, size(line)))
+		ChooseSortWindow();
+		switch (Menu::ChoiceKeyboard(line, (int)size(line)))
 		{
 		case 0:
 			sort(vector_employee.begin(), vector_employee.end(), SortByIdCompDown);
-			system("cls");
 			DatabaseEmployee(vector_employee);
-			std::cout << std::endl << std::endl << "------------------------ ÑÎÐÒÈÐÎÂÊÀ ÓÑÏÅØÍÎ ÇÀÂÅÐØÅÍÀ -------------------------------" << std::endl;
-			ch = _getch();
-			return;
-			break;
+			EndSortWindow();
 		case 1:
 			sort(vector_employee.begin(), vector_employee.end(), SortByIdCompUp);
-			system("cls");
 			DatabaseEmployee(vector_employee);
-			std::cout << std::endl << std::endl << "------------------------ ÑÎÐÒÈÐÎÂÊÀ ÓÑÏÅØÍÎ ÇÀÂÅÐØÅÍÀ -------------------------------" << std::endl;
-			ch = _getch();
-			return;
-			break;
+			EndSortWindow();
 		case 2:
 			return;
 		}
@@ -306,42 +217,21 @@ void Employee::SortByHourlyRate(std::vector<std::shared_ptr<Employee>>& vector_e
 {
 	system("cls");
 	char ch;
-	bool flag = true;
 	std::string line[] = { "Ñîðòèðîâêà ïî óáûâàíèþ", "Ñîðòèðîâêà ïî âîçðàñòàíèþ", "    Âåðíóòüñÿ íàçàä" };
 
 	while (true)
 	{
-		system("cls");
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-		Console::GoToXY(36, 8);
-		std::cout << "+-----------------------------------------+";
-		Console::GoToXY(36, 9);
-		std::cout << "|                                         |";
-		Console::GoToXY(36, 10);
-		std::cout << "|           ÂÛÁÅÐÈÒÅ ÑÎÐÒÈÐÎÂÊÓ           |";
-		Console::GoToXY(36, 11);
-		std::cout << "|                                         |";
-		Console::GoToXY(36, 12);
-		std::cout << "+-----------------------------------------+";
-		
-		switch (Menu::ChoiceKeyboard(line, size(line)))
+		ChooseSortWindow();
+		switch (Menu::ChoiceKeyboard(line, (int)size(line)))
 		{
 		case 0:
 			sort(vector_employee.begin(), vector_employee.end(), SortByHourlyRatCompDown);
-			system("cls");
 			DatabaseEmployee(vector_employee);
-			std::cout << std::endl << std::endl << "------------------------ ÑÎÐÒÈÐÎÂÊÀ ÓÑÏÅØÍÎ ÇÀÂÅÐØÅÍÀ -------------------------------" << std::endl;
-			ch = _getch();
-			return;
-			break;
+			EndSortWindow();
 		case 1:
 			sort(vector_employee.begin(), vector_employee.end(), SortByHourlyRatCompUp);
-			system("cls");
 			DatabaseEmployee(vector_employee);
-			std::cout << std::endl << std::endl << "------------------------ ÑÎÐÒÈÐÎÂÊÀ ÓÑÏÅØÍÎ ÇÀÂÅÐØÅÍÀ -------------------------------" << std::endl;
-			ch = _getch();
-			return;
-			break;
+			EndSortWindow();
 		case 2:
 			return;
 		}
@@ -381,16 +271,7 @@ bool Employee::SortByHourlyRatCompUp(std::shared_ptr<Employee>& first, std::shar
 void Employee::SalaryData(std::vector<std::shared_ptr<Employee>> vector_employee)
 {
 	char ch;
-	if (!vector_employee.size())
-	{
-		system("cls");
-		Console::GoToXY(50, 12);
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
-		std::cout << "-!!!- ÁÀÇÀ ÄÀÍÍÛÕ ÏÓÑÒÀ -!!!-";
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-		ch = _getch();
-		return;
-	}
+	if (!vector_employee.size()) Menu::EmptyDatabase();
 
 	std::string date;
 	bool flag_1;
@@ -449,7 +330,7 @@ void Employee::SalaryData(std::vector<std::shared_ptr<Employee>> vector_employee
 
 		std::string line[] = { "   Äà", "Íåò, âûéòè" };
 
-		switch (Menu::ChoiceKeyboard(line, size(line)))
+		switch (Menu::ChoiceKeyboard(line, (int)size(line)))
 		{
 		case 0:
 			flag_1 = false;
@@ -471,16 +352,7 @@ int Employee::FindEmployee(std::vector<std::shared_ptr<Employee>> vector_employe
 		std::cout << std::endl << "ÂÂÅÄÈÒÅ ÍÎÌÅÐ ÐÀÁÎÒÍÈÊÀ" << std::endl;
 		int number_employee = Menu::CheckInt();
 		if (number_employee <= 0 || unsigned(number_employee) > vector_employee.size())
-		{
-			system("cls");
-			Console::GoToXY(35, 14);
-			SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
-			std::cout << "-!!!- ÒÀÊÎÃÎ ÍÎÌÅÐÀ ÐÀÁÎÒÍÈÊÀ ÍÅ ÑÓÙÅÑÒÂÓÅÒ. ÏÎÏÐÎÁÓÉÒÅ ÑÍÎÂÀ -!!!-";
-			SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-			ch = _getch();
-			system("cls");
-			continue;
-		}
+			Department::ErrorFindEmployee();
 		else
 			return number_employee;
 	}
@@ -581,15 +453,7 @@ void Employee::DeleteDatabase(std::vector<std::shared_ptr<Employee>>& vector_emp
 	system("cls");
 	std::ofstream fout("employees.txt", std::ios::out);
 
-	if (!vector_employee.size())
-	{
-		Console::GoToXY(45, 14);
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
-		std::cout << "-!!!- ÁÀÇÀ ÄÀÍÍÛÕ ÏÓÑÒÀ -!!!-";
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-		ch = _getch();
-		return;
-	}
+	if (!vector_employee.size()) Menu::EmptyDatabase();
 
 	std::string line[] = { "Äà, óäàëèòü", "    Âûéòè" };
 
@@ -599,7 +463,7 @@ void Employee::DeleteDatabase(std::vector<std::shared_ptr<Employee>>& vector_emp
 	std::cout << "-!!!- ÏÎÄÒÂÅÐÄÈÒÅ, ×ÒÎ ÂÛ ÕÎÒÈÒÅ ÓÄÀËÈÒÜ ÂÑÞ ÁÀÇÓ ÄÀÍÍÛÕ -!!!-";
 	SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 
-	switch (Menu::ChoiceKeyboard(line, size(line)))
+	switch (Menu::ChoiceKeyboard(line, (int)size(line)))
 	{
 	case 0:
 		vector_employee.clear();
@@ -778,7 +642,7 @@ void Employee::AddEmployeeDatabase(std::vector<std::shared_ptr<Employee>>& vecto
 		std::string line[] = { " Äà", "Íåò" };
 
 
-		switch (Menu::ChoiceKeyboard(line, size(line)))
+		switch (Menu::ChoiceKeyboard(line, (int)size(line)))
 		{
 		case 0:
 			if (j >= 11)
@@ -831,18 +695,9 @@ void Employee::AddEmployeeDatabase(std::vector<std::shared_ptr<Employee>>& vecto
 void Employee::DeleteEmployee(std::vector<std::shared_ptr<Employee>>& vector_employee)
 {
 	char  ch;
-	if (!vector_employee.size())
-	{
-		system("cls");
-		Console::GoToXY(45, 14);
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
-		std::cout << "-!!!- ÁÀÇÀ ÄÀÍÍÛÕ ÏÓÑÒÀ -!!!-";
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-		ch = _getch();
-		return;
-	}
-	system("cls");
+	if (!vector_employee.size()) Menu::EmptyDatabase();
 
+	system("cls");
 	int number_employee = FindEmployee(vector_employee);
 	system("cls");
 	Console::GoToXY(30, 12);
@@ -850,7 +705,7 @@ void Employee::DeleteEmployee(std::vector<std::shared_ptr<Employee>>& vector_emp
 
 	std::string line[] = { "Äà, óäàëèòü", "  Âûéòè" };
 
-	switch (Menu::ChoiceKeyboard(line, size(line)))
+	switch (Menu::ChoiceKeyboard(line, (int)size(line)))
 	{
 	case 0:
 		if (number_employee > 0 && number_employee <= vector_employee.size()) {

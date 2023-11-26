@@ -2,10 +2,16 @@
 
 User::User(): FIO()
 {
-	this->SetUser("", 0, 0, 0);
+	this->SetUser("NULL", "NULL", 0, 0);
 }
 
-void User::SetUser(std::string username, unsigned int password, int role, int access)
+User::~User() 
+{ 
+	this->username.clear(); 
+	this->password.clear(); 
+}
+
+void User::SetUser(std::string username, std::string password, int role, int access)
 {
 	this->username = username;
 	this->password = password;
@@ -26,10 +32,10 @@ void User::GetFromFile(std::istream& in)
 	FIO::GetFromFile(in);
 }
 
-int User::EnterAccount(std::vector<std::shared_ptr<User>> vectorUser)
+int User::EnterAccount()
 {
-	std::string mainMenu[] = {"      Àâòîðèçàöèÿ   ", "      Ðåãèñòðàöèÿ   ", "        Âûõîä    "};
-	int i, x, y;
+	std::string main_menu[] = {"      Àâòîðèçàöèÿ   ", "      Ðåãèñòðàöèÿ   ", "        Âûõîä    "};
+	int x, y;
 
 	while (true)
 	{
@@ -39,13 +45,13 @@ int User::EnterAccount(std::vector<std::shared_ptr<User>> vectorUser)
 		std::string line[] = { "+-------------------------+", "|                         |", "|    ÂÕÎÄ Â ÏÐÈËÎÆÅÍÈÅ    |",
 			"|                         |", "+-------------------------+" };
 
-		for (i = 0; i < size(line); i++)
+		for (int i = 0; i < (int)size(line); i++)
 		{
 			Console::GoToXY(x, y++);
 			std::cout << line[i] << std::endl;
 		}
 
-		switch (Menu::ChoiceKeyboard(mainMenu, size(mainMenu)))
+		switch (Menu::ChoiceKeyboard(main_menu, (int)size(main_menu)))
 		{
 		case 0:
 			return 0;
@@ -59,14 +65,14 @@ int User::EnterAccount(std::vector<std::shared_ptr<User>> vectorUser)
 	}
 }
 
-std::shared_ptr<User>& User::FindUser(std::string username, std::vector<std::shared_ptr<User>>& vecUser)
+std::shared_ptr<User>& User::FindUser(std::string username, std::vector<std::shared_ptr<User>>& vector_user)
 {
-	for (auto& element : vecUser)
+	for (auto& element : vector_user)
 		if (element->GetUsername() == username)
 			return element;
 }
 
-void User::ShowAccounts(std::vector<std::shared_ptr<User>>& vectorUser)
+void User::ShowAccounts(std::vector<std::shared_ptr<User>>& vector_user)
 {
 	system("cls");
 	SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
@@ -76,15 +82,15 @@ void User::ShowAccounts(std::vector<std::shared_ptr<User>>& vectorUser)
 	std::cout << "|  ¹  |       Ëîãèí        |     Äîñòóï     |       Ðîëü       |" << std::endl;
 	std::cout << "+--------------------------------------------------------------+";
 
-	for (int i = 0; unsigned(i) < vectorUser.size(); i++)
+	for (int i = 0; i < (int)vector_user.size(); i++)
 	{
 		std::cout << "\n| " << std::setw(4) << std::left << (i + 1)
-			<< "| " << std::setw(19) << std::left << vectorUser.at(i)->GetUsername();
-		if (vectorUser.at(i)->GetAccess())
+			<< "| " << std::setw(19) << std::left << vector_user.at(i)->GetUsername();
+		if (vector_user.at(i)->GetAccess())
 			std::cout << "| " << std::setw(15) << std::left << "Îòêðûòûé";
 		else
 			std::cout << "| " << std::setw(15) << std::left << "Çàêðûòûé";
-		if (vectorUser.at(i)->GetRole())
+		if (vector_user.at(i)->GetRole())
 			std::cout << "| " << std::setw(17) << std::left << "Aäìèíèñòðàòîð" << "|";
 		else
 			std::cout << "| " << std::setw(17) << std::left << "Ïîëüçîâàòåëü" << "|";
@@ -93,46 +99,23 @@ void User::ShowAccounts(std::vector<std::shared_ptr<User>>& vectorUser)
 	}
 }
 
-void User::AddNewAccount(std::vector<std::shared_ptr<User>>& vectorUser)
+void User::AddNewAccount(std::vector<std::shared_ptr<User>>& vector_user)
 {
 	std::shared_ptr<User> user = std::make_shared<User>();
 	system("cls");
-	Console::GoToXY(30, 7);
-	std::cout << "+--------------------------------------+";
-	Console::GoToXY(30, 8);
-	std::cout << "|                                      |";
-	Console::GoToXY(30, 9);
-	std::cout << "|      ÄÎÁÀÂËÅÍÈÅ ÍÎÂÎÃÎ ÀÊÊÀÓÍÒÀ      |";
-	Console::GoToXY(30, 10);
-	std::cout << "|                                      |";
-	Console::GoToXY(30, 11);
-	std::cout << "+--------------------------------------+";
 	Console::GoToXY(50, 13);
-	std::string username = Vectors::FindUsername(vectorUser);
+	std::string username = Vectors::FindUsername(vector_user);
 	Console::GoToXY(50, 15);
 	std::string password = Vectors::FindPassword();
 	user->SetUsername(username);
 	user->SetPassword(password);
 	user->SetFullName();
-
+	user->SetAccess(1);
 	std::string line[] = { "Àäìèíèñòðàòîð", "Ïîëüçîâàòåëü" };
-
 	system("cls");
-	SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-	Console::GoToXY(30, 7);
-	std::cout << "+--------------------------------------+";
-	Console::GoToXY(30, 8);
-	std::cout << "|                                      |";
-	Console::GoToXY(30, 9);
-	std::cout << "|      ÄÎÁÀÂËÅÍÈÅ ÍÎÂÎÃÎ ÀÊÊÀÓÍÒÀ      |";
-	Console::GoToXY(30, 10);
-	std::cout << "|                                      |";
-	Console::GoToXY(30, 11);
-	std::cout << "+--------------------------------------+";
 	Console::GoToXY(45, 13);
 	std::cout << "ÂÛÁÅÐÈÒÅ ÐÎËÜ";
-
-	switch (Menu::ChoiceKeyboard(line, size(line)))
+	switch (Menu::ChoiceKeyboard(line, (int)size(line)))
 	{
 	case 0:
 		user->SetRole(1);
@@ -142,14 +125,10 @@ void User::AddNewAccount(std::vector<std::shared_ptr<User>>& vectorUser)
 		break;
 	}
 
-	user->SetAccess(1);
+	if (!Menu::confirmOrNot()) return;
 
-	if (!Menu::confirmOrNot())
-		return;
-
-	vectorUser.push_back(user);
-	Vectors::AddAccountInFile(vectorUser);
-
+	vector_user.push_back(user);
+	Vectors::AddAccountInFile(vector_user);
 	system("cls");
 	Console::GoToXY(36, 11);
 	std::cout << "+------------------------------------------+";
@@ -165,15 +144,15 @@ void User::AddNewAccount(std::vector<std::shared_ptr<User>>& vectorUser)
 }
 
 
-std::shared_ptr<User>& User::FindAccount(std::vector<std::shared_ptr<User>>& vectorUser)
+std::shared_ptr<User>& User::FindAccount(std::vector<std::shared_ptr<User>>& vector_user)
 {
 	char ch;
 	while (true)
 	{
-		ShowAccounts(vectorUser);
+		ShowAccounts(vector_user);
 		std::cout << std::endl << "ÂÂÅÄÈÒÅ ÍÎÌÅÐ ÀÊÊÀÓÍÒÀ " << std::endl;
 		int number_user = Menu::CheckInt();
-		if (number_user <= 0 || unsigned(number_user) > vectorUser.size())
+		if (number_user <= 0 || number_user > (int)vector_user.size())
 		{
 			system("cls");
 			Console::GoToXY(25, 12);
@@ -181,19 +160,16 @@ std::shared_ptr<User>& User::FindAccount(std::vector<std::shared_ptr<User>>& vec
 			std::cout << "-!!!- ÂÛ ÎØÈÁËÈÑÜ. ÒÀÊÎÃÎ ÀÊÊÀÓÍÒÀ ÍÅ ÑÓÙÅÑÒÂÓÅÒ. ÏÎÏÐÎÁÓÉÒÅ ÑÍÎÂÀ -!!!-";
 			SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 			ch = _getch();
-			system("cls");
-			continue;
 		}
-		else return vectorUser.at(number_user-1);		
+		else return vector_user.at(number_user-1);
 	}
 }
 
-
-void User::DeleteAccount(std::vector<std::shared_ptr<User>>& vectorUser, std::string username)
+void User::DeleteAccount(std::vector<std::shared_ptr<User>>& vector_user, std::string username)
 {
 	system("cls");
-	std::shared_ptr<User>& user = FindAccount(vectorUser);
-	for (int i = 0; i < vectorUser.size(); i++)
+	std::shared_ptr<User>& user = FindAccount(vector_user);
+	for (int i = 0; i < (int)vector_user.size(); i++)
 		if (user->GetUsername() == username)
 		{
 			SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
@@ -205,11 +181,10 @@ void User::DeleteAccount(std::vector<std::shared_ptr<User>>& vectorUser, std::st
 
 	if (Menu::confirmOrNot())
 	{
-		for (int i = 0; i < vectorUser.size(); i++)
-			if (user->GetUsername() == vectorUser.at(i)->GetUsername())
-				vectorUser.erase(vectorUser.begin() + i);
-
-		Vectors::AddAccountInFile(vectorUser);
+		for (int i = 0; i < (int)vector_user.size(); i++)
+			if (user->GetUsername() == vector_user.at(i)->GetUsername())
+				vector_user.erase(vector_user.begin() + i);
+		Vectors::AddAccountInFile(vector_user);
 
 		system("cls");
 		Console::GoToXY(35, 11);
@@ -227,100 +202,60 @@ void User::DeleteAccount(std::vector<std::shared_ptr<User>>& vectorUser, std::st
 	}
 }
 
-void User::ChangeUsername(std::vector<std::shared_ptr<User>>& vectorUser, std::shared_ptr<User>& user)
+void User::UpdatingWindow(std::string word)
+{
+	system("cls");
+	Console::GoToXY(36, 11);
+	std::cout << "+-------------------------------------------+";
+	Console::GoToXY(36, 12);
+	std::cout << "|                                           |";
+	Console::GoToXY(36, 13);
+	std::cout << "|          " << std::setw(6) << std::left << word << " ÓÑÏÅØÍÎ ÎÁÍÎÂËÅÍ          |";
+	Console::GoToXY(36, 14);                                          
+	std::cout << "|                                           |";
+	Console::GoToXY(36, 15);
+	std::cout << "+-------------------------------------------+";
+	char ch = _getch();
+}
+
+void User::ChangeUsername(std::vector<std::shared_ptr<User>>& vector_user, std::shared_ptr<User>& user)
 {
 	char ch;
-	system("cls");
-	std::string new_login;
-
-	Console::GoToXY(36, 8);
-	std::cout << "+---------------------------------------------+";
-	Console::GoToXY(36, 9);
-	std::cout << "|                                             |";
-	Console::GoToXY(36, 10);
-	std::cout << "|          ÈÇÌÅÍÅÍÈÅ ÑÒÀÐÎÃÎ ËÎÃÈÍÀ           |";
-	Console::GoToXY(36, 11);
-	std::cout << "|                                             |";
-	Console::GoToXY(36, 12);
-	std::cout << "+---------------------------------------------+";
-
-	Console::GoToXY(50, 14);
+	std::string new_login, word = "ËÎÃÈÍ";
+	User::ChangingDataAccount();
+	Console::GoToXY(50, 15);
 	std::cout << "ÑÒÀÐÛÉ ËÎÃÈÍ";
-	Console::GoToXY(53, 15);
+	Console::GoToXY(53, 16);
 	std::cout << user->GetUsername();
 	ch = _getch();
-	system("cls");
-
 	while (true)
 	{
-		system("cls");
-		Console::GoToXY(36, 8);
-		std::cout << "+---------------------------------------------+";
-		Console::GoToXY(36, 9);
-		std::cout << "|                                             |";
-		Console::GoToXY(36, 10);
-		std::cout << "|          ÈÇÌÅÍÅÍÈÅ ÑÒÀÐÎÃÎ ËÎÃÈÍÀ           |";
-		Console::GoToXY(36, 11);
-		std::cout << "|                                             |";
-		Console::GoToXY(36, 12);
-		std::cout << "+---------------------------------------------+";
-
-		Console::GoToXY(55, 14);
-		std::cout << "ÂÂÅÄÈÒÅ";
-		Console::GoToXY(56, 15);
-		new_login = Vectors::FindUsername(vectorUser);
+		new_login = Vectors::FindUsername(vector_user);
 		if (new_login == user->GetUsername())
 		{
 			Console::GoToXY(33, 17);
 			SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
-			std::cout << "-!!!- ÍÎÂÛÉ ËÎÃÈÍ ÈÄÅÍÒÈ×ÅÍ ÑÒÀÐÎÌÓ. ÏÎÏÐÎÁÓÉÒÅ ÑÍÎÂÀ -!!!-";
+			std::cout << " -!!!- ÍÎÂÛÉ ËÎÃÈÍ ÈÄÅÍÒÈ×ÅÍ ÑÒÀÐÎÌÓ. ÏÎÏÐÎÁÓÉÒÅ ÑÍÎÂÀ -!!!-";
 			SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 			ch = _getch();
 		}
 		else
 		{
 			user->SetUsername(new_login);
-			Vectors::AddAccountInFile(vectorUser);
-			system("cls");
-			Console::GoToXY(35, 11);
-			std::cout << "+-------------------------------------------+";
-			Console::GoToXY(35, 12);
-			std::cout << "|                                           |";
-			Console::GoToXY(35, 13);
-			std::cout << "|          ËÎÃÈÍ ÓÑÏÅØÍÎ ÎÁÍÎÂËÅÍ           |";
-			Console::GoToXY(35, 14);
-			std::cout << "|                                           |";
-			Console::GoToXY(35, 15);
-			std::cout << "+-------------------------------------------+";
-			ch = _getch();
+			Vectors::AddAccountInFile(vector_user);
+			User::UpdatingWindow(word);
 			return;
 		}
 	}
 }
 
-void User::ChangePassword(std::vector<std::shared_ptr<User>>& vectorUser, std::shared_ptr<User>& user)
+void User::ChangePassword(std::vector<std::shared_ptr<User>>& vector_user, std::shared_ptr<User>& user)
 {
 	char ch;
 	system("cls");
-	std::string new_password;
-
+	std::string new_password, word = "ÏÀÐÎËÜ";
 	while (true)
 	{
-		system("cls");
-		Console::GoToXY(36, 8);
-		std::cout << "+---------------------------------------------+";
-		Console::GoToXY(36, 9);
-		std::cout << "|                                             |";
-		Console::GoToXY(36, 10);
-		std::cout << "|          ÈÇÌÅÍÅÍÈÅ ÑÒÀÐÎÃÎ ÏÀÐÎËß           |";
-		Console::GoToXY(36, 11);
-		std::cout << "|                                             |";
-		Console::GoToXY(36, 12);
-		std::cout << "+---------------------------------------------+";
-
-		Console::GoToXY(55, 14);
-		std::cout << "ÂÂÅÄÈÒÅ";
-		Console::GoToXY(56, 15);
 		new_password = Vectors::FindPassword();
 		if (new_password == user->GetPassword())
 		{
@@ -333,50 +268,45 @@ void User::ChangePassword(std::vector<std::shared_ptr<User>>& vectorUser, std::s
 		else
 		{
 			user->SetPassword(new_password);
-			Vectors::AddAccountInFile(vectorUser);
-			system("cls");
-
-			Console::GoToXY(35, 11);
-			std::cout << "+-------------------------------------------+";
-			Console::GoToXY(35, 12);
-			std::cout << "|                                           |";
-			Console::GoToXY(35, 13);
-			std::cout << "|          ÏÀÐÎËÜ ÓÑÏÅØÍÎ ÎÁÍÎÂËÅÍ          |";
-			Console::GoToXY(35, 14);
-			std::cout << "|                                           |";
-			Console::GoToXY(35, 15);
-			std::cout << "+-------------------------------------------+";
-			ch = _getch();
+			Vectors::AddAccountInFile(vector_user);
+			User::UpdatingWindow(word);
 			return;
 		}
 	}
 }
 
-void User::ChangeAccess(std::vector<std::shared_ptr<User>>& vectorUser, std::shared_ptr<User>& user, std::string username)
+void User::ErrorChangingAccess()
+{
+	Console::GoToXY(40, 12);
+	SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
+	std::cout << "-!!!- ÍÅÂÎÇÌÎÆÍÎ ÈÇÌÅÍÈÒÜ ÄÎÑÒÓÏ ÑÂÎÅÃÎ ÀÊÊÀÓÍÒ -!!!-";
+	SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+	char ch = _getch();
+}
+
+void User::ChangingAccess()
+{
+	system("cls");
+	Console::GoToXY(35, 11);
+	std::cout << "+--------------------------------------------+";
+	Console::GoToXY(35, 12);
+	std::cout << "|                                            |";
+	Console::GoToXY(35, 13);
+	std::cout << "|      ÄÎÑÒÓÏ ÀÊÊÀÓÍÒÀ ÓÑÏÅØÍÎ ÈÇÌÅÍÅÍÀ      |";
+	Console::GoToXY(35, 14);
+	std::cout << "|                                            |";
+	Console::GoToXY(35, 15);
+	std::cout << "+--------------------------------------------+";
+	char ch = _getch();
+}
+
+void User::ChangeAccess(std::vector<std::shared_ptr<User>>& vector_user, std::shared_ptr<User>& user, std::string username)
 {
 	system("cls");
 	char ch;
-	if (user->GetUsername() == username)
-	{
-		Console::GoToXY(40, 12);
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
-		std::cout << "-!!!- ÍÅÂÎÇÌÎÆÍÎ ÈÇÌÅÍÈÒÜ ÄÎÑÒÓÏ ÑÂÎÅÃÎ ÀÊÊÀÓÍÒ -!!!-";
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-		ch = _getch();
-		return;
-	}
+	if (user->GetUsername() == username) { User::ErrorChangingAccess(); return; }
 
-	Console::GoToXY(36, 8);
-	std::cout << "+---------------------------------------------+";
-	Console::GoToXY(36, 9);
-	std::cout << "|                                             |";
-	Console::GoToXY(36, 10);
-	std::cout << "|     ÈÇÌÅÍÅÍÈÅ ÑÒÀÐÎÃÎ ÄÎÑÒÓÏÀ ÀÊÊÀÓÍÒÀ      |";
-	Console::GoToXY(36, 11);
-	std::cout << "|                                             |";
-	Console::GoToXY(36, 12);
-	std::cout << "+---------------------------------------------+";
-
+	User::ChangingDataAccount();
 	Console::GoToXY(50, 14);
 	std::cout << "  ÑÒÀÐÛÉ ÄÎÑÒÓÏ";
 	Console::GoToXY(55, 15);
@@ -392,24 +322,12 @@ void User::ChangeAccess(std::vector<std::shared_ptr<User>>& vectorUser, std::sha
 		Console::GoToXY(45, 13);
 		std::cout << "ÆÅËÀÅÒÅ ÇÀÊÐÛÒÜ ÀÊÊÀÓÍÒ?";
 		std::string line[] = { "  Äà", "Âûéòè" };
-
-		switch (Menu::ChoiceKeyboard(line, size(line)))
+		switch (Menu::ChoiceKeyboard(line, (int)size(line)))
 		{
 		case 0:
 			user->SetAccess(0);
-			Vectors::AddAccountInFile(vectorUser);
-			system("cls");
-			Console::GoToXY(35, 11);
-			std::cout << "+--------------------------------------------+";
-			Console::GoToXY(35, 12);
-			std::cout << "|                                            |";
-			Console::GoToXY(35, 13);
-			std::cout << "|       ÐÎËÜ ÀÊÊÀÓÍÒÀ ÓÑÏÅØÍÎ ÈÇÌÅÍÅÍÀ       |";
-			Console::GoToXY(35, 14);
-			std::cout << "|                                            |";
-			Console::GoToXY(35, 15);
-			std::cout << "+--------------------------------------------+";
-			ch = _getch();
+			Vectors::AddAccountInFile(vector_user);
+			User::ChangingAccess();
 			return;
 		case 1:
 			return;
@@ -421,23 +339,12 @@ void User::ChangeAccess(std::vector<std::shared_ptr<User>>& vectorUser, std::sha
 		std::cout << "ÆÅËÀÅÒÅ ÎÒÊÐÛÒÜ ÀÊÊÀÓÍÒ?";
 		std::string line[] = { "  Äà", "Âûéòè" };
 
-		switch (Menu::ChoiceKeyboard(line, size(line)))
+		switch (Menu::ChoiceKeyboard(line, (int)size(line)))
 		{
 		case 0:
 			user->SetAccess(1);
-			Vectors::AddAccountInFile(vectorUser);
-			system("cls");
-			Console::GoToXY(35, 11);
-			std::cout << "+--------------------------------------------+";
-			Console::GoToXY(35, 12);
-			std::cout << "|                                            |";
-			Console::GoToXY(35, 13);
-			std::cout << "|       ÐÎËÜ ÀÊÊÀÓÍÒÀ ÓÑÏÅØÍÎ ÈÇÌÅÍÅÍÀ       |";
-			Console::GoToXY(35, 14);
-			std::cout << "|                                            |";
-			Console::GoToXY(35, 15);
-			std::cout << "+--------------------------------------------+";
-			ch = _getch();
+			Vectors::AddAccountInFile(vector_user);
+			User::ChangingAccess();
 			return;
 		case 1:
 			return;
@@ -445,110 +352,34 @@ void User::ChangeAccess(std::vector<std::shared_ptr<User>>& vectorUser, std::sha
 	}
 }
 
-
-
-void User::ChangeRole(std::vector<std::shared_ptr<User>>& vectorUser, std::shared_ptr<User>& user, std::string username)
+void User::ChangingRole()
 {
 	system("cls");
-	char ch;
-	if (user->GetUsername() == username)
-	{
-		Console::GoToXY(40, 12);
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
-		std::cout << "-!!!- ÍÅÂÎÇÌÎÆÍÎ ÈÇÌÅÍÈÒÜ ÐÎËÜ ÑÂÎÅÃÎ ÀÊÊÀÓÍÒÀ -!!!-";
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-		ch = _getch();
-		return;
-	}
-
-	Console::GoToXY(36, 8);
-	std::cout << "+---------------------------------------------+";
-	Console::GoToXY(36, 9);
-	std::cout << "|                                             |";
-	Console::GoToXY(36, 10);
-	std::cout << "|       ÈÇÌÅÍÅÍÈÅ ÑÒÀÐÎÉ ÐÎËÈ ÀÊÊÀÓÍÒÀ        |";
-	Console::GoToXY(36, 11);
-	std::cout << "|                                             |";
-	Console::GoToXY(36, 12);
-	std::cout << "+---------------------------------------------+";
-
-
-	Console::GoToXY(50, 14);
-	std::cout << "  ÑÒÀÐÀß ÐÎËÜ";
-	Console::GoToXY(50, 15);
-	if (user->GetRole())
-		std::cout << "Aäìèíèñòðàòîð";
-	else
-		std::cout << "Ïîëüçîâàòåëü";
-	ch = _getch();
-	system("cls");
-
-	if (user->GetRole() == 1)
-	{
-		Console::GoToXY(40, 13);
-		std::cout << "ÆÅËÀÅÒÅ ÈÇÌÅÍÈÒÜ ÐÎËÜ ÍÀ ÏÎËÜÇÎÂÀÒÅËß?";
-		std::string line[] = { "  Äà", "Âûéòè" };
-
-		switch (Menu::ChoiceKeyboard(line, size(line)))
-		{
-		case 0:
-			user->SetRole(0);
-			Vectors::AddAccountInFile(vectorUser);
-			system("cls");
-			Console::GoToXY(35, 11);
-			std::cout << "+--------------------------------------------+";
-			Console::GoToXY(35, 12);
-			std::cout << "|                                            |";
-			Console::GoToXY(35, 13);
-			std::cout << "|       ÐÎËÜ ÀÊÊÀÓÍÒÀ ÓÑÏÅØÍÎ ÈÇÌÅÍÅÍÀ       |";
-			Console::GoToXY(35, 14);
-			std::cout << "|                                            |";
-			Console::GoToXY(35, 15);
-			std::cout << "+--------------------------------------------+";
-			ch = _getch();
-			return;
-		case 1:
-			return;
-		}
-	}
-	else
-	{
-		Console::GoToXY(40, 13);
-		std::cout << "ÆÅËÀÅÒÅ ÈÇÌÅÍÈÒÜ ÐÎËÜ ÍÀ ÀÄÌÈÍÈÑÒÐÀÒÎÐÀ?";
-		std::string line[] = { "  Äà", "Âûéòè" };
-
-		switch (Menu::ChoiceKeyboard(line, size(line)))
-		{
-		case 0:
-			user->SetRole(1);
-			Vectors::AddAccountInFile(vectorUser);
-			system("cls");
-			Console::GoToXY(35, 11);
-			std::cout << "+--------------------------------------------+";
-			Console::GoToXY(35, 12);
-			std::cout << "|                                            |";
-			Console::GoToXY(35, 13);
-			std::cout << "|       ÐÎËÜ ÀÊÊÀÓÍÒÀ ÓÑÏÅØÍÎ ÈÇÌÅÍÅÍÀ       |";
-			Console::GoToXY(35, 14);
-			std::cout << "|                                            |";
-			Console::GoToXY(35, 15);
-			std::cout << "+--------------------------------------------+";
-			ch = _getch();
-			return;
-		case 1:
-			return;
-		}
-	}
+	Console::GoToXY(35, 11);
+	std::cout << "+--------------------------------------------+";
+	Console::GoToXY(35, 12);
+	std::cout << "|                                            |";
+	Console::GoToXY(35, 13);
+	std::cout << "|       ÐÎËÜ ÀÊÊÀÓÍÒÀ ÓÑÏÅØÍÎ ÈÇÌÅÍÅÍÀ       |";
+	Console::GoToXY(35, 14);
+	std::cout << "|                                            |";
+	Console::GoToXY(35, 15);
+	std::cout << "+--------------------------------------------+";
+	char ch = _getch();
 }
 
-void User::ChangeAccount(std::vector<std::shared_ptr<User>>& vectorUser, std::string username)
+void User::ErrorChangingRole()
 {
-	system("cls");
-	std::shared_ptr<User>& user = FindAccount(vectorUser);
+	Console::GoToXY(40, 12);
+	SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
+	std::cout << "-!!!- ÍÅÂÎÇÌÎÆÍÎ ÈÇÌÅÍÈÒÜ ÐÎËÜ ÑÂÎÅÃÎ ÀÊÊÀÓÍÒÀ -!!!-";
+	SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+	char ch = _getch();
+	return;
+}
 
-	std::string menu[] = { "   Èçìåíèòü ëîãèí", "  Èçìåíèòü ïàðîëü", "   Èçìåíèòü ðîëü",
-		"  Èçìåíèòü äîñòóï", "  Âåðíóòüñÿ íàçàä" };
-
+void User::ChangingDataAccount()
+{
 	system("cls");
 	SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 	Console::GoToXY(36, 8);
@@ -561,69 +392,116 @@ void User::ChangeAccount(std::vector<std::shared_ptr<User>>& vectorUser, std::st
 	std::cout << "|                                             |";
 	Console::GoToXY(36, 12);
 	std::cout << "+---------------------------------------------+";
+}
 
-	switch (Menu::ChoiceKeyboard(menu, size(menu)))
+void User::ChangeRole(std::vector<std::shared_ptr<User>>& vector_user, std::shared_ptr<User>& user, std::string username)
+{
+	system("cls");
+	char ch;
+	if (user->GetUsername() == username) User::ErrorChangingRole();
+	User::ChangingDataAccount();
+	Console::GoToXY(50, 14);
+	std::cout << "  ÑÒÀÐÀß ÐÎËÜ";
+	Console::GoToXY(50, 15);
+	if (user->GetRole())
+		std::cout << "Aäìèíèñòðàòîð";
+	else
+		std::cout << "Ïîëüçîâàòåëü";
+	ch = _getch();
+	system("cls");
+	if (user->GetRole() == 1)
+	{
+		Console::GoToXY(40, 13);
+		std::cout << "ÆÅËÀÅÒÅ ÈÇÌÅÍÈÒÜ ÐÎËÜ ÍÀ ÏÎËÜÇÎÂÀÒÅËß?";
+		std::string line[] = { "  Äà", "Âûéòè" };
+
+		switch (Menu::ChoiceKeyboard(line, (int)size(line)))
+		{
+		case 0:
+			user->SetRole(0);
+			Vectors::AddAccountInFile(vector_user);
+			User::ChangingRole();
+			return;
+		case 1:
+			return;
+		}
+	}
+	else
+	{
+		Console::GoToXY(40, 13);
+		std::cout << "ÆÅËÀÅÒÅ ÈÇÌÅÍÈÒÜ ÐÎËÜ ÍÀ ÀÄÌÈÍÈÑÒÐÀÒÎÐÀ?";
+		std::string line[] = { "  Äà", "Âûéòè" };
+
+		switch (Menu::ChoiceKeyboard(line, (int)size(line)))
+		{
+		case 0:
+			user->SetRole(1);
+			Vectors::AddAccountInFile(vector_user);
+			User::ChangingRole();
+			return;
+		case 1:
+			return;
+		}
+	}
+}
+
+void User::ChangeAccount(std::vector<std::shared_ptr<User>>& vector_user, std::string username)
+{
+	system("cls");
+	std::shared_ptr<User>& user = FindAccount(vector_user);
+	std::string menu[] = { "   Èçìåíèòü ëîãèí", "  Èçìåíèòü ïàðîëü", "   Èçìåíèòü ðîëü",
+		"  Èçìåíèòü äîñòóï", "  Âåðíóòüñÿ íàçàä" };
+	User::ChangingDataAccount();
+
+	switch (Menu::ChoiceKeyboard(menu, (int)size(menu)))
 	{
 	case 0:
 		system("cls");
-		ChangeUsername(vectorUser, user);
+		ChangeUsername(vector_user, user);
 		break;
 	case 1:
 		system("cls");
-		ChangePassword(vectorUser, user);
+		ChangePassword(vector_user, user);
 		break;
 	case 2:
 		system("cls");
-		ChangeRole(vectorUser, user, username);
+		ChangeRole(vector_user, user, username);
 		break;
 	case 3:
 		system("cls");
-		ChangeAccess(vectorUser, user, username);
+		ChangeAccess(vector_user, user, username);
 		break;
 	case 4:
 		return;
 	}
 }
 
-void User::ChangeMyAccount(std::vector<std::shared_ptr<User>>& vectorUser, std::string username)
+void User::ChangeMyAccount(std::vector<std::shared_ptr<User>>& vector_user, std::string username)
 {
 	system("cls");
 	std::shared_ptr<User> user = std::make_shared<User>();
 	std::string menu[] = { " Èçìåíèòü ëîãèí", " Èçìåíèòü ïàðîëü", " Âåðíóòüñÿ íàçàä" };
 
-	for (int i = 0; i < vectorUser.size(); i++)
+	for (int i = 0; i < vector_user.size(); i++)
 	{
-		if (username == vectorUser.at(i)->GetUsername())
+		if (username == vector_user.at(i)->GetUsername())
 		{
-			user = vectorUser.at(i);
+			user = vector_user.at(i);
 			break;
 		}
 	}
-
 	while (true)
 	{
-		system("cls");
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-		Console::GoToXY(36, 8);
-		std::cout << "+---------------------------------------------+";
-		Console::GoToXY(36, 9);
-		std::cout << "|                                             |";
-		Console::GoToXY(36, 10);
-		std::cout << "|          ÈÇÌÅÍÅÍÈÅ ÄÀÍÍÛÕ ÀÊÊÀÓÍÒÀ          |";
-		Console::GoToXY(36, 11);
-		std::cout << "|                                             |";
-		Console::GoToXY(36, 12);
-		std::cout << "+---------------------------------------------+";
-
-		switch (Menu::ChoiceKeyboard(menu, size(menu)))
+		User::ChangingDataAccount();
+		switch (Menu::ChoiceKeyboard(menu, (int)size(menu)))
 		{
 		case 0:
 			system("cls");
-			ChangeUsername(vectorUser, user);
+			ChangeUsername(vector_user, user);
 			break;
 		case 1:
 			system("cls");
-			ChangePassword(vectorUser, user);
+			ChangePassword(vector_user, user);
 			break;
 		case 2:
 			return;

@@ -19,7 +19,7 @@ int main()
 
 	while (true)
 	{
-		int my_choice = User::EnterAccount(vect.GetUsers());        // вход в приложение
+		int my_choice = User::EnterAccount();        // вход в приложение
 
 		if (my_choice == 0)
 		{
@@ -37,5 +37,6 @@ int main()
 		}
 		else exit(0);                                                //выход из приложения
 	}
+	char ch = _getch();
 }
 

@@ -1,8 +1,9 @@
 #pragma once
 
 #ifndef SMARTPOINTER_H
-
 #define SMARTPOINTER_H
+
+#define _CRT_SECURE_NO_WARNINGS
 
 #include "common.h"
 
