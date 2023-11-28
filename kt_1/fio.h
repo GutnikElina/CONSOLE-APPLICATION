@@ -5,7 +5,7 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 
-#include "common.h"
+#include "messages.h"
 
 namespace Keyboard  // пользовательское пространство имен, хранящее константные переменные кода клавиш
 {

@@ -31,13 +31,6 @@ public:
 	int GetNumberEmployees() { return this->number_employees; };
 	std::vector<std::shared_ptr<Employee>>& GetEmployees() { return this->employee; }
 
-	static void ErrorFindDepartment();
-	static void DepartmentChangeWindow();
-	static void ErrorFindEmployee();
-	static void AddDepartmentWindow();
-	static void ConfirmDeleting();
-	static void AddEmployeeWindow();
-
 	static int FindDepartment(std::vector<std::shared_ptr<Department>>& dep);
 	static int FindEmployeeInDepartment(std::vector<std::shared_ptr<Department>> dep, int number_department);
 	static void DepartmentsDatabase(std::vector<std::shared_ptr<Department>> dep);

@@ -39,13 +39,6 @@ public:
 	static void DeleteAccount(std::vector<std::shared_ptr<User>>& vector_user, std::string username);
 	static std::shared_ptr<User>& FindAccount(std::vector<std::shared_ptr<User>>& vector_user);
 
-    static void UpdatingWindow(std::string word);
-	static void ErrorChangingAccess();
-	static void ErrorChangingRole();
-	static void ChangingAccess();
-	static void ChangingRole();
-	static void ChangingDataAccount();
-
 	static void ChangeAccount(std::vector<std::shared_ptr<User>>& vector_user, std::string username);
 	static void ChangeUsername(std::vector<std::shared_ptr<User>>& vector_user, std::shared_ptr<User>& user);
 	static void ChangePassword(std::vector<std::shared_ptr<User>>& vector_user, std::shared_ptr<User>& user);

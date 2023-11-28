@@ -18,16 +18,6 @@ void Department::GetFromFile(std::istream& in)
 	}
 }
 
-void Department::ErrorFindDepartment()
-{
-	system("cls");
-	Console::GoToXY(35, 14);
-	SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
-	std::cout << "-!!!- ÒÀÊÎÃÎ ÍÀÇÂÀÍÈß ÎÒÄÅËÀ ÍÅ ÑÓÙÅÑÒÂÓÅÒ. ÏÎÏÐÎÁÓÉÒÅ ÑÍÎÂÀ -!!!-";
-	SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-	char ch = _getch();
-}
-
 int Department::FindDepartment(std::vector<std::shared_ptr<Department>>& dep)
 {
 	int i, flag = 0;
@@ -39,7 +29,7 @@ int Department::FindDepartment(std::vector<std::shared_ptr<Department>>& dep)
 		for (i = 0; i < dep.size() && flag == 0; i++)
 			if (title == dep.at(i)->GetTitle())
 				flag++;
-		if (flag == 0) ErrorFindDepartment();
+		if (flag == 0) Messages::ErrorFindDepartment();
 		else
 			return i;
 	}
@@ -87,23 +77,6 @@ void Department::DepartmentsDatabase(std::vector<std::shared_ptr<Department>> de
 	}
 }
 
-void Department::DepartmentChangeWindow()
-{
-	system("cls");
-	SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-	Console::GoToXY(35, 11);
-	std::cout << "+----------------------------------------+";
-	Console::GoToXY(35, 12);
-	std::cout << "|                                        |";
-	Console::GoToXY(35, 13);
-	std::cout << "|           ÓÑÏÅØÍÎÅ ÈÇÌÅÍÅÍÈÅ           |";
-	Console::GoToXY(35, 14);
-	std::cout << "|                                        |";
-	Console::GoToXY(35, 15);
-	std::cout << "+----------------------------------------+";
-	char ch = _getch();
-}
-
 void Department::ChangeTitle(std::vector<std::shared_ptr<Department>>& dep, int number_department)
 {
 	std::string title;
@@ -114,7 +87,7 @@ void Department::ChangeTitle(std::vector<std::shared_ptr<Department>>& dep, int 
 	title = Menu::CheckString();
 	dep.at(number_department)->GetTitle() = title;
 	Vectors::AddDepartmentInFile(dep);
-	DepartmentChangeWindow();
+	Messages::DepartmentChangeWindow();
 	return;
 }
 
@@ -128,23 +101,8 @@ void Department::ChangeNumberOfProjects(std::vector<std::shared_ptr<Department>>
 	numb = Menu::CheckInt();
 	dep.at(number_department)->SetNumberProjects(numb);
 	Vectors::AddDepartmentInFile(dep);
-	DepartmentChangeWindow();
+	Messages::DepartmentChangeWindow();
 	return;
-}
-
-void Department::AddEmployeeWindow()
-{
-	system("cls");
-	Console::GoToXY(36, 8);
-	std::cout << "+-----------------------------------------------+";
-	Console::GoToXY(36, 9);
-	std::cout << "|                                               |";
-	Console::GoToXY(36, 10);
-	std::cout << "|      ÄÎÁÀÂËÅÍÈÅ ÍÎÂÛÕ ÐÀÁÎÒÍÈÊÎÂ Â ÎÒÄÅË      |";
-	Console::GoToXY(36, 11);
-	std::cout << "|                                               |";
-	Console::GoToXY(36, 12);
-	std::cout << "+-----------------------------------------------+";
 }
 
 void Department::AddNewEmployeeInDepartment(std::vector<std::shared_ptr<Employee>>& emp, std::vector<std::shared_ptr<Department>>& dep, int number_department)
@@ -156,7 +114,7 @@ void Department::AddNewEmployeeInDepartment(std::vector<std::shared_ptr<Employee
 	while (true)
 	{
 		bool found = false;
-		AddEmployeeWindow();
+		Messages::AddEmployeeWindow();
 		copy->SetFullName();
 		for (const auto& employee : emp)
 		{
@@ -169,14 +127,14 @@ void Department::AddNewEmployeeInDepartment(std::vector<std::shared_ptr<Employee
 			}
 		}
 		if (!found)
-			ErrorFindEmployee();
+			Messages::ErrorFindEmployee();
 		else
 		{
 			dep.at(number_department)->SetNumberEmployees(number_employee);
 			Vectors::AddDepartmentInFile(dep);
-			DepartmentChangeWindow();
+			Messages::DepartmentChangeWindow();
 		}
-		AddEmployeeWindow();
+		Messages::AddEmployeeWindow();
 		Console::GoToXY(38, 14);
 		if (Menu::continueOrNot())
 			break;
@@ -203,21 +161,11 @@ void Department::DeleteEmployeeFromDepartment(std::vector<std::shared_ptr<Depart
 			count--;
 			dep.at(number_department)->SetNumberEmployees(count);
 			Vectors::AddDepartmentInFile(dep);
-			DepartmentChangeWindow();
+			Messages::DepartmentChangeWindow();
 			return;
 		}
 	}
 	else return;
-}
-void Department::ErrorFindEmployee()
-{
-	system("cls");
-	Console::GoToXY(35, 14);
-	SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
-	std::cout << "-!!!- ÒÀÊÎÃÎ ÐÀÁÎÒÍÈÊÀ ÍÅ ÑÓÙÅÑÒÂÓÅÒ. ÏÎÏÐÎÁÓÉÒÅ ÑÍÎÂÀ -!!!-";
-	SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-	char ch = _getch();
-	system("cls");
 }
 
 int Department::FindEmployeeInDepartment(std::vector<std::shared_ptr<Department>> dep, int number_department)
@@ -229,7 +177,7 @@ int Department::FindEmployeeInDepartment(std::vector<std::shared_ptr<Department>
 		std::cout << std::endl << "ÂÂÅÄÈÒÅ ÍÎÌÅÐ ÐÀÁÎÒÍÈÊÀ" << std::endl;
 		number = Menu::CheckInt();
 		if (number <= 0 || number > (int)dep.at(number_department)->GetEmployees().size())
-			ErrorFindEmployee();
+			Messages::ErrorFindEmployee();
 		else
 			return number;
 	}
@@ -275,45 +223,21 @@ void Department::ParticulatDepartmentDatabase(std::vector<std::shared_ptr<Depart
 	else std::cout << std::endl;
 }
 
-void Department::ConfirmDeleting()
-{
-	system("cls");
-	Console::GoToXY(30, 10);
-	SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
-	std::cout << "-!!!- ÏÎÄÒÂÅÐÄÈÒÅ, ×ÒÎ ÂÛ ÕÎÒÈÒÅ ÓÄÀËÈÒÜ ÂÑÞ ÁÀÇÓ ÄÀÍÍÛÕ -!!!-";
-	SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-}
-
 void Department::DeleteDatabaseDepartment(std::vector<std::shared_ptr<Department>>& dep)
 {
 	if (!dep.size()) Menu::EmptyDatabase();
 		
-	ConfirmDeleting();
+	Messages::ConfirmDeleting();
 	if (Menu::continueOrNot())
 	{
 		dep.clear();
 		std::ofstream file("department.txt", std::ios::trunc);
 		file << "";
 		file.close();
-		DepartmentChangeWindow();
+		Messages::DepartmentChangeWindow();
 		return;
 	}
 	else return;
-}
-
-void Department::AddDepartmentWindow()
-{
-	system("cls");
-	Console::GoToXY(36, 8);
-	std::cout << "+-------------------------------------------+";
-	Console::GoToXY(36, 9);
-	std::cout << "|                                           |";
-	Console::GoToXY(36, 10);
-	std::cout << "|         ÄÎÁÀÂËÅÍÈÅ ÍÎÂÎÃÎ ÎÒÄÅËÀ          |";
-	Console::GoToXY(36, 11);
-	std::cout << "|                                           |";
-	Console::GoToXY(36, 12);
-	std::cout << "+-------------------------------------------+";
 }
 
 void Department::AddNewDepartment(std::vector<std::shared_ptr<Employee>>& emp, std::vector<std::shared_ptr<Department>>& dep)
@@ -321,19 +245,19 @@ void Department::AddNewDepartment(std::vector<std::shared_ptr<Employee>>& emp, s
 	while (true)
 	{
 		std::shared_ptr<Department> d = std::make_shared<Department>();
-		AddDepartmentWindow();
+		Messages::AddDepartmentWindow();
 		Console::GoToXY(46, 14);
 		std::cout << "ÂÂÅÄÈÒÅ ÍÀÇÂÀÍÈÅ ÎÒÄÅËÀ ";
 		Console::GoToXY(52, 15);
 		d->SetTitle(Menu::CheckString());
-		AddDepartmentWindow();
+		Messages::AddDepartmentWindow();
 		Console::GoToXY(40, 14);
 		std::cout << "ÂÂÅÄÈÒÅ ÊÎËÈ×ÅÑÒÂÎ ÏÐÎÅÊÒÎÂ Ó ÎÒÄÅËÀ";
 		Console::GoToXY(53, 15);
 		d->SetNumberProjects(Menu::CheckInt());
 		dep.push_back(d);
 		Vectors::AddDepartmentInFile(dep);
-		DepartmentChangeWindow();
+		Messages::DepartmentChangeWindow();
 		return;
 	}
 }
@@ -354,7 +278,7 @@ void Department::DeleteDepartment(std::vector<std::shared_ptr<Department>>& dep)
 			else
 				dep.erase(dep.begin() + (number_department - 1));
 			Vectors::AddDepartmentInFile(dep);
-			DepartmentChangeWindow();
+			Messages::DepartmentChangeWindow();
 			return;
 		}
 	}

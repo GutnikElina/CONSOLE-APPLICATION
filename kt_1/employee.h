@@ -48,9 +48,6 @@ public:
 	static void FindById(std::vector<std::shared_ptr<Employee>> vectorEmployee);
 	static void FindByHourlyRate(std::vector<std::shared_ptr<Employee>> vectorEmployee);
 
-	static void ChooseSortWindow();
-	static void EndSortWindow();
-
 	static void SortBySurname(std::vector<std::shared_ptr<Employee>>& vectorEmployee);
 	static void SortByID(std::vector<std::shared_ptr<Employee>>& vectorEmployee);
 	static void SortByHourlyRate(std::vector<std::shared_ptr<Employee>>& vectorEmployee);

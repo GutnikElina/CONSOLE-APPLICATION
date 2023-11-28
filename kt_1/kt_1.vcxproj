@@ -140,6 +140,7 @@
     <ClCompile Include="fio.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="menu.cpp" />
+    <ClCompile Include="messages.cpp" />
     <ClCompile Include="smartPointer.cpp" />
     <ClCompile Include="vectors.cpp" />
   </ItemGroup>
@@ -150,6 +151,7 @@
     <ClInclude Include="employee.h" />
     <ClInclude Include="fio.h" />
     <ClInclude Include="menu.h" />
+    <ClInclude Include="messages.h" />
     <ClInclude Include="smartPointer.h" />
     <ClInclude Include="vectors.h" />
   </ItemGroup>
