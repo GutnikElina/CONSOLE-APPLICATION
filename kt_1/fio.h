@@ -7,7 +7,7 @@
 
 #include "messages.h"
 
-namespace Keyboard  // пользовательское пространство имен, хранящее константные переменные кода клавиш
+namespace Keyboard				// пользовательское пространство имен, хранящее константные переменные кода клавиш
 {
 	static const char ESCAPE = 27;
 	static const char UP = 72;
@@ -47,8 +47,8 @@ public:
 	FIO();
 	~FIO();
 
-	void Set(std::string name, std::string surname, std::string otch);
 	void SetFullName();
+	void SetFullName(std::string name, std::string surname, std::string otch);
 	void SetName(std::string name) { this->name = name; }
 	void SetSurname(std::string surname) { this->surname = surname; }
 	void SetOtch(std::string otch) { this->otch = otch; }

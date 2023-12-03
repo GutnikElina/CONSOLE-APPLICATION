@@ -34,23 +34,22 @@ void User::GetFromFile(std::istream& in)
 
 int User::EnterAccount()
 {
-	std::string main_menu[] = {"      Авторизация   ", "      Регистрация   ", "        Выход    "};
+	std::string main_menu[] = {"      Авторизация   ", "      Регистрация   ", "         Выход    "};
 	int x, y;
 
 	while (true)
 	{
 		system("cls");
-		x = 43; y = 8;
+		x = 41; y = 8;
 		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-		std::string line[] = { "+-------------------------+", "|                         |", "|    ВХОД В ПРИЛОЖЕНИЕ    |",
-			"|                         |", "+-------------------------+" };
-
+		std::string line[] = { "+-----------------------------+", 
+			"|                             |", "|      ВХОД В ПРИЛОЖЕНИЕ      |",
+			"|                             |", "+-----------------------------+" };
 		for (int i = 0; i < (int)size(line); i++)
 		{
 			Console::GoToXY(x, y++);
 			std::cout << line[i] << std::endl;
 		}
-
 		switch (Menu::ChoiceKeyboard(main_menu, (int)size(main_menu)))
 		{
 		case 0:
@@ -111,10 +110,9 @@ void User::AddNewAccount(std::vector<std::shared_ptr<User>>& vector_user)
 	user->SetPassword(password);
 	user->SetFullName();
 	user->SetAccess(1);
-	std::string line[] = { "Администратор", "Пользователь" };
-	system("cls");
-	Console::GoToXY(45, 13);
-	std::cout << "ВЫБЕРИТЕ РОЛЬ";
+	std::string line[] = { "       Администратор", "       Пользователь" };
+	Messages::ChangeRole();
+
 	switch (Menu::ChoiceKeyboard(line, (int)size(line)))
 	{
 	case 0:
@@ -126,7 +124,6 @@ void User::AddNewAccount(std::vector<std::shared_ptr<User>>& vector_user)
 	}
 
 	if (!Menu::confirmOrNot()) return;
-
 	vector_user.push_back(user);
 	Vectors::AddAccountInFile(vector_user);
 	Messages::SuccessAddAccount();
@@ -151,8 +148,7 @@ void User::DeleteAccount(std::vector<std::shared_ptr<User>>& vector_user, std::s
 	system("cls");
 	std::shared_ptr<User>& user = FindAccount(vector_user);
 	for (int i = 0; i < (int)vector_user.size(); i++)
-		if (user->GetUsername() == username)
-			Messages::ErrorDeleteMyAccount();
+		if (user->GetUsername() == username) { Messages::ErrorDeleteMyAccount(); return; }
 
 	if (Menu::confirmOrNot())
 	{
@@ -162,6 +158,7 @@ void User::DeleteAccount(std::vector<std::shared_ptr<User>>& vector_user, std::s
 		Vectors::AddAccountInFile(vector_user);
 
 		Messages::SuccessDeleteAccount();
+		char ch = _getch();
 	}
 }
 
@@ -170,9 +167,9 @@ void User::ChangeUsername(std::vector<std::shared_ptr<User>>& vector_user, std::
 	char ch;
 	std::string new_login, word = "ЛОГИН";
 	Messages::ChangingDataAccount();
-	Console::GoToXY(50, 15);
+	Console::GoToXY(52, 14);
 	std::cout << "СТАРЫЙ ЛОГИН";
-	Console::GoToXY(53, 16);
+	Console::GoToXY(55, 15);
 	std::cout << user->GetUsername();
 	ch = _getch();
 	while (true)
@@ -213,102 +210,55 @@ void User::ChangeAccess(std::vector<std::shared_ptr<User>>& vector_user, std::sh
 {
 	system("cls");
 	char ch;
-	if (user->GetUsername() == username) { Messages::ErrorChangingAccess(); return; }
+	if (user->GetUsername() == username) { Messages::ErrorChangingAccess();	return; }
 
 	Messages::ChangingDataAccount();
 	Console::GoToXY(50, 14);
 	std::cout << "  СТАРЫЙ ДОСТУП";
 	Console::GoToXY(55, 15);
-	if (user->GetAccess())
-		std::cout << "Открыт";
-	else
-		std::cout << "Закрыт";
+	std::cout << (user->GetAccess() ? "Открыт" : "Закрыт");
 	ch = _getch();
 	system("cls");
-
-	if (user->GetAccess() == 1)
+	Console::GoToXY(48, 12);
+	std::string access_question;
+	std::cout << ((user->GetAccess() == 1) ? "ЖЕЛАЕТЕ ЗАКРЫТЬ АККАУНТ?" : "ЖЕЛАЕТЕ ОТКРЫТЬ АККАУНТ?");
+	std::string line[] = { "              Да", "            Выйти" };
+	int choice = Menu::ChoiceKeyboard(line, (int)size(line));
+	if (choice == 0) 
 	{
-		Console::GoToXY(45, 13);
-		std::cout << "ЖЕЛАЕТЕ ЗАКРЫТЬ АККАУНТ?";
-		std::string line[] = { "  Да", "Выйти" };
-		switch (Menu::ChoiceKeyboard(line, (int)size(line)))
-		{
-		case 0:
-			user->SetAccess(0);
-			Vectors::AddAccountInFile(vector_user);
-			Messages::ChangingAccess();
-			return;
-		case 1:
-			return;
-		}
+		user->SetAccess(!user->GetAccess());
+		Vectors::AddAccountInFile(vector_user);
+		Messages::ChangingAccess();
 	}
-	else
-	{
-		Console::GoToXY(45, 13);
-		std::cout << "ЖЕЛАЕТЕ ОТКРЫТЬ АККАУНТ?";
-		std::string line[] = { "  Да", "Выйти" };
-
-		switch (Menu::ChoiceKeyboard(line, (int)size(line)))
-		{
-		case 0:
-			user->SetAccess(1);
-			Vectors::AddAccountInFile(vector_user);
-			Messages::ChangingAccess();
-			return;
-		case 1:
-			return;
-		}
-	}
+	return;
 }
 
-void User::ChangeRole(std::vector<std::shared_ptr<User>>& vector_user, std::shared_ptr<User>& user, std::string username)
+void User::ChangeRole(std::vector<std::shared_ptr<User>>& vector_user, std::shared_ptr<User>& user, std::string username) 
 {
 	system("cls");
-	char ch;
-	if (user->GetUsername() == username) Messages::ErrorChangingRole();
+	if (user->GetUsername() == username) {	Messages::ErrorChangingRole(); return; }
+
 	Messages::ChangingDataAccount();
 	Console::GoToXY(50, 14);
 	std::cout << "  СТАРАЯ РОЛЬ";
 	Console::GoToXY(50, 15);
-	if (user->GetRole())
-		std::cout << "Aдминистратор";
-	else
-		std::cout << "Пользователь";
-	ch = _getch();
+	std::cout << (user->GetRole() ? "  Aдминистратор" : "  Пользователь");
+
+	char ch = _getch();
 	system("cls");
-	if (user->GetRole() == 1)
-	{
-		Console::GoToXY(40, 13);
-		std::cout << "ЖЕЛАЕТЕ ИЗМЕНИТЬ РОЛЬ НА ПОЛЬЗОВАТЕЛЯ?";
-		std::string line[] = { "  Да", "Выйти" };
+	Console::GoToXY(40, 12);
+	std::cout << ((user->GetRole() == 1) ? "ЖЕЛАЕТЕ ИЗМЕНИТЬ РОЛЬ НА ПОЛЬЗОВАТЕЛЯ?" : "ЖЕЛАЕТЕ ИЗМЕНИТЬ РОЛЬ НА АДМИНИСТРАТОРА?");
+	std::string line[] = { "            Да", "          Выйти" };
 
-		switch (Menu::ChoiceKeyboard(line, (int)size(line)))
-		{
-		case 0:
-			user->SetRole(0);
-			Vectors::AddAccountInFile(vector_user);
-			Messages::ChangingRole();
-			return;
-		case 1:
-			return;
-		}
-	}
-	else
+	switch (Menu::ChoiceKeyboard(line, (int)size(line))) 
 	{
-		Console::GoToXY(40, 13);
-		std::cout << "ЖЕЛАЕТЕ ИЗМЕНИТЬ РОЛЬ НА АДМИНИСТРАТОРА?";
-		std::string line[] = { "  Да", "Выйти" };
-
-		switch (Menu::ChoiceKeyboard(line, (int)size(line)))
-		{
-		case 0:
-			user->SetRole(1);
-			Vectors::AddAccountInFile(vector_user);
-			Messages::ChangingRole();
-			return;
-		case 1:
-			return;
-		}
+	case 0:
+		user->SetRole((user->GetRole() == 1) ? 0 : 1);
+		Vectors::AddAccountInFile(vector_user);
+		Messages::ChangingRole();
+		break;
+	case 1:
+		break;
 	}
 }
 
@@ -316,10 +266,9 @@ void User::ChangeAccount(std::vector<std::shared_ptr<User>>& vector_user, std::s
 {
 	system("cls");
 	std::shared_ptr<User>& user = FindAccount(vector_user);
-	std::string menu[] = { "   Изменить логин", "  Изменить пароль", "   Изменить роль",
-		"  Изменить доступ", "  Вернуться назад" };
+	std::string menu[] = { "       Изменить логин", "      Изменить пароль", 
+		"       Изменить роль", "      Изменить доступ", "      Вернуться назад" };
 	Messages::ChangingDataAccount();
-
 	switch (Menu::ChoiceKeyboard(menu, (int)size(menu)))
 	{
 	case 0:

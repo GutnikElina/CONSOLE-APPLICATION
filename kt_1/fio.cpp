@@ -2,10 +2,10 @@
 
 FIO::FIO()
 {
-	this->Set("NULL", "NULL", "NULL");
+	this->SetFullName("NULL", "NULL", "NULL");
 }
 
-void FIO::Set(std::string name, std::string surname, std::string otch)
+void FIO::SetFullName(std::string name, std::string surname, std::string otch)
 {
 	this->name = name;
 	this->surname = surname;

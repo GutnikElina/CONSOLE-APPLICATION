@@ -29,7 +29,11 @@ int Department::FindDepartment(std::vector<std::shared_ptr<Department>>& dep)
 		for (i = 0; i < dep.size() && flag == 0; i++)
 			if (title == dep.at(i)->GetTitle())
 				flag++;
-		if (flag == 0) Messages::ErrorFindDepartment();
+		if (flag == 0)
+		{
+			Messages::ErrorFindDepartment();
+			return -1;
+		}
 		else
 			return i;
 	}
@@ -85,9 +89,9 @@ void Department::ChangeTitle(std::vector<std::shared_ptr<Department>>& dep, int 
 	std::cout << "ÂÂÅÄÈÒÅ ÍÎÂÎÅ ÍÀÇÂÀÍÈÅ ÎÒÄÅËÀ";
 	Console::GoToXY(55, 14);
 	title = Menu::CheckString();
-	dep.at(number_department)->GetTitle() = title;
+	dep.at(number_department)->SetTitle(title);
 	Vectors::AddDepartmentInFile(dep);
-	Messages::DepartmentChangeWindow();
+	Messages::ChangingEmployeeData();
 	return;
 }
 
@@ -101,7 +105,7 @@ void Department::ChangeNumberOfProjects(std::vector<std::shared_ptr<Department>>
 	numb = Menu::CheckInt();
 	dep.at(number_department)->SetNumberProjects(numb);
 	Vectors::AddDepartmentInFile(dep);
-	Messages::DepartmentChangeWindow();
+	Messages::ChangingEmployeeData();
 	return;
 }
 
@@ -114,7 +118,7 @@ void Department::AddNewEmployeeInDepartment(std::vector<std::shared_ptr<Employee
 	while (true)
 	{
 		bool found = false;
-		Messages::AddEmployeeWindow();
+		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 		copy->SetFullName();
 		for (const auto& employee : emp)
 		{
@@ -132,20 +136,17 @@ void Department::AddNewEmployeeInDepartment(std::vector<std::shared_ptr<Employee
 		{
 			dep.at(number_department)->SetNumberEmployees(number_employee);
 			Vectors::AddDepartmentInFile(dep);
-			Messages::DepartmentChangeWindow();
+			Messages::SuccessAddEmployee();
 		}
-		Messages::AddEmployeeWindow();
-		Console::GoToXY(38, 14);
-		if (Menu::continueOrNot())
-			break;
-		else
+		system("cls");
+		if (!Menu::continueOrNot())
 			return;
 	}
 }
 
 void Department::DeleteEmployeeFromDepartment(std::vector<std::shared_ptr<Department>>& dep, int number_department)
 {
-	if (!dep.size()) Menu::EmptyDatabase();
+	if (!dep.size()) { Messages::EmptyDatabase(); return;  }
 	system("cls");
 	int number_employee = FindEmployeeInDepartment(dep, number_department);
 	if (Menu::confirmOrNot())
@@ -161,7 +162,7 @@ void Department::DeleteEmployeeFromDepartment(std::vector<std::shared_ptr<Depart
 			count--;
 			dep.at(number_department)->SetNumberEmployees(count);
 			Vectors::AddDepartmentInFile(dep);
-			Messages::DepartmentChangeWindow();
+			Messages::SuccessDeleteEmployee();
 			return;
 		}
 	}
@@ -225,7 +226,9 @@ void Department::ParticulatDepartmentDatabase(std::vector<std::shared_ptr<Depart
 
 void Department::DeleteDatabaseDepartment(std::vector<std::shared_ptr<Department>>& dep)
 {
-	if (!dep.size()) Menu::EmptyDatabase();
+	if (!dep.size()) {
+		Messages::EmptyDatabase(); return;
+	}
 		
 	Messages::ConfirmDeleting();
 	if (Menu::continueOrNot())
@@ -257,19 +260,20 @@ void Department::AddNewDepartment(std::vector<std::shared_ptr<Employee>>& emp, s
 		d->SetNumberProjects(Menu::CheckInt());
 		dep.push_back(d);
 		Vectors::AddDepartmentInFile(dep);
-		Messages::DepartmentChangeWindow();
+		Messages::SuccessAddDepartment();
 		return;
 	}
 }
 
 void Department::DeleteDepartment(std::vector<std::shared_ptr<Department>>& dep)
 {
-	if (!dep.size()) Menu::EmptyDatabase();
+	if (!dep.size()) { Messages::EmptyDatabase(); return; }
 	
 	system("cls");
 	int number_department = FindDepartment(dep);
-
-	if (Menu::confirmOrNot())
+	if (number_department == -1)
+		return;
+	else if (Menu::confirmOrNot())
 	{
 		if (number_department > 0 && number_department <= dep.size())
 		{
@@ -278,7 +282,7 @@ void Department::DeleteDepartment(std::vector<std::shared_ptr<Department>>& dep)
 			else
 				dep.erase(dep.begin() + (number_department - 1));
 			Vectors::AddDepartmentInFile(dep);
-			Messages::DepartmentChangeWindow();
+			Messages::SuccessDeleteDepartment();
 			return;
 		}
 	}

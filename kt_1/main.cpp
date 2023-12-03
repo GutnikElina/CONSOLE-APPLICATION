@@ -9,17 +9,17 @@ int main()
 	SetConsoleTitle(L"√утник Ёлина јндреевна, группа 272301");    // измен€ем заголовок окна приложени€
 	Console::ConsoleCursorVisible(false, 100);                    // управл€ем видимостью курсора в консоли
 
-	Vectors vect;
 	std::string username;
 	int role;
 
+	Vectors vect;
 	vect.GetVectorUsers();              // считываем из файла все данные аккаунтов
 	vect.GetVectorEmployees();          // считываем из файла все данные работников
 	vect.GetVectorDepartment();		    // считываем из файла все данные отделов
 
 	while (true)
 	{
-		int my_choice = User::EnterAccount();        // вход в приложение
+		int my_choice = User::EnterAccount();                       // вход в приложение
 
 		if (my_choice == 0)
 		{
@@ -35,8 +35,8 @@ int main()
 		{
 			Vectors::SingUp(0, vect.GetUsers(), vect);               //регистраци€
 		}
-		else exit(0);                                                //выход из приложени€
+		else 
+			if(Menu::exitOrNot()) exit(0);                           //выход из приложени€
 	}
-	char ch = _getch();
 }
 

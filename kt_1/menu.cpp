@@ -1,25 +1,8 @@
 #include "menu.h"
 
-void Menu::FileNotOpened()
+bool Menu::IsDigitKey(char key)
 {
-	system("cls");
-	Console::GoToXY(50, 12);
-	SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
-	std::cout << "-!!!- ОШИБКА ОТКРЫТИЯ ФАЙЛА -!!!-";
-	SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-	char ch = _getch();
-	exit(1);
-}
-
-void Menu::EmptyDatabase()
-{
-	system("cls");
-	Console::GoToXY(45, 14);
-	SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
-	std::cout << "-!!!- БАЗА ДАННЫХ ПУСТА -!!!-";
-	SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-	char ch = _getch();
-	return;
+	return (key >= '0' && key <= '9');
 }
 
 int Menu::CheckInt()
@@ -30,16 +13,18 @@ int Menu::CheckInt()
 	while (true)
 	{
 		ch = _getch();
-		if (std::isdigit(ch) || ch == 13 || ch == 8 )
+		if (IsDigitKey(ch) || ch == 13 || ch == 8 || ch == '\r')
 		{
-			if (ch == 13 && !result.empty())
+			if ((ch == 13 || ch == '\r') && !result.empty())
 				break;
+			else if (ch == 13 && result.empty())
+				continue;
 			else if (ch == 8 && !result.empty())
 			{
 				std::cout << "\b \b";
 				result.pop_back();
 			}
-			else
+			else 
 			{
 				std::cout << ch;
 				result += ch;
@@ -171,9 +156,9 @@ bool Menu::exitOrNot()
 {
 	system("cls");
 	SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-	Console::GoToXY(35, 12);
+	Console::GoToXY(45, 12);
 	std::cout << "ВЫ ДЕЙСТВИТЕЛЬНО ХОТИТЕ ВЫЙТИ?";
-	std::string question[] = { " Отмена", "  Выйти" };
+	std::string question[] = { "          Отмена", "           Выйти" };
 	if (Menu::ChoiceKeyboard(question, (int)size(question)))
 		return true;
 	else return false;
@@ -182,28 +167,29 @@ bool Menu::exitOrNot()
 bool Menu::continueOrNot()
 {
 	SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+	Console::GoToXY(50, 12);
 	std::cout << "ЖЕЛАЕТЕ ПРОДОЛЖИТЬ? ";
-	std::string line[] = { " Да", "Нет" };
+	std::string line[] = { "             Нет", "             Да" };
 	if (Menu::ChoiceKeyboard(line, (int)size(line)))
-		return false;
-	else return true;
+		return true;
+	else return false;
 }
 
 bool Menu::confirmOrNot()
 {
 	system("cls");
 	SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-	Console::GoToXY(30, 8);
+	Console::GoToXY(31, 8);
 	std::cout << "+--------------------------------------------------------+";
-	Console::GoToXY(30, 9);
+	Console::GoToXY(31, 9);
 	std::cout << "|                                                        |";
-	Console::GoToXY(30, 10);
-	std::cout << "|    ПОДТВЕРДИТЕ, ЧТО ВЫ ХОТИТЕ ВЫПОЛНИТЬ ДЕЙСТВИЕ       |";
-	Console::GoToXY(30, 11);
+	Console::GoToXY(31, 10);
+	std::cout << "|     ПОДТВЕРДИТЕ, ЧТО ВЫ ХОТИТЕ ВЫПОЛНИТЬ ДЕЙСТВИЕ      |";
+	Console::GoToXY(31, 11);
 	std::cout << "|                                                        |";
-	Console::GoToXY(30, 12);
+	Console::GoToXY(31, 12);
 	std::cout << "+--------------------------------------------------------+";
-	std::string line[] = { "Да, подтверждаю", "    Выйти" };
+	std::string line[] = { "     Да, подтверждаю", "         Выйти" };
 	if (Menu::ChoiceKeyboard(line, (int)size(line)))
 		return false;
 	else return true;
@@ -211,25 +197,13 @@ bool Menu::confirmOrNot()
 
 void Menu::ChangeAccountMenu(std::vector<std::shared_ptr<User>>& vector_user, std::string username)
 {
-	std::string menu[] = { "     Посмотреть все аккаунты", "      Добавить новый аккаунт", "        Удалить аккаунт",
-		"   Редактировать данные аккаунта", "        Вернуться назад" };
+	std::string menu[] = { "  Посмотреть все аккаунты", "   Добавить новый аккаунт", "     \ Удалить аккаунт",
+		"Редактировать данные аккаунта", "      Вернуться назад" };
 	char ch;
 
 	while (true)
 	{
-		system("cls");
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-		Console::GoToXY(36, 8);
-		std::cout << "+-------------------------------------------+";
-		Console::GoToXY(36, 9);
-		std::cout << "|                                           |";
-		Console::GoToXY(36, 10);
-		std::cout << "|           УПРАВЛЕНИЕ АККАУНТАМИ           |";
-		Console::GoToXY(36, 11);
-		std::cout << "|                                           |";
-		Console::GoToXY(36, 12);
-		std::cout << "+-------------------------------------------+";
-
+		Messages::AccountManagement();
 		switch (Menu::ChoiceKeyboard(menu, (int)size(menu)))
 		{
 		case 0:
@@ -257,21 +231,21 @@ void Menu::ChangeAccountMenu(std::vector<std::shared_ptr<User>>& vector_user, st
 
 void Menu::MenuAdmin(Vectors& vect, std::string username)
 {
-	std::string admin_menu[] = { "        Управлять аккаунтами", "  Работать c данными работников",
-		"   Работать c данными отделов","         Выйти из аккаунта" };
+	std::string admin_menu[] = { "    Управлять аккаунтами", "Работать c данными работников",
+		"Работать c данными отделов","     Выйти из аккаунта" };
 	while (true)
 	{
 		system("cls");
 		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-		Console::GoToXY(40, 8);
+		Console::GoToXY(38, 8);
 		std::cout << "+---------------------------------------+";
-		Console::GoToXY(40, 9);
+		Console::GoToXY(38, 9);
 		std::cout << "|                                       |";
-		Console::GoToXY(40, 10);
-		std::cout << "|      ПРИВЕТСТВУЕМ ВАС, " << std::setw(15) << std::left << username << "|";
-		Console::GoToXY(40, 11);
+		Console::GoToXY(38, 10);
+		std::cout << "|        ПРИВЕТСТВУЕМ ВАС, " << std::setw(13) << std::left << username << "|";
+		Console::GoToXY(38, 11);
 		std::cout << "|                                       |";
-		Console::GoToXY(40, 12);
+		Console::GoToXY(38, 12);
 		std::cout << "+---------------------------------------+";
 
 		switch (Menu::ChoiceKeyboard(admin_menu, (int)size(admin_menu)))
@@ -298,21 +272,11 @@ void Menu::MenuAdmin(Vectors& vect, std::string username)
 
 void Menu::WorkWithDataMenu(std::vector<std::shared_ptr<Employee>>& vector_employee)
 {
-	std::string menu[] = { " Обработать данные", "Редактировать данные", "   Вернуться назад" };
+	if (!vector_employee.size()) { Messages::EmptyDatabase(); return; }
+	std::string menu[] = { "     Обработать данные", "    Редактировать данные", "      Вернуться назад" };
 	while (true)
 	{
-		system("cls");
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-		Console::GoToXY(36, 8);
-		std::cout << "+-------------------------------------------+";
-		Console::GoToXY(36, 9);
-		std::cout << "|                                           |";
-		Console::GoToXY(36, 10);
-		std::cout << "|        РАБОТА С ДАННЫМИ РАБОТНИКОВ        |";
-		Console::GoToXY(36, 11);
-		std::cout << "|                                           |";
-		Console::GoToXY(36, 12);
-		std::cout << "+-------------------------------------------+";
+		Messages::WorkWithDataEmployee();
 		switch (Menu::ChoiceKeyboard(menu, (int)size(menu)))
 		{
 		case 0:
@@ -331,22 +295,11 @@ void Menu::WorkWithDataMenu(std::vector<std::shared_ptr<Employee>>& vector_emplo
 
 void Menu::DataProcessingMenu(std::vector<std::shared_ptr<Employee>>& vector_employee)
 {
-	std::string menu[] = { "      Найти работника", "   Сортировать работников", "Показать зарплату за опр-й месяц", "      Вернуться назад" };
+	if (!vector_employee.size()) { Messages::EmptyDatabase(); return; }
+	std::string menu[] = { "      Найти работника", "   Сортировать работников", "Показать зарплату за месяц", "      Вернуться назад" };
 	while (true)
 	{
-		system("cls");
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-		Console::GoToXY(36, 8);
-		std::cout << "+----------------------------------------+";
-		Console::GoToXY(36, 9);
-		std::cout << "|                                        |";
-		Console::GoToXY(36, 10);
-		std::cout << "|            ОБРАБОТКА ДАННЫХ            |";
-		Console::GoToXY(36, 11);
-		std::cout << "|                                        |";
-		Console::GoToXY(36, 12);
-		std::cout << "+----------------------------------------+";
-
+		Messages::DataProcessing();
 		switch (Menu::ChoiceKeyboard(menu, (int)size(menu)))
 		{
 		case 0:
@@ -370,26 +323,13 @@ void Menu::DataProcessingMenu(std::vector<std::shared_ptr<Employee>>& vector_emp
 
 void Menu::FindMenu(std::vector<std::shared_ptr<Employee>> vector_employee)
 {
-	if (!vector_employee.size()) EmptyDatabase();
-	
-	std::string menu[] = { "     Найти работника по ФИО", "Найти работника по табельному номеру",
-		"Найти работника по почасовому тарифу", "        Вернуться назад" };
+	if (!vector_employee.size()) { Messages::EmptyDatabase(); return; }
+	std::string menu[] = { "   Найти работника по ФИО", "Найти работника по таб. номеру",
+		" Найти работника по тарифу", "      Вернуться назад" };
 
 	while (true)
 	{
-		system("cls");
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-		Console::GoToXY(36, 8);
-		std::cout << "+----------------------------------------+";
-		Console::GoToXY(36, 9);
-		std::cout << "|                                        |";
-		Console::GoToXY(36, 10);
-		std::cout << "|            ПОИСК РАБОТНИКА             |";
-		Console::GoToXY(36, 11);
-		std::cout << "|                                        |";
-		Console::GoToXY(36, 12);
-		std::cout << "+----------------------------------------+";
-		
+		Messages::FindingEmployee();		
 		switch (Menu::ChoiceKeyboard(menu, (int)size(menu)))
 		{
 		case 0:
@@ -412,36 +352,13 @@ void Menu::FindMenu(std::vector<std::shared_ptr<Employee>> vector_employee)
 
 void Menu::SortMenu(std::vector<std::shared_ptr<Employee>> vector_employee)
 {
-	char ch;
-	if (!vector_employee.size())
-	{
-		system("cls");
-		Console::GoToXY(45, 14);
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
-		std::cout << "-!!!- БАЗА ДАННЫХ ПУСТА -!!!-";
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-		ch = _getch();
-		return;
-	}
-
-	std::string menu[] = { "    Сортировать работников по фамилии", "Сортировать работников по табельному номеру",
-		"Сортировать работников по почасовому тарифу", "              Вернуться назад" };
+	if (!vector_employee.size()) { Messages::EmptyDatabase(); return; }
+	std::string menu[] = { "   Сортировать по фамилии", "Сортировать по табельному номеру",
+		"   Сортировать по тарифу", "      Вернуться назад" };
 
 	while (true)
 	{
-		system("cls");
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-		Console::GoToXY(36, 8);
-		std::cout << "+----------------------------------------+";
-		Console::GoToXY(36, 9);
-		std::cout << "|                                        |";
-		Console::GoToXY(36, 10);
-		std::cout << "|          СОРТИРОВКА РАБОТНИКОВ         |";
-		Console::GoToXY(36, 11);
-		std::cout << "|                                        |";
-		Console::GoToXY(36, 12);
-		std::cout << "+----------------------------------------+";
-
+		Messages::SortingWindow();
 		switch (Menu::ChoiceKeyboard(menu, (int)size(menu)))
 		{
 		case 0:
@@ -464,25 +381,13 @@ void Menu::SortMenu(std::vector<std::shared_ptr<Employee>> vector_employee)
 
 void Menu::ChangeDataMenu(std::vector<std::shared_ptr<Employee>>& vector_employee)
 {
+	if (!vector_employee.size()) { Messages::EmptyDatabase(); return; }
 	std::string menu[] = { "  Изменить данные работников", "Удалить всю базу данных работников", "      Добавить работника",
 		"Посмотреть базу данных работников", "      Удалить работника", "       Вернуться назад" };
 	char ch;
-
 	while (true)
 	{
-		system("cls");
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-		Console::GoToXY(36, 8);
-		std::cout << "+----------------------------------------+";
-		Console::GoToXY(36, 9);
-		std::cout << "|                                        |";
-		Console::GoToXY(36, 10);
-		std::cout << "|          РЕДАКТИРОВАНИЕ ДАННЫХ         |";
-		Console::GoToXY(36, 11);
-		std::cout << "|                                        |";
-		Console::GoToXY(36, 12);
-		std::cout << "+----------------------------------------+";
-
+		Messages::EditingDataWindow();
 		switch (Menu::ChoiceKeyboard(menu, (int)size(menu)))
 		{
 		case 0:
@@ -515,18 +420,7 @@ void Menu::ChangeDataMenu(std::vector<std::shared_ptr<Employee>>& vector_employe
 
 void Menu::EditDatabaseMenu(std::vector<std::shared_ptr<Employee>>& vector_employee)
 {
-	char ch;
-	if (!vector_employee.size())
-	{
-		system("cls");
-		Console::GoToXY(45, 14);
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_INTENSITY);
-		std::cout << "-!!!- БАЗА ДАННЫХ ПУСТА -!!!-";
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-		ch = _getch();
-		return;
-	}
-
+	if (!vector_employee.size()) { Messages::EmptyDatabase(); return; }
 	int numberOfEmployee = Employee::FindEmployee(vector_employee);
 	numberOfEmployee--;
 
@@ -535,20 +429,7 @@ void Menu::EditDatabaseMenu(std::vector<std::shared_ptr<Employee>>& vector_emplo
 
 	while (true)
 	{
-		system("cls");
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-
-		Console::GoToXY(36, 8);
-		std::cout << "+-----------------------------------------+";
-		Console::GoToXY(36, 9);
-		std::cout << "|                                         |";
-		Console::GoToXY(36, 10);
-		std::cout << "|       ИЗМЕНЕНИЕ ДАННЫХ О РАБОТНИКЕ      |";
-		Console::GoToXY(36, 11);
-		std::cout << "|                                         |";
-		Console::GoToXY(36, 12);
-		std::cout << "+-----------------------------------------+";
-
+		Messages::WorkWithDataEmployee();
 		switch (Menu::ChoiceKeyboard(menu, (int)size(menu)))
 		{
 		case 0:
@@ -579,25 +460,13 @@ void Menu::EditDatabaseMenu(std::vector<std::shared_ptr<Employee>>& vector_emplo
 
 void Menu::WorkWithDepartmentsMenu(std::vector<std::shared_ptr<Employee>>& empl, std::vector<std::shared_ptr<Department>>& dep)
 {
+	if (!dep.size()) { Messages::EmptyDatabase(); return; }
 	char ch;
 	std::string menu[] = { "    Изменить данные отдела", "Удалить всю базу данных отделов", "Посмотреть базу данных отделов",
-		"        Добавить отдел", "         Удалить отдел", "        Вернуться назад" };
+		"       Добавить отдел", "       Удалить отдел", "      Вернуться назад" };
 	while (true)
 	{
-		system("cls");
-		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-
-		Console::GoToXY(36, 8);
-		std::cout << "+-------------------------------------------+";
-		Console::GoToXY(36, 9);
-		std::cout << "|                                           |";
-		Console::GoToXY(36, 10);
-		std::cout << "|       РЕДАКТИРОВАНИЕ ДАННЫХ ОТДЕЛОВ       |";
-		Console::GoToXY(36, 11);
-		std::cout << "|                                           |";
-		Console::GoToXY(36, 12);
-		std::cout << "+-------------------------------------------+";
-
+		Messages::EditingDataWindow();
 		switch (Menu::ChoiceKeyboard(menu, (int)size(menu)))
 		{
 		case 0:
@@ -629,33 +498,39 @@ void Menu::WorkWithDepartmentsMenu(std::vector<std::shared_ptr<Employee>>& empl,
 
 void Menu::EditDatabaseDepartmentMenu(std::vector<std::shared_ptr<Employee>>& empl, std::vector<std::shared_ptr<Department>>& dep)
 {
-	if (!dep.size()) EmptyDatabase();
-	int number_department = Department::FindDepartment(dep);
-	number_department--;
-	std::string menu[] = { "    Изменение названия", "Изменение кол-ва проектов", "   Добавить работника",
-		"   Удалить работника",  "    Вернуться назад" };
+	if (!dep.size()) { Messages::EmptyDatabase(); return; }
 
-	switch (Menu::ChoiceKeyboard(menu, (int)size(menu)))
+	int number_department = Department::FindDepartment(dep);
+	if (number_department != -1)
 	{
-	case 0:
 		system("cls");
-		Department::ChangeTitle(dep, number_department);
-		break;
-	case 1:
-		system("cls");
-		Department::ChangeNumberOfProjects(dep, number_department);
-		break;
-	case 2:
-		system("cls");
-		Department::AddNewEmployeeInDepartment(empl, dep, number_department);
-		break;
-	case 3:
-		system("cls");
-		Department::DeleteEmployeeFromDepartment(dep, number_department);
-		break;
-	case 4:
-		return;
+		number_department--;
+		std::string menu[] = { "    Изменение названия", "Изменение кол-ва проектов", "    Добавить работника",
+			"    Удалить работника",  "     Вернуться назад" };
+		Messages::ChangingDataDepartment();
+		switch (Menu::ChoiceKeyboard(menu, (int)size(menu)))
+		{
+		case 0:
+			system("cls");
+			Department::ChangeTitle(dep, number_department);
+			break;
+		case 1:
+			system("cls");
+			Department::ChangeNumberOfProjects(dep, number_department);
+			break;
+		case 2:
+			system("cls");
+			Department::AddNewEmployeeInDepartment(empl, dep, number_department);
+			break;
+		case 3:
+			system("cls");
+			Department::DeleteEmployeeFromDepartment(dep, number_department);
+			break;
+		case 4:
+			return;
+		}
 	}
+	else return;
 }
 
 void Menu::MenuUser(Vectors& vect, std::string username)
