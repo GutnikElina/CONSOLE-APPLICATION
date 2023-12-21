@@ -27,9 +27,8 @@ public:
 	static void ErrorYear();
 	static void ErrorInputHours();
 	static void ErrorFindYou();
-	static void ConfirmDeleting();
 
-	static void UpdatingWindow(std::string word);
+	static void ConfirmDeleting();
 	static void SuccessAddDepartment();
 	static void SuccessDeleteEmployee();
 	static void SuccessAddEmployee();

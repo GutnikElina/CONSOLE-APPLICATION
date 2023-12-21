@@ -5,5 +5,6 @@ zhanna	hgfed	1	1	Kravtsova	Zhanna	Nikolaevna
 user12345	defgh6789	0	0	fgh	poi	qwer	
 nastya	ddddd	0	1	Sachuk	Anastasia	Sergeevna	
 andrey	defgh6789	0	1	Gutnik	Andrey	Georgievich	
-ivanov	defgh	0	0	Ivanov	Ivan	Ivanovich	
+ivanov	defgh	0	1	Ivanov	Ivan	Ivanovich	
 qwerty	defgh	0	1	a	a	a	
+asdfg	defgh6	0	1	Gutniik	Elina	Andreevna	

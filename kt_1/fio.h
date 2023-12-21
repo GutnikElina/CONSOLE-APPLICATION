@@ -34,7 +34,32 @@ namespace Console
 	}
 }
 
-class FIO
+class AbstractClass
+{
+public:
+
+	virtual void GetFromFile(std::istream& in) = 0;
+
+	template <typename DataType>
+	static void UpdatingWindow(DataType word)
+	{
+		system("cls");
+		SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
+		Console::GoToXY(35, 11);
+		std::cout << "+--------------------------------------------+";
+		Console::GoToXY(35, 12);
+		std::cout << "|                                            |";
+		Console::GoToXY(35, 13);
+		std::cout << "|          " << std::setw(6) << std::left << word << " сяоеьмн намнбкем           |";
+		Console::GoToXY(35, 14);
+		std::cout << "|                                            |";
+		Console::GoToXY(35, 15);
+		std::cout << "+--------------------------------------------+";
+		char ch = _getch();
+	}
+};
+
+class FIO: public AbstractClass
 {
 private:
 
@@ -58,7 +83,7 @@ public:
 	std::string GetSurname() { return this->surname; }
 	std::string GetOtch() { return this->otch; }
 
-	virtual void GetFromFile(std::istream& in);
+	void GetFromFile(std::istream& in) override;
 };
 
 #endif 

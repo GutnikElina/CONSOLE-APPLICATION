@@ -96,7 +96,6 @@ int Menu::ChoiceKeyboard(std::string main_menu[], int size)
 	int x, y, active_menu = 0;
 	while (true)
 	{
-		
 		x = 45, y = 14;
 		for (int i = 0; i < size; i++)
 		{
@@ -197,7 +196,7 @@ bool Menu::confirmOrNot()
 
 void Menu::ChangeAccountMenu(std::vector<std::shared_ptr<User>>& vector_user, std::string username)
 {
-	std::string menu[] = { "  Посмотреть все аккаунты", "   Добавить новый аккаунт", "     \ Удалить аккаунт",
+	std::string menu[] = { "  Посмотреть все аккаунты", "   Добавить новый аккаунт", "       Удалить аккаунт",
 		"Редактировать данные аккаунта", "      Вернуться назад" };
 	char ch;
 

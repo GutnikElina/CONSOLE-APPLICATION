@@ -11,9 +11,6 @@ class Menu
 {
 public:
 
-	static void FileNotOpened();
-	static void EmptyDatabase();
-
 	static bool IsDigitKey(char key);
 	static int CheckInt();
 	static std::string CheckDouble();

@@ -149,27 +149,26 @@ int Vectors::CountLengthFile()
 
 void Vectors::GetVectorUsers()
 {
-	int count = CountLengthFile();
+	std::ifstream file("users.txt");
+	if (!file.is_open()) Messages::FileNotOpened();
+	int count = (int)std::count(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>(), '\n');
 	this->vector_user.reserve(count);
 	for (int i = 0; i < count; i++)
 		this->vector_user.push_back(std::make_shared<User>());
 
-	std::ifstream file("users.txt", std::ios::in);
-	if (!file.is_open()) Messages::FileNotOpened();
+	file.clear();  // сброс состояния потока для повторного использования
+	file.seekg(0);  // переход в начало файла
 
-	std::string username = "admin", password = Vectors::HashPassword("12345"), 
-		surname = "Gutnik", name = "Elina", patronymic = "Andreevna";
-
-	if (!vector_user.size())
+	if (count == 0)
 	{
 		std::shared_ptr<User> user = std::make_shared<User>();
 		user->SetRole(1);
 		user->SetAccess(1);
-		user->SetUsername(username);
-		user->SetPassword(password);
-		user->SetSurname(surname);
-		user->SetName(name);
-		user->SetOtch(patronymic);
+		user->SetUsername("admin");
+		user->SetPassword(Vectors::HashPassword("12345"));
+		user->SetSurname("Gutnik");
+		user->SetName("Elina");
+		user->SetOtch("Andreevna");
 		this->vector_user.push_back(user);
 		Vectors::AddAccountInFile(vector_user);
 	}
@@ -181,19 +180,19 @@ void Vectors::GetVectorUsers()
 
 void Vectors::GetVectorEmployees()
 {
-	std::ifstream file("employees.txt", std::ios::in);
+	std::ifstream file("employees.txt");
 	if (!file.is_open())  Messages::FileNotOpened();
 
 	std::string surname, name, patronymic, month, hourly_rate;
-	double salry, hours, average_salary;
+	double salary, hours, average_salary;
 	int id, amount_months;
-	while (true)
+
+	while (file >> surname >> name >> patronymic >> id >> hourly_rate >> average_salary >> amount_months)
 	{
-		if (!(file >> surname >> name >> patronymic >> id >> hourly_rate >> average_salary >> amount_months))
-			break;
 		std::shared_ptr<Employee> emp = std::make_shared<Employee>();
-		std::vector<double> salary;
-		std::vector<std::pair<std::string, double>> hours_worked;
+		std::vector<double> salary_vector;
+		std::vector<std::pair<std::string, double>> hours_worked_vector;
+
 		emp->SetSurname(surname);
 		emp->SetName(name);
 		emp->SetOtch(patronymic);
@@ -204,12 +203,13 @@ void Vectors::GetVectorEmployees()
 
 		for (int i = 0; i < amount_months; i++)
 		{
-			file >> salry >> month >> hours;
-			salary.push_back(salry);
-			hours_worked.emplace_back(month, hours);
+			file >> salary >> month >> hours;
+			salary_vector.push_back(salary);
+			hours_worked_vector.emplace_back(month, hours);
 		}
-		emp->SetSalary(salary);
-		emp->SetHoursWorkedForMonth(hours_worked);
+
+		emp->SetSalary(salary_vector);
+		emp->SetHoursWorkedForMonth(hours_worked_vector);
 		this->vector_employee.push_back(emp);
 	}
 	file.close();

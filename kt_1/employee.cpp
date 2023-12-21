@@ -292,7 +292,7 @@ void Employee::SalaryData(std::vector<std::shared_ptr<Employee>> vector_employee
 					std::cout << "+----------------------------------------+";
 					Console::GoToXY(40, 14);
 					std::cout << "| " << date << " | ÇÀÐÏËÀÒÀ: " << std::setw(16) << std::left <<
-						vector_employee.at(number_employee - 1)->GetSalary().at(i) << "$  |";
+						vector_employee.at(number_employee - 1)->GetSalary().at(i) << "$   |";
 					Console::GoToXY(40, 15);
 					std::cout << "+----------------------------------------+";
 					ch = _getch();
@@ -551,7 +551,7 @@ void Employee::DatabaseForUser(std::vector<std::shared_ptr<User>> vector_user,
 				vector_user.at(i)->GetName() == vector_employee.at(j)->GetName() &&
 				vector_user.at(i)->GetOtch() == vector_employee.at(j)->GetOtch())
 			{
-				std::cout << "+------------------------------------------------2-----------------------------+" << std::endl;
+				std::cout << "+-----------------------------------------------------------------------------+" << std::endl;
 				std::cout << "|                     ÁÀÇÀ ÄÀÍÍÛÕ ÐÀÁÎÒÍÈÊÎÂ ÏÐÅÄÏÐÈßÒÈß                      |" << std::endl;
 				std::cout << "+-----------------------------------------------------------------------------+" << std::endl;
 				std::cout << "|            ÔÈÎ ðàáîòíèêà              | Òàáåëüíûé | Ïî÷àñîâîé |   Ñðåäíÿÿ   |" << std::endl;

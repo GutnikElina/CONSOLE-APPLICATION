@@ -165,7 +165,7 @@ void User::DeleteAccount(std::vector<std::shared_ptr<User>>& vector_user, std::s
 void User::ChangeUsername(std::vector<std::shared_ptr<User>>& vector_user, std::shared_ptr<User>& user)
 {
 	char ch;
-	std::string new_login, word = "ÀŒ√»Õ";
+	std::string new_login;
 	Messages::ChangingDataAccount();
 	Console::GoToXY(52, 14);
 	std::cout << "—“¿–€… ÀŒ√»Õ";
@@ -181,7 +181,7 @@ void User::ChangeUsername(std::vector<std::shared_ptr<User>>& vector_user, std::
 		{
 			user->SetUsername(new_login);
 			Vectors::AddAccountInFile(vector_user);
-			Messages::UpdatingWindow(word);
+			AbstractClass::UpdatingWindow(std::string("ÀŒ√»Õ"));
 			return;
 		}
 	}
@@ -190,7 +190,7 @@ void User::ChangeUsername(std::vector<std::shared_ptr<User>>& vector_user, std::
 void User::ChangePassword(std::vector<std::shared_ptr<User>>& vector_user, std::shared_ptr<User>& user)
 {
 	system("cls");
-	std::string new_password, word = "œ¿–ŒÀ‹";
+	std::string new_password;
 	while (true)
 	{
 		new_password = Vectors::FindPassword();
@@ -200,7 +200,7 @@ void User::ChangePassword(std::vector<std::shared_ptr<User>>& vector_user, std::
 		{
 			user->SetPassword(new_password);
 			Vectors::AddAccountInFile(vector_user);
-			Messages::UpdatingWindow(word);
+			AbstractClass::UpdatingWindow(std::string("œ¿–ŒÀ‹"));
 			return;
 		}
 	}

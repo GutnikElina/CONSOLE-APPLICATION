@@ -157,23 +157,6 @@ void Messages::ErrorInputHours()
 	char ch = _getch();
 }
 
-void Messages::UpdatingWindow(std::string word)
-{
-	system("cls");
-	SetConsoleTextAttribute(Console::hStdOut, FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
-	Console::GoToXY(35, 11);
-	std::cout << "+--------------------------------------------+";
-	Console::GoToXY(35, 12);
-	std::cout << "|                                            |";
-	Console::GoToXY(35, 13);
-	std::cout << "|          " << std::setw(6) << std::left << word << " сяоеьмн намнбкем          |";
-	Console::GoToXY(35, 14);
-	std::cout << "|                                            |";
-	Console::GoToXY(35, 15);
-	std::cout << "+--------------------------------------------+";
-	char ch = _getch();
-}
-
 void Messages::ChangingAccess()
 {
 	system("cls");
